@@ -77,13 +77,13 @@ const Sidebar = () => {
         { path: '/patients/new', icon: UserPlus, label: 'Patient Registration', roles: ['admin', 'receptionist'] },
         { path: '/patients', icon: Users, label: 'Patients', roles: ['admin', 'receptionist'] },
         { path: '/patients/search', icon: Search, label: 'Advanced Search', roles: ['admin', 'receptionist'] },
-        { path: '/appointments', icon: Calendar, label: 'Appointments', roles: ['admin', 'doctor', 'nurse', 'receptionist'] },
+        { path: '/appointments', icon: Calendar, label: 'Appointments', roles: ['admin', 'doctor', 'receptionist'] },
         { path: '/visits/end-visit', icon: ToggleLeft, label: 'End Visit', roles: ['admin', 'receptionist'] },
         { path: '/lab-tests/completed', icon: CheckCircle, label: 'Lab Results', roles: ['admin', 'doctor'] },
-        { path: '/admission', icon: Activity, label: 'Admission', roles: ['admin', 'doctor', 'nurse'] },
+        { path: '/admission', icon: Activity, label: 'Admission', roles: ['admin', 'doctor'] },
         { path: '/ipd', icon: Activity, label: 'IPD', roles: ['admin', 'doctor', 'nurse'] },
-        { path: '/wards', icon: Activity, label: 'Wards', roles: ['admin', 'nurse'] },
-        { path: '/beds', icon: Activity, label: 'Beds', roles: ['admin', 'nurse'] }
+        { path: '/wards', icon: Activity, label: 'Wards', roles: ['admin'] },
+        { path: '/beds', icon: Activity, label: 'Beds', roles: ['admin'] }
       ];
 
       if (hasRole('doctor')) {
@@ -157,15 +157,20 @@ const Sidebar = () => {
 
     // Theatre Group
     if (hasRole('surgeon') || hasRole('doctor') || hasRole('admin')) {
-      groups.push({
-        name: 'theatre',
-        label: 'Theatre',
-        items: [
+      const theatreItems = [
           { path: '/theatre-scheduling', icon: Scissors, label: 'Theatre Scheduling', roles: ['admin', 'doctor'] },
           { path: '/theatre-procedures', icon: Scissors, label: 'Pending Procedures', roles: ['admin', 'surgeon'] },
           { path: '/theatres', icon: Building2, label: 'Theatre Rooms', roles: ['admin'] }
-        ]
-      });
+        ];
+
+      const filteredtheatreItems = theatreItems.filter(item => item.roles.some(role => hasRole(role)));
+      if (filteredtheatreItems.length > 0) {
+        groups.push({
+          name: 'theatre',
+          label: 'Theatre',
+          items: filteredtheatreItems
+        });
+      }
     }
 
     // Mortuary Group
