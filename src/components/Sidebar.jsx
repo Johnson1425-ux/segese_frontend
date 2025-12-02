@@ -72,7 +72,7 @@ const Sidebar = () => {
     });
 
     // Patient Management Group
-    if (hasRole('admin') || hasRole('doctor') || hasRole('mortuary_attendant') || hasRole('receptionist')) {
+    if (hasRole('admin') || hasRole('doctor') || hasRole('mortuary_attendant') || hasRole('receptionist') || (hasRole('nurse')) {
       const patientItems = [
         { path: '/patients/new', icon: UserPlus, label: 'Patient Registration', roles: ['admin', 'receptionist'] },
         { path: '/patients', icon: Users, label: 'Patients', roles: ['admin', 'receptionist'] },
@@ -90,10 +90,6 @@ const Sidebar = () => {
         patientItems.push({ path: '/doctors/my-queue', icon: Activity, label: 'My Queue', roles: ['doctor'] });
       } else {
         patientItems.push({ path: '/visits', icon: Activity, label: 'Visits', roles: ['admin', 'receptionist'] });
-      }
-
-      if (hasRole('nurse')) {
-        patientItems.push({ path: '/ipd', icon: Activity, label: 'IPD', roles: ['nurse'] });
       }
 
       groups.push({
