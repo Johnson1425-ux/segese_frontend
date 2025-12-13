@@ -126,6 +126,23 @@ const Patients = () => {
     });
   };
 
+  // Helper function to get insurance provider name
+  const getInsuranceProviderName = (insurance) => {
+    if (!insurance) return 'N/A';
+    
+    // If provider is an object with a name property
+    if (insurance.provider && typeof insurance.provider === 'object') {
+      return insurance.provider.name || 'N/A';
+    }
+    
+    // If provider is a string
+    if (typeof insurance.provider === 'string') {
+      return insurance.provider;
+    }
+    
+    return 'N/A';
+  };
+
   // Actions Dropdown Component
   const ActionsDropdown = ({ patient, isOpen, onToggle }) => {
     const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
@@ -357,7 +374,7 @@ const Patients = () => {
             
             <div>
               <label className="block text-sm font-medium text-gray-700">Insurance Provider</label>
-              <p className="mt-1 text-sm text-gray-900">{patient.insurance?.provider || 'N/A'}</p>
+              <p className="mt-1 text-sm text-gray-900">{getInsuranceProviderName(patient.insurance)}</p>
               {patient.insurance?.policyNumber && (
                 <p className="text-sm text-gray-500">Policy: {patient.insurance.policyNumber}</p>
               )}
@@ -567,7 +584,7 @@ const Patients = () => {
                     )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {patient.insurance?.provider || 'N/A'}
+                    {getInsuranceProviderName(patient.insurance)}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {formatDate(patient.createdAt)}
