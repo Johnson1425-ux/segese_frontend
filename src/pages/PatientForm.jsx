@@ -219,7 +219,7 @@ const PatientForm = () => {
         await patientService.createPatient(submitData);
         toast.success('Patient created successfully');
       }
-      navigate('/patients');
+      navigate('/patients/search');
     } catch (error) {
       const message = error.response?.data?.message || 
         (isEditing ? 'Failed to update patient' : 'Failed to create patient');
@@ -468,10 +468,9 @@ const PatientForm = () => {
               <input
                 type="text"
                 name="address.country"
-                value={formData.address?.country || 'Tanzania, United Republic of'}
+                value="Tanzania, United Republic of"
                 readOnly
-                onChange={handleChange}
-                className="input-field"
+                className="input-field bg-gray-50 cursor-not-allowed"
                 placeholder="Enter country"
               />
             </div>
