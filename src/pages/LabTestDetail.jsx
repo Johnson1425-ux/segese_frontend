@@ -31,7 +31,7 @@ export default function LabTestDetail() {
     e.preventDefault();
     try {
       const payload = { results, status: 'Completed' };
-      await api.put(`/lab-tests/${id}`, payload);
+      await api.patch(`/lab-tests/${id}/results`, payload);
       toast.success('Results submitted successfully!');
       fetchTest(); // Refresh the data
     } catch (error) {
