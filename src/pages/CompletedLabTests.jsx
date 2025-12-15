@@ -16,10 +16,10 @@ export default function CompletedLabTests() {
         console.log('All lab tests:', data.data);
         console.log('Current user:', user);
         
-        // Get all active visits first
+        // Get all active visits (using isActive field)
         const visitsResponse = await api.get('/visits');
         const activeVisitIds = visitsResponse.data.data
-          .filter(visit => visit.status === 'active')
+          .filter(visit => visit.isActive === true)
           .map(visit => visit._id);
         
         console.log('Active visit IDs:', activeVisitIds);
