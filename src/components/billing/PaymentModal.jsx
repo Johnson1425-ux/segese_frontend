@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { toast } from 'react-hot-toast';
 import { X, DollarSign, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 import api from '../../utils/api';
 
-const PaymentModal = ({ invoice, onClose, onPaymentSuccess }) => {
+const PaymentModal = ({ invoice: initialInvoice, onClose, onPaymentSuccess }) => {
   const queryClient = useQueryClient();
   const [selectedItems, setSelectedItems] = useState([]);
   const [paymentMethod, setPaymentMethod] = useState('cash');
-  const [currentInvoice, setCurrentInvoice] = useState(invoice);
+  // Use state to track the current invoice data
+  const [invoice, setInvoice] = useState(initialInvoice);
+
+  // Update local invoice when prop changes
+  useEffect(() => {
+    setInvoice(initialInvoice);
+  }, [initialInvoice]);
 
   // Mutation to pay for selected items
   const paymentMutation = useMutation(
@@ -21,18 +27,22 @@ const PaymentModal = ({ invoice, onClose, onPaymentSuccess }) => {
         toast.success('Payment recorded successfully!');
         
         // Update local state immediately to reflect changes in UI
-        setCurrentInvoice(updatedInvoice);
+        setInvoice(updatedInvoice);
         
         // Update the cache with the response data
         queryClient.setQueryData(['invoice', invoice._id], updatedInvoice);
         
+        // Invalidate related queries to ensure consistency
+        queryClient.invalidateQueries(['invoice', invoice._id]);
+        queryClient.invalidateQueries(['invoices']);
+        
         // Clear selected items
         setSelectedItems([]);
         
-        // Call the success callback after a delay to show updated state
-        setTimeout(() => {
-          if (onPaymentSuccess) onPaymentSuccess();
-        }, 1000);
+        // Call the success callback
+        if (onPaymentSuccess) {
+          onPaymentSuccess(updatedInvoice);
+        }
       },
       onError: (error) => {
         toast.error(error.response?.data?.message || 'Payment failed');
@@ -49,7 +59,7 @@ const PaymentModal = ({ invoice, onClose, onPaymentSuccess }) => {
   };
 
   const selectAllUnpaid = () => {
-    const unpaidIndices = currentInvoice.items
+    const unpaidIndices = invoice.items
       .map((item, index) => !item.paid ? index : null)
       .filter(index => index !== null);
     setSelectedItems(unpaidIndices);
@@ -60,9 +70,8 @@ const PaymentModal = ({ invoice, onClose, onPaymentSuccess }) => {
   };
 
   const calculateTotal = () => {
-    if (!currentInvoice) return 0;
     return selectedItems.reduce((sum, index) => {
-      return sum + currentInvoice.items[index].total;
+      return sum + (invoice.items[index]?.total || 0);
     }, 0);
   };
 
@@ -77,14 +86,13 @@ const PaymentModal = ({ invoice, onClose, onPaymentSuccess }) => {
     if (window.confirm(`Confirm payment of Tsh. ${totalAmount.toLocaleString()} via ${paymentMethod}?`)) {
       paymentMutation.mutate({
         itemIndices: selectedItems,
-        method: paymentMethod,
-        amount: totalAmount
+        method: paymentMethod
       });
     }
   };
 
-  const unpaidItems = currentInvoice?.items?.filter(item => !item.paid) || [];
-  const paidItems = currentInvoice?.items?.filter(item => item.paid) || [];
+  const unpaidItems = invoice?.items?.filter(item => !item.paid) || [];
+  const paidItems = invoice?.items?.filter(item => item.paid) || [];
   const totalUnpaid = unpaidItems.reduce((sum, item) => sum + item.total, 0);
 
   return (
@@ -93,22 +101,22 @@ const PaymentModal = ({ invoice, onClose, onPaymentSuccess }) => {
         {/* Header */}
         <div className="flex justify-between items-start p-6 border-b">
           <div className="flex-1">
-            <h2 className="text-xl font-bold mb-1">Record Payment - Invoice #{currentInvoice.invoiceNumber}</h2>
+            <h2 className="text-xl font-bold mb-1">Record Payment - Invoice #{invoice.invoiceNumber}</h2>
             <p className="text-sm text-gray-600">
-              Patient: {currentInvoice.patient?.firstName} {currentInvoice.patient?.lastName}
+              Patient: {invoice.patient?.firstName} {invoice.patient?.lastName}
             </p>
             <div className="mt-2 flex gap-4 text-sm">
               <div>
                 <span className="text-gray-600">Total Invoice:</span>
-                <span className="font-semibold ml-1">Tsh. {currentInvoice.totalAmount.toLocaleString()}</span>
+                <span className="font-semibold ml-1">Tsh. {invoice.totalAmount.toLocaleString()}</span>
               </div>
               <div>
                 <span className="text-gray-600">Paid:</span>
-                <span className="font-semibold text-green-600 ml-1">Tsh. {currentInvoice.amountPaid.toLocaleString()}</span>
+                <span className="font-semibold text-green-600 ml-1">Tsh. {invoice.amountPaid.toLocaleString()}</span>
               </div>
               <div>
                 <span className="text-gray-600">Balance Due:</span>
-                <span className="font-semibold text-red-600 ml-1">Tsh. {currentInvoice.balanceDue.toLocaleString()}</span>
+                <span className="font-semibold text-red-600 ml-1">Tsh. {invoice.balanceDue.toLocaleString()}</span>
               </div>
             </div>
           </div>
@@ -145,7 +153,7 @@ const PaymentModal = ({ invoice, onClose, onPaymentSuccess }) => {
                 </div>
               </div>
               <div className="space-y-2">
-                {currentInvoice.items.map((item, index) => {
+                {invoice.items.map((item, index) => {
                   if (item.paid) return null;
                   return (
                     <div
@@ -215,7 +223,7 @@ const PaymentModal = ({ invoice, onClose, onPaymentSuccess }) => {
                 Paid Services ({paidItems.length})
               </h3>
               <div className="space-y-2">
-                {currentInvoice.items.map((item, index) => {
+                {invoice.items.map((item, index) => {
                   if (!item.paid) return null;
                   return (
                     <div
@@ -261,7 +269,7 @@ const PaymentModal = ({ invoice, onClose, onPaymentSuccess }) => {
             <div className="text-center py-4">
               <CheckCircle className="w-16 h-16 mx-auto mb-3 text-green-500" />
               <p className="text-lg font-semibold text-green-600">All items have been paid!</p>
-              <p className="text-sm text-gray-600 mt-1">Invoice Status: {currentInvoice.status}</p>
+              <p className="text-sm text-gray-600 mt-1">Invoice Status: {invoice.status}</p>
             </div>
           )}
         </div>
@@ -277,6 +285,7 @@ const PaymentModal = ({ invoice, onClose, onPaymentSuccess }) => {
                 value={paymentMethod}
                 onChange={(e) => setPaymentMethod(e.target.value)}
                 className="input-field w-full"
+                disabled={paymentMutation.isLoading}
               >
                 <option value="cash">Cash</option>
                 <option value="credit_card">Credit Card</option>
@@ -297,7 +306,7 @@ const PaymentModal = ({ invoice, onClose, onPaymentSuccess }) => {
                 </p>
                 {selectedItems.length > 0 && (
                   <p className="text-xs text-gray-500 mt-1">
-                    Remaining after payment: Tsh. {(currentInvoice.balanceDue - calculateTotal()).toLocaleString()}
+                    Remaining after payment: Tsh. {(invoice.balanceDue - calculateTotal()).toLocaleString()}
                   </p>
                 )}
               </div>
@@ -305,6 +314,7 @@ const PaymentModal = ({ invoice, onClose, onPaymentSuccess }) => {
                 <button
                   onClick={onClose}
                   className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 text-gray-700"
+                  disabled={paymentMutation.isLoading}
                 >
                   Cancel
                 </button>
