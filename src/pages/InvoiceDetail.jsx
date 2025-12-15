@@ -24,7 +24,7 @@ const InvoiceDetail = () => {
 
   // Print handler
   const handlePrint = useReactToPrint({
-    content: () => printRef.current,
+    contentRef: printRef,
     documentTitle: `Invoice-${invoice?.invoiceNumber || id}`,
     onAfterPrint: () => toast.success('Invoice printed successfully'),
   });
