@@ -17,21 +17,29 @@ const InvoiceDetail = () => {
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
   // Fetch invoice details
-  const { data: invoice, isLoading, isError } = useQuery(
+  const { data: invoice, isLoading, isError, refetch } = useQuery(
     ['invoice', id],
-    () => billingService.getInvoiceById(id).then(res => res.data.data)
+    () => billingService.getInvoiceById(id).then(res => res.data.data),
+    {
+      refetchOnMount: 'always',
+      staleTime: 0
+    }
   );
 
   // Print handler
   const handlePrint = useReactToPrint({
-    contentRef: printRef,
+    content: () => printRef.current,
     documentTitle: `Invoice-${invoice?.invoiceNumber || id}`,
     onAfterPrint: () => toast.success('Invoice printed successfully'),
   });
 
-  const handlePaymentSuccess = () => {
-    setIsPaymentModalOpen(false);
-    queryClient.invalidateQueries(['invoice', id]);
+  const handlePaymentSuccess = async () => {
+    // Refetch the invoice immediately to get updated data
+    await refetch();
+    // Close modal after a short delay
+    setTimeout(() => {
+      setIsPaymentModalOpen(false);
+    }, 500);
   };
 
   if (isLoading) return <LoadingSpinner />;
@@ -77,10 +85,15 @@ const InvoiceDetail = () => {
         </div>
 
         {/* Status Badge */}
-        <div className="mb-6">
+        <div className="mb-6 flex items-center gap-3">
           <span className={`inline-block text-lg font-semibold px-4 py-2 rounded-full ${getStatusChip(invoice.status)}`}>
             Status: {invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1)}
           </span>
+          {invoice.items && (
+            <span className="text-sm text-gray-600">
+              ({invoice.items.filter(item => item.paid).length} of {invoice.items.length} items paid)
+            </span>
+          )}
         </div>
 
         {/* Patient and Date Info */}
@@ -141,9 +154,16 @@ const InvoiceDetail = () => {
             </thead>
             <tbody>
               {invoice.items.map((item, index) => (
-                <tr key={index} className="border-b border-gray-200">
+                <tr key={index} className={`border-b border-gray-200 ${item.paid ? 'bg-green-50' : ''}`}>
                   <td className="py-3">
-                    <div className="font-medium text-gray-800">{item.description}</div>
+                    <div className="flex items-center gap-2">
+                      <div className="font-medium text-gray-800">{item.description}</div>
+                      {item.paid && (
+                        <span className="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded">
+                          Paid ✓
+                        </span>
+                      )}
+                    </div>
                     {item.type && (
                       <div className="text-xs text-gray-500 mt-1">
                         Type: {item.type}
@@ -152,6 +172,11 @@ const InvoiceDetail = () => {
                     {item.notes && (
                       <div className="text-xs text-gray-500 mt-1">
                         Note: {item.notes}
+                      </div>
+                    )}
+                    {item.paidAt && (
+                      <div className="text-xs text-green-600 mt-1">
+                        Paid on: {new Date(item.paidAt).toLocaleDateString()}
                       </div>
                     )}
                   </td>
