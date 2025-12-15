@@ -8,18 +8,31 @@ const PaymentModal = ({ invoice, onClose, onPaymentSuccess }) => {
   const queryClient = useQueryClient();
   const [selectedItems, setSelectedItems] = useState([]);
   const [paymentMethod, setPaymentMethod] = useState('cash');
+  const [currentInvoice, setCurrentInvoice] = useState(invoice);
 
   // Mutation to pay for selected items
   const paymentMutation = useMutation(
     async (paymentData) => {
-      return api.post(`/billing/invoices/${invoice._id}/pay-items`, paymentData);
+      const response = await api.post(`/billing/invoices/${invoice._id}/pay-items`, paymentData);
+      return response.data.data; // Return the updated invoice
     },
     {
-      onSuccess: () => {
+      onSuccess: (updatedInvoice) => {
         toast.success('Payment recorded successfully!');
-        queryClient.invalidateQueries(['invoice', invoice._id]);
+        
+        // Update local state immediately to reflect changes in UI
+        setCurrentInvoice(updatedInvoice);
+        
+        // Update the cache with the response data
+        queryClient.setQueryData(['invoice', invoice._id], updatedInvoice);
+        
+        // Clear selected items
         setSelectedItems([]);
-        if (onPaymentSuccess) onPaymentSuccess();
+        
+        // Call the success callback after a delay to show updated state
+        setTimeout(() => {
+          if (onPaymentSuccess) onPaymentSuccess();
+        }, 1000);
       },
       onError: (error) => {
         toast.error(error.response?.data?.message || 'Payment failed');
@@ -36,7 +49,7 @@ const PaymentModal = ({ invoice, onClose, onPaymentSuccess }) => {
   };
 
   const selectAllUnpaid = () => {
-    const unpaidIndices = invoice.items
+    const unpaidIndices = currentInvoice.items
       .map((item, index) => !item.paid ? index : null)
       .filter(index => index !== null);
     setSelectedItems(unpaidIndices);
@@ -47,9 +60,9 @@ const PaymentModal = ({ invoice, onClose, onPaymentSuccess }) => {
   };
 
   const calculateTotal = () => {
-    if (!invoice) return 0;
+    if (!currentInvoice) return 0;
     return selectedItems.reduce((sum, index) => {
-      return sum + invoice.items[index].total;
+      return sum + currentInvoice.items[index].total;
     }, 0);
   };
 
@@ -70,8 +83,8 @@ const PaymentModal = ({ invoice, onClose, onPaymentSuccess }) => {
     }
   };
 
-  const unpaidItems = invoice?.items?.filter(item => !item.paid) || [];
-  const paidItems = invoice?.items?.filter(item => item.paid) || [];
+  const unpaidItems = currentInvoice?.items?.filter(item => !item.paid) || [];
+  const paidItems = currentInvoice?.items?.filter(item => item.paid) || [];
   const totalUnpaid = unpaidItems.reduce((sum, item) => sum + item.total, 0);
 
   return (
@@ -80,22 +93,22 @@ const PaymentModal = ({ invoice, onClose, onPaymentSuccess }) => {
         {/* Header */}
         <div className="flex justify-between items-start p-6 border-b">
           <div className="flex-1">
-            <h2 className="text-xl font-bold mb-1">Record Payment - Invoice #{invoice.invoiceNumber}</h2>
+            <h2 className="text-xl font-bold mb-1">Record Payment - Invoice #{currentInvoice.invoiceNumber}</h2>
             <p className="text-sm text-gray-600">
-              Patient: {invoice.patient?.firstName} {invoice.patient?.lastName}
+              Patient: {currentInvoice.patient?.firstName} {currentInvoice.patient?.lastName}
             </p>
             <div className="mt-2 flex gap-4 text-sm">
               <div>
                 <span className="text-gray-600">Total Invoice:</span>
-                <span className="font-semibold ml-1">Tsh. {invoice.totalAmount.toLocaleString()}</span>
+                <span className="font-semibold ml-1">Tsh. {currentInvoice.totalAmount.toLocaleString()}</span>
               </div>
               <div>
                 <span className="text-gray-600">Paid:</span>
-                <span className="font-semibold text-green-600 ml-1">Tsh. {invoice.amountPaid.toLocaleString()}</span>
+                <span className="font-semibold text-green-600 ml-1">Tsh. {currentInvoice.amountPaid.toLocaleString()}</span>
               </div>
               <div>
                 <span className="text-gray-600">Balance Due:</span>
-                <span className="font-semibold text-red-600 ml-1">Tsh. {invoice.balanceDue.toLocaleString()}</span>
+                <span className="font-semibold text-red-600 ml-1">Tsh. {currentInvoice.balanceDue.toLocaleString()}</span>
               </div>
             </div>
           </div>
@@ -132,7 +145,7 @@ const PaymentModal = ({ invoice, onClose, onPaymentSuccess }) => {
                 </div>
               </div>
               <div className="space-y-2">
-                {invoice.items.map((item, index) => {
+                {currentInvoice.items.map((item, index) => {
                   if (item.paid) return null;
                   return (
                     <div
@@ -202,7 +215,7 @@ const PaymentModal = ({ invoice, onClose, onPaymentSuccess }) => {
                 Paid Services ({paidItems.length})
               </h3>
               <div className="space-y-2">
-                {invoice.items.map((item, index) => {
+                {currentInvoice.items.map((item, index) => {
                   if (!item.paid) return null;
                   return (
                     <div
@@ -248,7 +261,7 @@ const PaymentModal = ({ invoice, onClose, onPaymentSuccess }) => {
             <div className="text-center py-4">
               <CheckCircle className="w-16 h-16 mx-auto mb-3 text-green-500" />
               <p className="text-lg font-semibold text-green-600">All items have been paid!</p>
-              <p className="text-sm text-gray-600 mt-1">Invoice Status: {invoice.status}</p>
+              <p className="text-sm text-gray-600 mt-1">Invoice Status: {currentInvoice.status}</p>
             </div>
           )}
         </div>
@@ -284,7 +297,7 @@ const PaymentModal = ({ invoice, onClose, onPaymentSuccess }) => {
                 </p>
                 {selectedItems.length > 0 && (
                   <p className="text-xs text-gray-500 mt-1">
-                    Remaining after payment: Tsh. {(invoice.balanceDue - calculateTotal()).toLocaleString()}
+                    Remaining after payment: Tsh. {(currentInvoice.balanceDue - calculateTotal()).toLocaleString()}
                   </p>
                 )}
               </div>
