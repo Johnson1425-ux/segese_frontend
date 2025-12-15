@@ -10,23 +10,41 @@ const UnpaidServicesModal = ({ visit, onClose }) => {
   const [paymentMethod, setPaymentMethod] = useState('cash');
 
   // Fetch the invoice
-  const { data: invoice, isLoading } = useQuery(
+  const { data: invoice, isLoading, refetch } = useQuery(
     ['invoice', visit.invoice],
     () => api.get(`/billing/invoices/${visit.invoice}`).then(res => res.data.data),
-    { enabled: !!visit.invoice }
+    { 
+      enabled: !!visit.invoice,
+      refetchOnMount: 'always',
+      cacheTime: 0,
+      staleTime: 0
+    }
   );
 
   // Mutation to pay for selected items
   const paymentMutation = useMutation(
     async (paymentData) => {
-      return api.post(`/billing/invoices/${visit.invoice}/pay-items`, paymentData);
+      const response = await api.post(`/billing/invoices/${visit.invoice}/pay-items`, paymentData);
+      return response.data.data; // Return the updated invoice
     },
     {
-      onSuccess: () => {
+      onSuccess: async (updatedInvoice) => {
         toast.success('Payment recorded successfully!');
-        queryClient.invalidateQueries(['invoice', visit.invoice]);
-        queryClient.invalidateQueries(['visit', visit._id]);
         setSelectedItems([]);
+        
+        // Update the cache immediately with the response data
+        queryClient.setQueryData(['invoice', visit.invoice], updatedInvoice);
+        
+        // Also refetch to ensure consistency
+        await refetch();
+        
+        // Invalidate related queries
+        queryClient.invalidateQueries(['visit', visit._id]);
+        
+        // Close modal after showing the updated state
+        setTimeout(() => {
+          onClose();
+        }, 1000);
       },
       onError: (error) => {
         toast.error(error.response?.data?.message || 'Payment failed');
@@ -257,4 +275,5 @@ const UnpaidServicesModal = ({ visit, onClose }) => {
     </div>
   );
 };
+
 export default UnpaidServicesModal;
