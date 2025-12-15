@@ -10,32 +10,41 @@ export default function LabTestDetail() {
   const [results, setResults] = useState('');
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchTest = async () => {
-      try {
-        const { data } = await api.get(`/lab-tests/${id}`);
-        setLabTest(data.data);
-        if (data.data.results) {
-          setResults(data.data.results);
-        }
-      } catch (error) {
-        console.error("Failed to fetch lab test details", error);
-      } finally {
-        setLoading(false);
+  const fetchTest = async () => {
+    try {
+      const { data } = await api.get(`/lab-tests/${id}`);
+      setLabTest(data.data);
+      if (data.data.results) {
+        setResults(data.data.results);
       }
-    };
+    } catch (error) {
+      console.error("Failed to fetch lab test details", error);
+      toast.error('Failed to load lab test details');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchTest();
   }, [id]);
   
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!results.trim()) {
+      toast.error('Please enter test results');
+      return;
+    }
+
     try {
-      const payload = { results, status: 'Completed' };
+      const payload = { results };
       await api.patch(`/lab-tests/${id}/results`, payload);
       toast.success('Results submitted successfully!');
       fetchTest(); // Refresh the data
     } catch (error) {
       toast.error('Failed to submit results.');
+      console.error('Submit results error:', error);
     }
   };
 
@@ -65,6 +74,7 @@ export default function LabTestDetail() {
               onChange={(e) => setResults(e.target.value)}
               rows="5"
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+              required
             ></textarea>
             <button type="submit" className="mt-4 inline-flex justify-center py-2 px-4 border shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
               Submit Results
