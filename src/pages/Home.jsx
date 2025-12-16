@@ -310,7 +310,7 @@ export default function Home() {
             <div className="relative hidden md:block">
               <div className="absolute inset-0 bg-gradient-to-br from-blue-200 to-blue-300 rounded-3xl transform rotate-6"></div>
               <img
-                src="/images/Doctor 12.png"
+                src="/images/DoctorMapula.jpg"
                 alt="Medical Professional"
                 className="relative rounded-3xl shadow-2xl transform hover:scale-105 transition-transform duration-300"
               />
