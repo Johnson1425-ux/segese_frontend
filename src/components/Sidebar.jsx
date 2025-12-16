@@ -118,7 +118,7 @@ const Sidebar = () => {
         { path: '/requisition', icon: FileText, label: 'Requisitions', roles: ['admin', 'pharmacist'] },
         { path: '/store-balance', icon: BarChart3, label: 'Store Balance', roles: ['admin', 'pharmacist'] },
         { path: '/stock-taking', icon: Store, label: 'Stock Taking', roles: ['admin', 'pharmacist'] },
-        { path: '/item-pricing', icon: DollarSign, label: 'Item Pricing', roles: ['admin'] },
+        { path: '/item-pricing', icon: DollarSign, label: 'Item Pricing', roles: ['admin', 'pharmacist'] },
         { path: '/item-receiving', icon: Briefcase, label: 'Item Receiving', roles: ['admin', 'pharmacist'] },
         { path: '/incoming-items', icon: AlignEndHorizontal, label: 'Incoming Items', roles: ['admin', 'pharmacist'] }
       ];
