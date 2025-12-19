@@ -457,13 +457,18 @@ export default function ItemReceiving() {
                       className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
                       <option value="">Select category</option>
-                      <option value="Antibiotic">Antibiotic</option>
                       <option value="Analgesic">Analgesic</option>
-                      <option value="Antiviral">Antiviral</option>
+                      <option value="Antibiotic">Antibiotic</option>
                       <option value="Antifungal">Antifungal</option>
+                      <option value="Antihypertension">Antihypertension</option>
+                      <option value="Antimalaria">Antimalaria</option>
+                      <option value="Antiviral">Antiviral</option>
+                      <option value="Antiworms">Antiworms</option>
                       <option value="Cardiovascular">Cardiovascular</option>
+                      <option value="Fluid">Fluid</option>
                       <option value="Diabetic">Diabetic</option>
                       <option value="Respiratory">Respiratory</option>
+                      <option value="Vitamin Drug">Vitamin Drug</option>
                       <option value="Other">Other</option>
                     </select>
                   </div>
