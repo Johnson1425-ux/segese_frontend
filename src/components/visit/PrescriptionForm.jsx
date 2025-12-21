@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useMutation, useQueryClient, useQuery } from 'react-query';
 import Select from 'react-select';
@@ -9,8 +9,8 @@ const prescriptionService = {
   create: (data) => api.post('/prescriptions', data)
 };
 
-const medicationService = {
-  getAll: (params) => api.get('/medications', { params })
+const medicineService = {
+  getAll: (params) => api.get('/medicines', { params })
 };
 
 const PrescriptionForm = ({ visitId, patientId, existingPrescriptions }) => {
@@ -25,31 +25,32 @@ const PrescriptionForm = ({ visitId, patientId, existingPrescriptions }) => {
   });
   const queryClient = useQueryClient();
 
-  // Fetch all medications
-  const { data: medicationsData, isLoading: isLoadingMedications } = useQuery(
-    'medications',
-    () => medicationService.getAll(),
+  // Fetch all medicines
+  const { data: medicinesData, isLoading: isLoadingMedicines } = useQuery(
+    'medicines',
+    () => medicineService.getAll(),
     {
       staleTime: 5 * 60 * 1000, // Cache for 5 minutes
       onError: (error) => {
-        console.error('Error fetching medications:', error);
-        toast.error('Failed to load medications');
+        console.error('Error fetching medicines:', error);
+        toast.error('Failed to load medicines');
       }
     }
   );
 
-  // Transform medications to options format
-  const medicationOptions = React.useMemo(() => {
-    if (!medicationsData?.data?.data) return [];
+  // Transform medicines to options format
+  const medicineOptions = React.useMemo(() => {
+    if (!medicinesData?.data?.data) return [];
     
-    return medicationsData.data.data.map(medication => ({
-      value: medication.name,
-      label: `${medication.name} - $${medication.price}`,
-      price: medication.price,
-      genericName: medication.genericName,
-      strength: medication.strength
+    return medicinesData.data.data.map(medicine => ({
+      value: medicine.name,
+      label: `${medicine.name}${medicine.strength ? ` ${medicine.strength}` : ''}`,
+      genericName: medicine.genericName,
+      strength: medicine.strength,
+      type: medicine.type,
+      manufacturer: medicine.manufacturer
     }));
-  }, [medicationsData]);
+  }, [medicinesData]);
 
   const mutation = useMutation(prescriptionService.create, {
     onSuccess: () => {
@@ -101,8 +102,8 @@ const PrescriptionForm = ({ visitId, patientId, existingPrescriptions }) => {
               render={({ field }) => (
                 <Select
                   {...field}
-                  options={medicationOptions}
-                  isLoading={isLoadingMedications}
+                  options={medicineOptions}
+                  isLoading={isLoadingMedicines}
                   isClearable
                   isSearchable
                   placeholder="Select a medication..."
@@ -156,7 +157,7 @@ const PrescriptionForm = ({ visitId, patientId, existingPrescriptions }) => {
           <button 
             type="submit" 
             className="btn-primary" 
-            disabled={isSubmitting || mutation.isLoading || isLoadingMedications}
+            disabled={isSubmitting || mutation.isLoading || isLoadingMedicines}
           >
             {mutation.isLoading ? 'Adding...' : 'Add Prescription'}
           </button>
