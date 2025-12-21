@@ -1,13 +1,16 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { useMutation, useQueryClient } from 'react-query';
-import Select from 'react-select/async';
+import { useMutation, useQueryClient, useQuery } from 'react-query';
+import Select from 'react-select';
 import { toast } from 'react-hot-toast';
-import { debounce } from 'lodash';
 import api from '../../utils/api';
 
 const prescriptionService = {
   create: (data) => api.post('/prescriptions', data)
+};
+
+const medicationService = {
+  getAll: (params) => api.get('/medications', { params })
 };
 
 const PrescriptionForm = ({ visitId, patientId, existingPrescriptions }) => {
@@ -22,29 +25,31 @@ const PrescriptionForm = ({ visitId, patientId, existingPrescriptions }) => {
   });
   const queryClient = useQueryClient();
 
-  const loadOptions = useCallback(async (inputValue, callback) => {
-    if (inputValue.length < 2) {
-      callback([]);
-      return;
+  // Fetch all medications
+  const { data: medicationsData, isLoading: isLoadingMedications } = useQuery(
+    'medications',
+    () => medicationService.getAll(),
+    {
+      staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+      onError: (error) => {
+        console.error('Error fetching medications:', error);
+        toast.error('Failed to load medications');
+      }
     }
-    try {
-      const { data } = await api.get(`/medications/search?name=${inputValue}`);
-      const options = data.data.map(medication => ({
-        value: medication.name,
-        label: `${medication.name} - $${medication.price}`,
-        price: medication.price
-      }));
-      callback(options);
-    } catch (error) {
-      console.error("Error searching medications:", error);
-      callback([]);
-    }
-  }, []);
-
-  const debouncedLoadOptions = useMemo(
-    () => debounce(loadOptions, 400),
-    [loadOptions]
   );
+
+  // Transform medications to options format
+  const medicationOptions = React.useMemo(() => {
+    if (!medicationsData?.data?.data) return [];
+    
+    return medicationsData.data.data.map(medication => ({
+      value: medication.name,
+      label: `${medication.name} - $${medication.price}`,
+      price: medication.price,
+      genericName: medication.genericName,
+      strength: medication.strength
+    }));
+  }, [medicationsData]);
 
   const mutation = useMutation(prescriptionService.create, {
     onSuccess: () => {
@@ -96,14 +101,12 @@ const PrescriptionForm = ({ visitId, patientId, existingPrescriptions }) => {
               render={({ field }) => (
                 <Select
                   {...field}
-                  loadOptions={debouncedLoadOptions}
+                  options={medicationOptions}
+                  isLoading={isLoadingMedications}
                   isClearable
-                  placeholder="Type to search medications..."
-                  noOptionsMessage={({ inputValue }) => 
-                    inputValue.length < 2 
-                      ? "Please enter 2 or more characters" 
-                      : "No medications found"
-                  }
+                  isSearchable
+                  placeholder="Select a medication..."
+                  noOptionsMessage={() => "No medications available"}
                   styles={{
                     control: (base) => ({
                       ...base,
@@ -112,7 +115,7 @@ const PrescriptionForm = ({ visitId, patientId, existingPrescriptions }) => {
                     })
                   }}
                 />
-             )}
+              )}
             /> 
           </div>
           <div>
@@ -153,7 +156,7 @@ const PrescriptionForm = ({ visitId, patientId, existingPrescriptions }) => {
           <button 
             type="submit" 
             className="btn-primary" 
-            disabled={isSubmitting || mutation.isLoading}
+            disabled={isSubmitting || mutation.isLoading || isLoadingMedications}
           >
             {mutation.isLoading ? 'Adding...' : 'Add Prescription'}
           </button>
