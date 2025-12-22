@@ -56,7 +56,6 @@ toast.error('Please select a scan type.');
 return;
 }
 
-```
 const orderData = {
   orderData: {
     scanType: data.scanType.value,
@@ -66,8 +65,6 @@ const orderData = {
 };
 
 mutation.mutate(orderData);
-```
-
 };
 
 return (
@@ -95,8 +92,6 @@ noOptionsMessage={() => 'No imaging services available'}
 <p className="text-red-500 text-sm mt-1">{errors.scanType.message}</p>
 )}
 </div>
-
-```
     <div>
       <label className="label-field">Body Part to Scan</label>
       <input 
@@ -133,7 +128,6 @@ noOptionsMessage={() => 'No imaging services available'}
     </div>
   </form>
 </div>
-```
 
 );
 };
