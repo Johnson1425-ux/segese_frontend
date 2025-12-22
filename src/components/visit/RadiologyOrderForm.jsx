@@ -86,7 +86,7 @@ render={({ field }) => (
 options={serviceOptions}
 isLoading={servicesLoading}
 isClearable
-placeholder="Select a scan type…"
+placeholder="Select a scan type..."
 noOptionsMessage={() => 'No imaging services available'}
 />
 )}
