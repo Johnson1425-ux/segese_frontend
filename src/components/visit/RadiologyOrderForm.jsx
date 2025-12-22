@@ -1,9 +1,9 @@
-import React from ‘react’;
-import { useForm, Controller } from ‘react-hook-form’;
-import { useMutation, useQuery, useQueryClient } from ‘react-query’;
-import Select from ‘react-select’;
-import { toast } from ‘react-hot-toast’;
-import api from ‘../../utils/api’;
+import React from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import Select from 'react-select';
+import { toast } from 'react-hot-toast';
+import api from '../../utils/api';
 
 const RadiologyOrderForm = ({ visitId, patientId }) => {
 const { control, register, handleSubmit, reset, formState: { errors } } = useForm();
@@ -11,16 +11,16 @@ const queryClient = useQueryClient();
 
 // Fetch all Imaging services
 const { data: imagingServices, isLoading: servicesLoading } = useQuery(
-‘imagingServices’,
+'imagingServices',
 async () => {
-const { data } = await api.get(’/services?category=Imaging’);
+const { data } = await api.get('/services?category=Imaging');
 return data.data;
 },
 {
-staleTime: 5 * 60 * 1000,
+staleTime: 5 * 60 * 1000, // Cache for 5 minutes
 onError: (error) => {
-toast.error(‘Failed to load imaging services’);
-console.error(‘Error fetching imaging services:’, error);
+toast.error('Failed to load imaging services');
+console.error('Error fetching imaging services:', error);
 }
 }
 );
@@ -40,19 +40,19 @@ const mutation = useMutation(
 (orderData) => api.post(`/visits/${visitId}/radiology-orders`, orderData),
 {
 onSuccess: (response) => {
-toast.success(response.data.message || ‘Radiology order created successfully!’);
-queryClient.invalidateQueries([‘visit’, visitId]);
+toast.success(response.data.message || 'Radiology order created successfully!');
+queryClient.invalidateQueries(['visit', visitId]);
 reset();
 },
 onError: (error) => {
-toast.error(error.response?.data?.message || ‘Failed to create radiology order.’);
+toast.error(error.response?.data?.message || 'Failed to create radiology order.');
 },
 }
 );
 
 const onSubmit = (data) => {
 if (!data.scanType) {
-toast.error(‘Please select a scan type.’);
+toast.error('Please select a scan type.');
 return;
 }
 
@@ -77,17 +77,17 @@ return (
 <div>
 <label className="label-field">Select Scan Type</label>
 <Controller
-name=“scanType”
+name="scanType"
 control={control}
-rules={{ required: ‘Scan type is required’ }}
+rules={{ required: 'Scan type is required' }}
 render={({ field }) => (
 <Select
-{…field}
+{...field}
 options={serviceOptions}
 isLoading={servicesLoading}
 isClearable
-placeholder=“Select a scan type…”
-noOptionsMessage={() => ‘No imaging services available’}
+placeholder="Select a scan type..."
+noOptionsMessage={() => 'No imaging services available'}
 />
 )}
 />
