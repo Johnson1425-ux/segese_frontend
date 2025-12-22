@@ -81,9 +81,8 @@ const InvoiceDetail = () => {
             </div>
             <div className="text-right">
               <h2 className="text-xl font-bold text-gray-800">Segese Medical Clinic</h2>
-              <p className="text-gray-600 text-sm mt-1">123 Medical Street</p>
-              <p className="text-gray-600 text-sm">Shinyanga, Tanzania</p>
-              <p className="text-gray-600 text-sm">Phone: +255 762 948 291</p>
+              <p className="text-gray-600 text-sm">Msalala, Kahama</p>
+              <p className="text-gray-600 text-sm">Phone: +255 624 229 207</p>
               <p className="text-gray-600 text-sm">Email: publichope2@gmail.com</p>
             </div>
           </div>
