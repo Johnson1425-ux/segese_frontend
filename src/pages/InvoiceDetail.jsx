@@ -55,6 +55,9 @@ const InvoiceDetail = () => {
     }
   };
 
+  // Filter only paid items for print
+  const paidItems = invoice.items?.filter(item => item.paid) || [];
+
   return (
     <>
       <div className="max-w-4xl mx-auto p-6">
@@ -142,8 +145,9 @@ const InvoiceDetail = () => {
             </div>
           </div>
 
-          {/* Invoice Items Table */}
-          <div className="mb-8">
+          {/* Invoice Items Table - ALL ITEMS for screen view */}
+          <div className="mb-8 screen-only">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">All Invoice Items</h3>
             <table className="w-full">
               <thead>
                 <tr className="border-b-2 border-gray-300">
@@ -194,8 +198,51 @@ const InvoiceDetail = () => {
             </table>
           </div>
 
-          {/* Totals Section */}
-          <div className="flex justify-end mb-8">
+          {/* PAID Items Table - ONLY for print */}
+          {paidItems.length > 0 && (
+            <div className="mb-8 print-only">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">Paid Items</h3>
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b-2 border-gray-300">
+                    <th className="text-left py-3 font-semibold text-gray-700">Description</th>
+                    <th className="text-center py-3 font-semibold text-gray-700">Qty</th>
+                    <th className="text-right py-3 font-semibold text-gray-700">Unit Price</th>
+                    <th className="text-right py-3 font-semibold text-gray-700">Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {paidItems.map((item, index) => (
+                    <tr key={index} className="border-b border-gray-200 bg-green-50">
+                      <td className="py-3">
+                        <div className="font-medium text-gray-800">{item.description}</div>
+                        {item.type && (
+                          <div className="text-xs text-gray-500 mt-1">
+                            Type: {item.type}
+                          </div>
+                        )}
+                        {item.paidAt && (
+                          <div className="text-xs text-green-600 mt-1">
+                            Paid on: {new Date(item.paidAt).toLocaleDateString()}
+                          </div>
+                        )}
+                      </td>
+                      <td className="py-3 text-center text-gray-700">{item.quantity || 1}</td>
+                      <td className="py-3 text-right text-gray-700">
+                        {item.unitPrice?.toLocaleString() || 0} TZS
+                      </td>
+                      <td className="py-3 text-right font-medium text-gray-800">
+                        {item.total.toLocaleString()} TZS
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {/* Totals Section - Screen only shows full details */}
+          <div className="flex justify-end mb-8 screen-only">
             <div className="w-full md:w-1/2 lg:w-1/3">
               <div className="flex justify-between py-2 border-b border-gray-200">
                 <span className="text-gray-600">Subtotal:</span>
@@ -217,6 +264,18 @@ const InvoiceDetail = () => {
                 <span>Balance Due:</span>
                 <span className={invoice.balanceDue > 0 ? 'text-red-600' : 'text-green-600'}>
                   {invoice.balanceDue.toLocaleString()} TZS
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Totals Section - Print only shows paid amount */}
+          <div className="flex justify-end mb-8 print-only">
+            <div className="w-full md:w-1/2 lg:w-1/3">
+              <div className="flex justify-between py-3 font-bold text-xl text-gray-900 border-t-2 border-gray-300">
+                <span>Total Paid:</span>
+                <span className="text-green-600">
+                  {invoice.amountPaid.toLocaleString()} TZS
                 </span>
               </div>
             </div>
@@ -258,9 +317,6 @@ const InvoiceDetail = () => {
             <div className="text-center text-gray-600 text-sm">
               <p className="mb-2">Thank you for your business!</p>
               <p>For any queries regarding this invoice, please contact our billing department.</p>
-              {invoice.notes && (
-                <p className="mt-4 italic text-gray-500">{invoice.notes}</p>
-              )}
             </div>
           </div>
 
@@ -319,10 +375,12 @@ const InvoiceDetail = () => {
             box-shadow: none !important;
             border-radius: 0 !important;
             margin: 0 !important;
+            padding: 20px !important;
           }
           
           /* Hide non-printable elements */
-          .no-print {
+          .no-print,
+          .screen-only {
             display: none !important;
             visibility: hidden !important;
           }
@@ -347,7 +405,7 @@ const InvoiceDetail = () => {
           }
           
           /* Prevent page breaks inside elements */
-          table, tr, td, th {
+          table, tr, td, th, .border-t {
             page-break-inside: avoid;
           }
           
@@ -367,6 +425,34 @@ const InvoiceDetail = () => {
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
           }
+
+          /* Compact spacing for single page */
+          h1 {
+            font-size: 24px !important;
+          }
+          
+          h2 {
+            font-size: 18px !important;
+          }
+          
+          h3 {
+            font-size: 16px !important;
+            margin-bottom: 8px !important;
+          }
+          
+          .mb-8 {
+            margin-bottom: 16px !important;
+          }
+          
+          .py-3 {
+            padding-top: 6px !important;
+            padding-bottom: 6px !important;
+          }
+        }
+
+        /* Hide print-only on screen */
+        .print-only {
+          display: none;
         }
       `}</style>
     </>
