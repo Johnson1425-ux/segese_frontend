@@ -6,7 +6,7 @@ import { toast } from 'react-hot-toast';
 import api from '../../utils/api';
 
 const prescriptionService = {
-  create: (data) => api.post('/visits/${visitId}/prescriptions', data)
+  create: ({ visitId, ...data }) => api.post(`/visits/${visitId}/prescriptions`, data)
 };
 
 const medicineService = {
@@ -30,7 +30,7 @@ const PrescriptionForm = ({ visitId, patientId, existingPrescriptions }) => {
     'medicines',
     () => medicineService.getAll(),
     {
-      staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+      staleTime: 5 * 60 * 1000,
       onError: (error) => {
         console.error('Error fetching medicines:', error);
         toast.error('Failed to load medicines');
@@ -71,20 +71,15 @@ const PrescriptionForm = ({ visitId, patientId, existingPrescriptions }) => {
       return;
     }
 
-    // Prepare the prescription data
-    const prescriptionData = {
+    // Prepare and send the prescription data
+    mutation.mutate({ 
+      visitId,
       medication: data.medication.value,
       dosage: data.dosage,
       frequency: data.frequency,
       duration: data.duration,
-      notes: data.notes
-    };
-
-    // Send to backend
-    mutation.mutate({ 
-      visitId, 
-      patient: patientId, 
-      prescriptionData 
+      notes: data.notes,
+      patient: patientId
     });
   };
 
