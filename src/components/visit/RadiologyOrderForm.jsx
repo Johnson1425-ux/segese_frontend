@@ -82,7 +82,7 @@ control={control}
 rules={{ required: 'Scan type is required' }}
 render={({ field }) => (
 <Select
-{…field}
+{...field}
 options={serviceOptions}
 isLoading={servicesLoading}
 isClearable
