@@ -6,7 +6,7 @@ import { toast } from 'react-hot-toast';
 import api from '../../utils/api';
 
 const prescriptionService = {
-  create: (data) => api.post('/prescriptions', data)
+  create: (data) => api.post('/visits/${visitId}/prescriptions', data)
 };
 
 const medicineService = {
