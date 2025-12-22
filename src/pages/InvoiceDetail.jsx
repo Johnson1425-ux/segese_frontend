@@ -31,6 +31,26 @@ const InvoiceDetail = () => {
     content: () => printRef.current,
     documentTitle: `Invoice-${invoice?.invoiceNumber || id}`,
     onAfterPrint: () => toast.success('Invoice printed successfully'),
+    pageStyle: `
+      @page {
+        size: A4;
+        margin: 20mm;
+      }
+      @media print {
+        body {
+          margin: 0;
+          padding: 0;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+        .no-print {
+          display: none !important;
+        }
+        .print-only {
+          display: block !important;
+        }
+      }
+    `,
   });
 
   const handlePaymentSuccess = async () => {
@@ -58,7 +78,7 @@ const InvoiceDetail = () => {
   return (
     <div className="max-w-4xl mx-auto p-6">
       {/* Action Buttons - Not printed */}
-      <div className="flex items-center justify-between mb-6 print:hidden">
+      <div className="flex items-center justify-between mb-6 no-print">
         <button onClick={() => navigate(-1)} className="btn-secondary flex items-center">
           <ArrowLeft className="w-4 h-4 mr-2" /> Back
         </button>
@@ -264,13 +284,13 @@ const InvoiceDetail = () => {
         </div>
 
         {/* Print timestamp */}
-        <div className="text-right text-xs text-gray-400 mt-4 print-only hidden print:block">
+        <div className="text-right text-xs text-gray-400 mt-4 print-only" style={{ display: 'none' }}>
           Printed on: {new Date().toLocaleString()}
         </div>
       </div>
 
       {/* Payment Section - Not printed */}
-      <div className="mt-8 p-6 bg-gray-50 rounded-lg print:hidden">
+      <div className="mt-8 p-6 bg-gray-50 rounded-lg no-print">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div>
             <h3 className="font-bold text-lg">Payment Status</h3>
@@ -295,26 +315,6 @@ const InvoiceDetail = () => {
           onPaymentSuccess={handlePaymentSuccess}
         />
       )}
-
-      {/* Print styles */}
-      <style>{`
-        @media print {
-          body {
-            margin: 0;
-            padding: 0;
-          }
-          .print\\:hidden {
-            display: none !important;
-          }
-          .print-only {
-            display: block !important;
-          }
-          @page {
-            size: A4;
-            margin: 1cm;
-          }
-        }
-      `}</style>
     </div>
   );
 };
