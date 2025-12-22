@@ -77,17 +77,17 @@ return (
 <div>
 <label className="label-field">Select Scan Type</label>
 <Controller
-name=“scanType”
+name="scanType"
 control={control}
-rules={{ required: ‘Scan type is required’ }}
+rules={{ required: 'Scan type is required' }}
 render={({ field }) => (
 <Select
 {…field}
 options={serviceOptions}
 isLoading={servicesLoading}
 isClearable
-placeholder=“Select a scan type…”
-noOptionsMessage={() => ‘No imaging services available’}
+placeholder="Select a scan type…"
+noOptionsMessage={() => 'No imaging services available'}
 />
 )}
 />
