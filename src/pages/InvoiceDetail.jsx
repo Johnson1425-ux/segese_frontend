@@ -12,7 +12,7 @@ const InvoiceDetail = () => {
 const { id } = useParams();
 const navigate = useNavigate();
 const queryClient = useQueryClient();
-const printRef = useRef(null);
+const printRef = useRef();
 
 const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
@@ -26,18 +26,11 @@ staleTime: 0
 }
 );
 
-// Print handler - Fixed implementation
+// Print handler
 const handlePrint = useReactToPrint({
 content: () => printRef.current,
 documentTitle: `Invoice-${invoice?.invoiceNumber || id}`,
-onAfterPrint: () => {
-toast.success(‘Invoice printed successfully’);
-},
-onPrintError: (error) => {
-console.error(‘Print error:’, error);
-toast.error(‘Failed to print invoice’);
-},
-pageStyle: `@page { size: A4; margin: 15mm; } @media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } .no-print { display: none !important; } .print-only { display: block !important; } }`
+onAfterPrint: () => toast.success(‘Invoice printed successfully’),
 });
 
 const handlePaymentSuccess = async () => {
@@ -65,22 +58,18 @@ default: return ‘bg-gray-100 text-gray-800’;
 return (
 <div className="max-w-4xl mx-auto p-6">
 {/* Action Buttons - Not printed */}
-<div className="flex items-center justify-between mb-6 no-print">
+<div className="flex items-center justify-between mb-6 print:hidden">
 <button onClick={() => navigate(-1)} className=“btn-secondary flex items-center”>
 <ArrowLeft className="w-4 h-4 mr-2" /> Back
 </button>
-<button 
-onClick={handlePrint} 
-className="btn-secondary flex items-center"
-type="button"
->
+<button onClick={handlePrint} className="btn-secondary flex items-center">
 <Printer className="w-4 h-4 mr-2" /> Print Invoice
 </button>
 </div>
 
 ```
   {/* Printable Invoice Content */}
-  <div ref={printRef} className="bg-white rounded-lg shadow-md p-8 print-content">
+  <div ref={printRef} className="bg-white rounded-lg shadow-md p-8">
     {/* Header */}
     <div className="flex justify-between items-start mb-8 border-b pb-6">
       <div>
@@ -276,13 +265,13 @@ type="button"
     </div>
 
     {/* Print timestamp */}
-    <div className="text-right text-xs text-gray-400 mt-4 print-only" style={{ display: 'none' }}>
+    <div className="text-right text-xs text-gray-400 mt-4 print-only hidden print:block">
       Printed on: {new Date().toLocaleString()}
     </div>
   </div>
 
   {/* Payment Section - Not printed */}
-  <div className="mt-8 p-6 bg-gray-50 rounded-lg no-print">
+  <div className="mt-8 p-6 bg-gray-50 rounded-lg print:hidden">
     <div className="flex flex-col md:flex-row justify-between items-center">
       <div>
         <h3 className="font-bold text-lg">Payment Status</h3>
@@ -314,42 +303,16 @@ type="button"
       body {
         margin: 0;
         padding: 0;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
       }
-      
-      .no-print {
+      .print\\:hidden {
         display: none !important;
       }
-      
       .print-only {
         display: block !important;
       }
-      
-      .print-content {
-        box-shadow: none !important;
-        border-radius: 0 !important;
-      }
-      
       @page {
         size: A4;
-        margin: 15mm;
-      }
-      
-      /* Ensure colors print */
-      * {
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-      }
-      
-      /* Page breaks */
-      .page-break {
-        page-break-after: always;
-      }
-      
-      /* Avoid breaking inside elements */
-      table, tr, td, th {
-        page-break-inside: avoid;
+        margin: 1cm;
       }
     }
   `}</style>
