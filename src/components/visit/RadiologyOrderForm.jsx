@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from ‘react’;
+import React from ‘react’;
 import { useForm, Controller } from ‘react-hook-form’;
 import { useMutation, useQuery, useQueryClient } from ‘react-query’;
 import Select from ‘react-select’;
@@ -52,7 +52,7 @@ toast.error(error.response?.data?.message || ‘Failed to create radiology order
 
 const onSubmit = (data) => {
 if (!data.scanType) {
-toast.error(“Please select a scan type.”);
+toast.error(‘Please select a scan type.’);
 return;
 }
 
@@ -79,7 +79,7 @@ return (
 <Controller
 name=“scanType”
 control={control}
-rules={{ required: “Scan type is required” }}
+rules={{ required: ‘Scan type is required’ }}
 render={({ field }) => (
 <Select
 {…field}
@@ -87,7 +87,7 @@ options={serviceOptions}
 isLoading={servicesLoading}
 isClearable
 placeholder=“Select a scan type…”
-noOptionsMessage={() => “No imaging services available”}
+noOptionsMessage={() => ‘No imaging services available’}
 />
 )}
 />
@@ -100,7 +100,7 @@ noOptionsMessage={() => “No imaging services available”}
     <div>
       <label className="label-field">Body Part to Scan</label>
       <input 
-        {...register("bodyPart", { required: "Body part is required" })} 
+        {...register('bodyPart', { required: 'Body part is required' })} 
         className="input-field"
         placeholder="e.g., Chest, Abdomen, Head"
       />
@@ -112,7 +112,7 @@ noOptionsMessage={() => “No imaging services available”}
     <div>
       <label className="label-field">Reason for Scan / Clinical Notes</label>
       <textarea 
-        {...register("reason", { required: "Reason is required" })} 
+        {...register('reason', { required: 'Reason is required' })} 
         className="input-field" 
         rows="3"
         placeholder="Enter clinical indication for the scan..."
