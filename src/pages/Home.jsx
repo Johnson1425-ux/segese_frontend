@@ -1,12 +1,27 @@
 import { NavLink } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { 
-  Users, Shield, Pill, Clock, Phone, Mail, MapPin,
-  Facebook, Twitter, Instagram, ChevronRight, Heart,
-  Award, Activity, User, UserCog, Menu, X
+  Users, 
+  Shield, 
+  Pill, 
+  Clock,
+  Phone,
+  Mail,
+  MapPin,
+  Facebook,
+  Twitter,
+  Instagram,
+  ChevronRight,
+  Heart,
+  Award,
+  Activity,
+  User,
+  UserCog,
+  Menu,
+  X
 } from "lucide-react";
 
-// Sign In Dropdown Component (unchanged)
+// Sign In Dropdown Component
 function SignInDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -17,6 +32,7 @@ function SignInDropdown() {
         setIsOpen(false);
       }
     };
+
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
@@ -116,7 +132,8 @@ export default function Home() {
   const infoItems = [
     {
       title: "SKILLED DOCTORS",
-      description: "Our team of experienced and certified doctors are dedicated to providing exceptional healthcare services with compassion and expertise.",
+      description:
+        "Our team of experienced and certified doctors are dedicated to providing exceptional healthcare services with compassion and expertise.",
       gradient: "from-blue-500 to-blue-600",
       icon: Users,
       iconBg: "bg-blue-100",
@@ -124,7 +141,8 @@ export default function Home() {
     },
     {
       title: "INSURANCES",
-      description: "We accept multiple health insurance providers including NHIF, NSSF, BRITAM, and ASSEMBLE to make healthcare accessible for everyone.",
+      description:
+        "We accept multiple health insurance providers including NHIF, NSSF, BRITAM, and ASSEMBLE to make healthcare accessible for everyone.",
       gradient: "from-teal-500 to-teal-600",
       icon: Shield,
       iconBg: "bg-teal-100",
@@ -132,7 +150,8 @@ export default function Home() {
     },
     {
       title: "QUALITY MEDICINE",
-      description: "Access to genuine, quality medications from trusted suppliers to ensure effective treatment and quick recovery.",
+      description:
+        "Access to genuine, quality medications from trusted suppliers to ensure effective treatment and quick recovery.",
       gradient: "from-purple-500 to-purple-600",
       icon: Pill,
       iconBg: "bg-purple-100",
@@ -140,7 +159,8 @@ export default function Home() {
     },
     {
       title: "24/7 SERVICE",
-      description: "Round-the-clock emergency services and medical care available whenever you need us, day or night.",
+      description:
+        "Round-the-clock emergency services and medical care available whenever you need us, day or night.",
       gradient: "from-green-500 to-green-600",
       icon: Clock,
       iconBg: "bg-green-100",
@@ -382,6 +402,7 @@ export default function Home() {
                   key={idx}
                   className="group bg-white rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl"
                 >
+                  {/* Icon Header */}
                   <div className={`bg-gradient-to-br ${info.gradient} p-5 sm:p-6 relative overflow-hidden`}>
                     <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
                     <div className={`${info.iconBg} w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center mb-3 sm:mb-4 transform group-hover:scale-110 transition-transform duration-300`}>
@@ -390,6 +411,7 @@ export default function Home() {
                     <h3 className="text-lg sm:text-xl font-bold text-white">{info.title}</h3>
                   </div>
 
+                  {/* Description */}
                   <div className="p-5 sm:p-6">
                     <p className="text-sm sm:text-base text-gray-600 leading-relaxed">{info.description}</p>
                   </div>
@@ -428,8 +450,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer id="contact" className="bg-gray-900 text-gray-300 px-4 sm:px-6 py-10 sm:py-12">
+      {/* Footer / Contact */}
+      <footer
+        id="contact"
+        className="bg-gray-900 text-gray-300 px-4 sm:px-6 py-10 sm:py-12"
+      >
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 sm:gap-10 md:gap-12 mb-8">
             <div>
