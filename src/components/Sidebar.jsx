@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
   Home, 
@@ -34,7 +34,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen, onClose }) => {
   const location = useLocation();
   const { user, logout, hasPermission, hasRole } = useAuth();
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -47,6 +47,25 @@ const Sidebar = () => {
     theatre: false,
     administration: false
   });
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    if (onClose) {
+      onClose();
+    }
+  }, [location.pathname]);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
@@ -213,31 +232,18 @@ const Sidebar = () => {
       pharmacist: 'Pharmacist',
       receptionist: 'Receptionist',
       lab_technician: 'Lab Technician',
-      mortuary_attendant: 'Mortuaty Attendant',
+      mortuary_attendant: 'Mortuary Attendant',
       surgeon: 'Surgeon'
     };
     return roleNames[role] || role;
   };
 
-  return (
-    <div className={`bg-white shadow-lg flex flex-col h-full transition-all duration-300 ${
-      isCollapsed ? 'w-20' : 'w-64'
-    }`}>
-      {/* Toggle Button */}
-      <div className="p-2 border-b border-gray-200 flex items-center justify-between">
-        <button
-          onClick={toggleSidebar}
-          className="p-2 rounded-md hover:bg-gray-100 transition-colors"
-          title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-        >
-          {isCollapsed ? <Menu className="w-5 h-5 text-gray-600" /> : <Menu className="w-5 h-5 text-gray-600" />}
-        </button>
-      </div>
-      
-      {/* User Info */}
-      <div className="p-4 border-b border-gray-200">
-        <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'space-x-3'}`}>
-          <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+  const sidebarContent = (
+    <div className="bg-white flex flex-col h-full">
+      {/* Mobile Header with Close Button */}
+      <div className="lg:hidden flex items-center justify-between p-4 border-b border-gray-200">
+        <div className="flex items-center space-x-3">
+          <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
             {user?.profileImage ? (
               <img
                 src={user.profileImage}
@@ -248,16 +254,59 @@ const Sidebar = () => {
               <User className="h-5 w-5 text-blue-600" />
             )}
           </div>
-          {!isCollapsed && (
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-900 truncate">
-                {user?.firstName} {user?.lastName}
-              </p>
-              <p className="text-xs text-gray-500 truncate">
-                {getRoleDisplayName(user?.role)}
-              </p>
+          <div>
+            <p className="text-sm font-medium text-gray-900">
+              {user?.firstName} {user?.lastName}
+            </p>
+            <p className="text-xs text-gray-500">
+              {getRoleDisplayName(user?.role)}
+            </p>
+          </div>
+        </div>
+        <button
+          onClick={onClose}
+          className="p-2 rounded-md hover:bg-gray-100 transition-colors"
+        >
+          <X className="w-5 h-5 text-gray-600" />
+        </button>
+      </div>
+
+      {/* Desktop Toggle Button and User Info */}
+      <div className="hidden lg:block">
+        <div className="p-2 border-b border-gray-200 flex items-center justify-between">
+          <button
+            onClick={toggleSidebar}
+            className="p-2 rounded-md hover:bg-gray-100 transition-colors"
+            title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          >
+            <Menu className="w-5 h-5 text-gray-600" />
+          </button>
+        </div>
+        
+        <div className="p-4 border-b border-gray-200">
+          <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'space-x-3'}`}>
+            <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+              {user?.profileImage ? (
+                <img
+                  src={user.profileImage}
+                  alt="Profile"
+                  className="h-10 w-10 rounded-full object-cover"
+                />
+              ) : (
+                <User className="h-5 w-5 text-blue-600" />
+              )}
             </div>
-          )}
+            {!isCollapsed && (
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-gray-900 truncate">
+                  {user?.firstName} {user?.lastName}
+                </p>
+                <p className="text-xs text-gray-500 truncate">
+                  {getRoleDisplayName(user?.role)}
+                </p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
       
@@ -299,7 +348,7 @@ const Sidebar = () => {
                       <Link
                         key={item.path}
                         to={item.path}
-                        className={`flex items-center ${isCollapsed ? 'justify-center px-2' : 'px-3'} py-2 text-sm font-medium rounded-md transition-colors ${
+                        className={`flex items-center ${isCollapsed ? 'justify-center px-2' : 'px-3'} py-2.5 text-sm font-medium rounded-md transition-colors ${
                           group.name !== 'main' && !isCollapsed ? 'ml-4' : ''
                         } ${
                           isActive
@@ -308,8 +357,8 @@ const Sidebar = () => {
                         }`}
                         title={isCollapsed ? item.label : ''}
                       >
-                        <Icon className={`w-4 h-4 ${!isCollapsed ? 'mr-3' : ''}`} />
-                        {!isCollapsed && item.label}
+                        <Icon className={`w-5 h-5 flex-shrink-0 ${!isCollapsed ? 'mr-3' : ''}`} />
+                        {!isCollapsed && <span className="truncate">{item.label}</span>}
                       </Link>
                     );
                   })}
@@ -325,31 +374,57 @@ const Sidebar = () => {
         <div className="space-y-1">
           <Link
             to="/profile"
-            className={`flex items-center ${isCollapsed ? 'justify-center px-2' : 'px-3'} py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 transition-colors`}
+            className={`flex items-center ${isCollapsed ? 'justify-center px-2' : 'px-3'} py-2.5 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 transition-colors`}
             title={isCollapsed ? 'Profile' : ''}
           >
-            <User className={`w-4 h-4 ${!isCollapsed ? 'mr-3' : ''}`} />
+            <User className={`w-5 h-5 flex-shrink-0 ${!isCollapsed ? 'mr-3' : ''}`} />
             {!isCollapsed && 'Profile'}
           </Link>
           <Link
             to="/settings"
-            className={`flex items-center ${isCollapsed ? 'justify-center px-2' : 'px-3'} py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 transition-colors`}
+            className={`flex items-center ${isCollapsed ? 'justify-center px-2' : 'px-3'} py-2.5 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 transition-colors`}
             title={isCollapsed ? 'Change Password' : ''}
           >
-            <Settings className={`w-4 h-4 ${!isCollapsed ? 'mr-3' : ''}`} />
+            <Settings className={`w-5 h-5 flex-shrink-0 ${!isCollapsed ? 'mr-3' : ''}`} />
             {!isCollapsed && 'Change Password'}
           </Link>
           <button
             onClick={logout}
-            className={`w-full flex items-center ${isCollapsed ? 'justify-center px-2' : 'px-3'} py-2 text-sm font-medium text-red-600 rounded-md hover:bg-gray-50 hover:text-red-700 transition-colors`}
+            className={`w-full flex items-center ${isCollapsed ? 'justify-center px-2' : 'px-3'} py-2.5 text-sm font-medium text-red-600 rounded-md hover:bg-gray-50 hover:text-red-700 transition-colors`}
             title={isCollapsed ? 'Logout' : ''}
           >
-            <LogOut className={`w-4 h-4 ${!isCollapsed ? 'mr-3' : ''} text-red-600`} />
+            <LogOut className={`w-5 h-5 flex-shrink-0 ${!isCollapsed ? 'mr-3' : ''}`} />
             {!isCollapsed && 'Logout'}
           </button>
         </div>
       </div>
     </div>
+  );
+
+  return (
+    <>
+      {/* Mobile Overlay */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          onClick={onClose}
+        />
+      )}
+
+      {/* Sidebar - Mobile Drawer / Desktop Static */}
+      <div
+        className={`
+          fixed lg:static inset-y-0 left-0 z-50
+          transform transition-transform duration-300 ease-in-out
+          ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+          ${isCollapsed ? 'w-20' : 'w-64 sm:w-72 lg:w-64'}
+          shadow-lg lg:shadow-none
+          h-full
+        `}
+      >
+        {sidebarContent}
+      </div>
+    </>
   );
 };
 
