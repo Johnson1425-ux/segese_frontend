@@ -234,7 +234,7 @@ export default function Home() {
                 About Us
               </NavLink>
 
-              
+              <a
                 href="#contact"
                 className={`hover:text-blue-600 transition-colors duration-200 ${
                   activeLink === "contact" ? "text-blue-600 font-semibold" : ""
@@ -294,7 +294,7 @@ export default function Home() {
                 About Us
               </NavLink>
 
-              
+              <a>
                 href="#contact"
                 onClick={() => setMobileMenuOpen(false)}
                 className={`block w-full text-left px-4 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors ${
