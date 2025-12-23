@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { HelmetProvider } from 'react-helmet-async';
 import { ErrorBoundary } from 'react-error-boundary';
+import { Menu } from 'lucide-react'; // ADD THIS IMPORT
 
 // Context Providers
 import { AuthProvider, useAuth } from './context/AuthContext.jsx';
@@ -109,10 +110,11 @@ const ProtectedRoute = ({ children, requiredPermissions = [], requiredRoles = []
   return children;
 };
 
-// Layout Component
+// Layout Component - UPDATED WITH MOBILE MENU
 const AppLayout = ({ children }) => {
   const { isAuthenticated } = useAuth();
   const location = useLocation();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // List of public routes that should NOT have the sidebar
   const publicRoutes = [
@@ -136,13 +138,30 @@ const AppLayout = ({ children }) => {
   }
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      <Sidebar />
-      <main className="flex-1 overflow-auto">
-        <div className="p-6">
-          {children}
-        </div>
-      </main>
+    <div className="flex h-screen bg-gray-100 overflow-hidden">
+      <Sidebar isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
+      
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Mobile Header */}
+        <header className="lg:hidden bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between shadow-sm z-30">
+          <button
+            onClick={() => setMobileMenuOpen(true)}
+            className="p-2 rounded-md hover:bg-gray-100 transition-colors"
+            aria-label="Open menu"
+          >
+            <Menu className="w-6 h-6 text-gray-600" />
+          </button>
+          <h1 className="text-lg font-semibold text-gray-900">Segese Medical</h1>
+          <div className="w-10"></div>
+        </header>
+
+        {/* Main Content */}
+        <main className="flex-1 overflow-y-auto">
+          <div className="p-4 sm:p-6">
+            {children}
+          </div>
+        </main>
+      </div>
     </div>
   );
 };
