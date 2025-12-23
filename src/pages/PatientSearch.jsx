@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { Search, Filter, Calendar, User, MapPin, Phone, Eye, Edit, AlertCircle, X } from 'lucide-react';
+import { Search, Filter, Calendar, User, MapPin, Mail, Phone, Eye, Edit, AlertCircle, X } from 'lucide-react';
 import { patientService } from '../utils/patientService.js';
 
 const PatientSearch = () => {
