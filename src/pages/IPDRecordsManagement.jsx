@@ -203,7 +203,6 @@ const IPDRecordsManagement = () => {
       console.error('Error discharging patient:', error);
       console.error('Error details:', error.response?.data);
       
-      // Show more detailed error message
       const errorMessage = error.response?.data?.message || 
                           error.response?.data?.error || 
                           'Failed to discharge patient';
@@ -305,39 +304,39 @@ const IPDRecordsManagement = () => {
   const canDischarge = hasRole('doctor') || hasRole('admin');
 
   return (
-    <div className="bg-gray-50 min-h-screen p-4 sm:p-6 lg:p-8">
+    <div className="bg-gray-50 min-h-screen p-2 sm:p-4 md:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4 md:p-6 mb-3 sm:mb-4 md:mb-6">
           <div className="flex items-center">
-            <div className="bg-blue-500 p-3 rounded-lg mr-4">
-              <Activity className="text-white" size={28} />
+            <div className="bg-blue-500 p-2 sm:p-3 rounded-lg mr-3 sm:mr-4 flex-shrink-0">
+              <Activity className="text-white w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" />
             </div>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-800">IPD Records Management</h1>
-              <p className="text-gray-600">Manage inpatient records and patient care</p>
+            <div className="min-w-0 flex-1">
+              <h1 className="text-base sm:text-xl md:text-2xl font-bold text-gray-800 truncate">IPD Records Management</h1>
+              <p className="text-xs sm:text-sm text-gray-600 hidden sm:block">Manage inpatient records and patient care</p>
             </div>
           </div>
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="relative">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4 mb-3 sm:mb-4 md:mb-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+            <div className="relative sm:col-span-2 md:col-span-1">
               <input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search by patient name or admission #..."
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-8 sm:pl-10 pr-3 sm:pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm"
               />
-              <Search className="absolute left-3 top-2.5 text-gray-400" size={20} />
+              <Search className="absolute left-2 sm:left-3 top-2 sm:top-2.5 text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
             </div>
 
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm"
             >
               {statusOptions.map(option => (
                 <option key={option.value} value={option.value}>{option.label}</option>
@@ -347,7 +346,7 @@ const IPDRecordsManagement = () => {
             <select
               value={filterWard}
               onChange={(e) => setFilterWard(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm"
             >
               <option value="">All Wards</option>
               {wards.map(ward => (
@@ -357,31 +356,31 @@ const IPDRecordsManagement = () => {
           </div>
         </div>
 
-        {/* Records Table */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+        {/* Desktop Table View */}
+        <div className="hidden lg:block bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 py-2 text-left text-[10px] font-medium text-gray-500 uppercase tracking-wider">
                     Admission #
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 py-2 text-left text-[10px] font-medium text-gray-500 uppercase tracking-wider">
                     Patient
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 py-2 text-left text-[10px] font-medium text-gray-500 uppercase tracking-wider">
                     Ward / Bed
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 py-2 text-left text-[10px] font-medium text-gray-500 uppercase tracking-wider">
                     Admission Date
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 py-2 text-left text-[10px] font-medium text-gray-500 uppercase tracking-wider">
                     Status
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 py-2 text-left text-[10px] font-medium text-gray-500 uppercase tracking-wider">
                     Length of Stay
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 py-2 text-left text-[10px] font-medium text-gray-500 uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
@@ -391,62 +390,62 @@ const IPDRecordsManagement = () => {
                   <tr>
                     <td colSpan="7" className="px-6 py-12 text-center">
                       <div className="flex justify-center items-center">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                        <span className="ml-2 text-gray-500">Loading records...</span>
+                        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
+                        <span className="ml-2 text-gray-500 text-xs">Loading records...</span>
                       </div>
                     </td>
                   </tr>
                 ) : filteredRecords.length === 0 ? (
                   <tr>
-                    <td colSpan="7" className="px-6 py-12 text-center text-gray-500">
+                    <td colSpan="7" className="px-6 py-12 text-center text-gray-500 text-xs">
                       No records found
                     </td>
                   </tr>
                 ) : (
                   filteredRecords.map((record) => (
                     <tr key={record._id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900">
+                      <td className="px-4 py-3 whitespace-nowrap">
+                        <div className="text-xs font-medium text-gray-900">
                           {record.admissionNumber}
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="px-4 py-3 whitespace-nowrap">
                         <div className="flex items-center">
-                          <div className="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
-                            <User className="h-5 w-5 text-blue-600" />
+                          <div className="flex-shrink-0 h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
+                            <User className="h-4 w-4 text-blue-600" />
                           </div>
-                          <div className="ml-4">
-                            <div className="text-sm font-medium text-gray-900">
+                          <div className="ml-3">
+                            <div className="text-xs font-medium text-gray-900">
                               {record.patient?.firstName} {record.patient?.lastName}
                             </div>
-                            <div className="text-sm text-gray-500">
+                            <div className="text-[10px] text-gray-500">
                               {record.patient?.patientId}
                             </div>
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900">{record.ward?.name || 'N/A'}</div>
-                        <div className="text-sm text-gray-500">Bed: {record.bed?.bedNumber || 'N/A'}</div>
+                      <td className="px-4 py-3 whitespace-nowrap">
+                        <div className="text-xs text-gray-900">{record.ward?.name || 'N/A'}</div>
+                        <div className="text-[10px] text-gray-500">Bed: {record.bed?.bedNumber || 'N/A'}</div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900">{formatDate(record.admissionDate)}</div>
-                        <div className="text-sm text-gray-500">{formatDateTime(record.admissionDate).split(',')[1]}</div>
+                      <td className="px-4 py-3 whitespace-nowrap">
+                        <div className="text-xs text-gray-900">{formatDate(record.admissionDate)}</div>
+                        <div className="text-[10px] text-gray-500">{formatDateTime(record.admissionDate).split(',')[1]}</div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(record.status)}`}>
+                      <td className="px-4 py-3 whitespace-nowrap">
+                        <span className={`px-2 py-1 inline-flex text-[10px] leading-5 font-semibold rounded-full ${getStatusColor(record.status)}`}>
                           {record.status.replace('_', ' ')}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      <td className="px-4 py-3 whitespace-nowrap text-xs text-gray-900">
                         {record.lengthOfStay} days
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <td className="px-4 py-3 whitespace-nowrap text-xs font-medium">
                         <button
                           onClick={() => loadRecordDetails(record._id)}
                           className="text-blue-600 hover:text-blue-900 flex items-center gap-1"
                         >
-                          <Eye size={16} />
+                          <Eye className="w-3 h-3" />
                           View
                         </button>
                       </td>
@@ -458,17 +457,82 @@ const IPDRecordsManagement = () => {
           </div>
         </div>
 
+        {/* Mobile Card View */}
+        <div className="lg:hidden space-y-3">
+          {loading ? (
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
+              <div className="flex justify-center items-center">
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
+                <span className="ml-2 text-gray-500 text-xs">Loading records...</span>
+              </div>
+            </div>
+          ) : filteredRecords.length === 0 ? (
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center text-gray-500 text-xs">
+              No records found
+            </div>
+          ) : (
+            filteredRecords.map((record) => (
+              <div key={record._id} className="bg-white rounded-lg shadow-sm border border-gray-200 p-3">
+                {/* Patient Info */}
+                <div className="flex items-start justify-between mb-2">
+                  <div className="flex items-center min-w-0 flex-1">
+                    <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                      <User className="h-5 w-5 text-blue-600" />
+                    </div>
+                    <div className="ml-3 min-w-0 flex-1">
+                      <div className="text-sm font-medium text-gray-900 truncate">
+                        {record.patient?.firstName} {record.patient?.lastName}
+                      </div>
+                      <div className="text-[10px] text-gray-500 truncate">
+                        {record.patient?.patientId}
+                      </div>
+                    </div>
+                  </div>
+                  <span className={`px-2 py-1 text-[9px] font-semibold rounded-full flex-shrink-0 ml-2 ${getStatusColor(record.status)}`}>
+                    {record.status.replace('_', ' ')}
+                  </span>
+                </div>
+
+                {/* Details */}
+                <div className="space-y-1 mb-3">
+                  <div className="flex items-center text-[10px] text-gray-600">
+                    <FileText className="w-3 h-3 mr-1 flex-shrink-0" />
+                    <span className="truncate">{record.admissionNumber}</span>
+                  </div>
+                  <div className="flex items-center text-[10px] text-gray-600">
+                    <BedDouble className="w-3 h-3 mr-1 flex-shrink-0" />
+                    <span className="truncate">{record.ward?.name || 'N/A'} - Bed {record.bed?.bedNumber || 'N/A'}</span>
+                  </div>
+                  <div className="flex items-center text-[10px] text-gray-600">
+                    <Calendar className="w-3 h-3 mr-1 flex-shrink-0" />
+                    <span>{formatDate(record.admissionDate)} ({record.lengthOfStay} days)</span>
+                  </div>
+                </div>
+
+                {/* Action Button */}
+                <button
+                  onClick={() => loadRecordDetails(record._id)}
+                  className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition text-xs font-medium"
+                >
+                  <Eye className="w-4 h-4" />
+                  View Details
+                </button>
+              </div>
+            ))
+          )}
+        </div>
+
         {/* Detail Modal */}
         {showDetailModal && selectedRecord && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 overflow-y-auto">
-            <div className="bg-white rounded-lg shadow-xl max-w-6xl w-full my-8">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-2 sm:p-4 z-50 overflow-y-auto">
+            <div className="bg-white rounded-lg shadow-xl w-full max-w-6xl my-4 sm:my-8">
               {/* Modal Header */}
-              <div className="p-6 border-b border-gray-200 flex items-center justify-between sticky top-0 bg-white z-10">
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-800">
+              <div className="p-3 sm:p-4 md:p-6 border-b border-gray-200 flex items-center justify-between sticky top-0 bg-white z-10">
+                <div className="min-w-0 flex-1 mr-2">
+                  <h2 className="text-base sm:text-lg md:text-2xl font-bold text-gray-800 truncate">
                     {selectedRecord.patient?.firstName} {selectedRecord.patient?.lastName}
                   </h2>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-[10px] sm:text-xs md:text-sm text-gray-600 truncate">
                     Admission: {selectedRecord.admissionNumber} | 
                     Ward: {selectedRecord.ward?.name} | 
                     Bed: {selectedRecord.bed?.bedNumber}
@@ -476,57 +540,61 @@ const IPDRecordsManagement = () => {
                 </div>
                 <button
                   onClick={() => setShowDetailModal(false)}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-gray-400 hover:text-gray-600 flex-shrink-0"
                 >
-                  <X size={24} />
+                  <X className="w-5 h-5 sm:w-6 sm:h-6" />
                 </button>
               </div>
 
               {/* Action Buttons */}
-              <div className="p-6 border-b border-gray-200 bg-gray-50">
-                <div className="flex flex-wrap gap-2">
+              <div className="p-3 sm:p-4 md:p-6 border-b border-gray-200 bg-gray-50">
+                <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2">
                   {canAddVitals && selectedRecord.status !== 'discharged' && (
                     <button
                       onClick={() => setShowVitalsModal(true)}
-                      className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+                      className="flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition text-[10px] sm:text-xs md:text-sm"
                     >
-                      <Heart size={16} />
-                      Add Vitals
+                      <Heart className="w-3 h-3 sm:w-4 sm:h-4" />
+                      <span className="hidden sm:inline">Add Vitals</span>
+                      <span className="sm:hidden">Vitals</span>
                     </button>
                   )}
                   {canAddMedication && selectedRecord.status !== 'discharged' && (
                     <button
                       onClick={() => setShowMedicationModal(true)}
-                      className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
+                      className="flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition text-[10px] sm:text-xs md:text-sm"
                     >
-                      <Pill size={16} />
-                      Add Medication
+                      <Pill className="w-3 h-3 sm:w-4 sm:h-4" />
+                      <span className="hidden sm:inline">Add Medication</span>
+                      <span className="sm:hidden">Meds</span>
                     </button>
                   )}
                   {canAddNursingNote && selectedRecord.status !== 'discharged' && (
                     <button
                       onClick={() => setShowNursingNoteModal(true)}
-                      className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+                      className="flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition text-[10px] sm:text-xs md:text-sm"
                     >
-                      <ClipboardList size={16} />
-                      Add Note
+                      <ClipboardList className="w-3 h-3 sm:w-4 sm:h-4" />
+                      <span className="hidden sm:inline">Add Note</span>
+                      <span className="sm:hidden">Note</span>
                     </button>
                   )}
                   {canAddDiagnosis && selectedRecord.status !== 'discharged' && (
                     <button
                       onClick={() => setShowDiagnosisModal(true)}
-                      className="flex items-center gap-2 px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition"
+                      className="flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition text-[10px] sm:text-xs md:text-sm"
                     >
-                      <Stethoscope size={16} />
-                      Add Diagnosis
+                      <Stethoscope className="w-3 h-3 sm:w-4 sm:h-4" />
+                      <span className="hidden sm:inline">Add Diagnosis</span>
+                      <span className="sm:hidden">Diagnosis</span>
                     </button>
                   )}
                   {canDischarge && selectedRecord.status !== 'discharged' && (
                     <button
                       onClick={() => setShowDischargeModal(true)}
-                      className="flex items-center gap-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition ml-auto"
+                      className="col-span-2 sm:col-span-1 flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition sm:ml-auto text-[10px] sm:text-xs md:text-sm"
                     >
-                      <UserCheck size={16} />
+                      <UserCheck className="w-3 h-3 sm:w-4 sm:h-4" />
                       Discharge Patient
                     </button>
                   )}
@@ -534,18 +602,18 @@ const IPDRecordsManagement = () => {
               </div>
 
               {/* Modal Content */}
-              <div className="p-6 max-h-[calc(100vh-300px)] overflow-y-auto">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="p-3 sm:p-4 md:p-6 max-h-[calc(100vh-280px)] sm:max-h-[calc(100vh-300px)] overflow-y-auto">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
                   {/* Patient Information */}
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <h3 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
-                      <User size={18} />
+                  <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+                    <h3 className="font-semibold text-gray-800 mb-2 sm:mb-3 flex items-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-base">
+                      <User className="w-4 h-4 sm:w-5 sm:h-5" />
                       Patient Information
                     </h3>
-                    <div className="space-y-2 text-sm">
+                    <div className="space-y-1 sm:space-y-2 text-[10px] sm:text-xs md:text-sm">
                       <div className="flex justify-between">
                         <span className="text-gray-600">Patient ID:</span>
-                        <span className="font-medium">{selectedRecord.patient?.patientId}</span>
+                        <span className="font-medium truncate ml-2">{selectedRecord.patient?.patientId}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Age:</span>
@@ -563,15 +631,15 @@ const IPDRecordsManagement = () => {
                   </div>
 
                   {/* Admission Details */}
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <h3 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
-                      <Calendar size={18} />
+                  <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+                    <h3 className="font-semibold text-gray-800 mb-2 sm:mb-3 flex items-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-base">
+                      <Calendar className="w-4 h-4 sm:w-5 sm:h-5" />
                       Admission Details
                     </h3>
-                    <div className="space-y-2 text-sm">
+                    <div className="space-y-1 sm:space-y-2 text-[10px] sm:text-xs md:text-sm">
                       <div className="flex justify-between">
                         <span className="text-gray-600">Admission Date:</span>
-                        <span className="font-medium">{formatDateTime(selectedRecord.admissionDate)}</span>
+                        <span className="font-medium text-right ml-2">{formatDateTime(selectedRecord.admissionDate)}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Type:</span>
@@ -581,9 +649,9 @@ const IPDRecordsManagement = () => {
                         <span className="text-gray-600">Length of Stay:</span>
                         <span className="font-medium">{selectedRecord.lengthOfStay} days</span>
                       </div>
-                      <div className="flex justify-between">
+                      <div className="flex justify-between items-center">
                         <span className="text-gray-600">Status:</span>
-                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(selectedRecord.status)}`}>
+                        <span className={`px-2 py-0.5 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-semibold ${getStatusColor(selectedRecord.status)}`}>
                           {selectedRecord.status.replace('_', ' ')}
                         </span>
                       </div>
@@ -591,29 +659,29 @@ const IPDRecordsManagement = () => {
                   </div>
 
                   {/* Admission Reason */}
-                  <div className="lg:col-span-2 bg-gray-50 p-4 rounded-lg">
-                    <h3 className="font-semibold text-gray-800 mb-2">Admission Reason</h3>
-                    <p className="text-sm text-gray-700">{selectedRecord.admissionReason}</p>
+                  <div className="lg:col-span-2 bg-gray-50 p-3 sm:p-4 rounded-lg">
+                    <h3 className="font-semibold text-gray-800 mb-2 text-xs sm:text-sm md:text-base">Admission Reason</h3>
+                    <p className="text-[10px] sm:text-xs md:text-sm text-gray-700">{selectedRecord.admissionReason}</p>
                   </div>
 
                   {/* Diagnoses */}
                   {selectedRecord.diagnosis && selectedRecord.diagnosis.length > 0 && (
-                    <div className="lg:col-span-2 bg-gray-50 p-4 rounded-lg">
-                      <h3 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
-                        <Stethoscope size={18} />
+                    <div className="lg:col-span-2 bg-gray-50 p-3 sm:p-4 rounded-lg">
+                      <h3 className="font-semibold text-gray-800 mb-2 sm:mb-3 flex items-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-base">
+                        <Stethoscope className="w-4 h-4 sm:w-5 sm:h-5" />
                         Diagnoses
                       </h3>
-                      <div className="space-y-3">
+                      <div className="space-y-2 sm:space-y-3">
                         {selectedRecord.diagnosis.map((diag, index) => (
-                          <div key={index} className="bg-white p-3 rounded border border-gray-200">
+                          <div key={index} className="bg-white p-2 sm:p-3 rounded border border-gray-200">
                             <div className="flex justify-between items-start mb-1">
-                              <p className="font-medium text-gray-800">{diag.condition}</p>
-                              <span className="text-xs text-gray-500">{formatDate(diag.diagnosedDate)}</span>
+                              <p className="font-medium text-gray-800 text-[10px] sm:text-xs md:text-sm">{diag.condition}</p>
+                              <span className="text-[9px] sm:text-[10px] text-gray-500 flex-shrink-0 ml-2">{formatDate(diag.diagnosedDate)}</span>
                             </div>
                             {diag.notes && (
-                              <p className="text-sm text-gray-600">{diag.notes}</p>
+                              <p className="text-[10px] sm:text-xs text-gray-600">{diag.notes}</p>
                             )}
-                            <p className="text-xs text-gray-500 mt-1">
+                            <p className="text-[9px] sm:text-[10px] text-gray-500 mt-1">
                               By: {diag.diagnosedBy?.firstName} {diag.diagnosedBy?.lastName}
                             </p>
                           </div>
@@ -624,15 +692,15 @@ const IPDRecordsManagement = () => {
 
                   {/* Latest Vital Signs */}
                   {selectedRecord.vitalSigns && selectedRecord.vitalSigns.length > 0 && (
-                    <div className="lg:col-span-2 bg-gray-50 p-4 rounded-lg">
-                      <h3 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
-                        <Heart size={18} />
+                    <div className="lg:col-span-2 bg-gray-50 p-3 sm:p-4 rounded-lg">
+                      <h3 className="font-semibold text-gray-800 mb-2 sm:mb-3 flex items-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-base">
+                        <Heart className="w-4 h-4 sm:w-5 sm:h-5" />
                         Latest Vital Signs
                       </h3>
-                      <div className="space-y-3">
+                      <div className="space-y-2 sm:space-y-3">
                         {selectedRecord.vitalSigns.slice(-3).reverse().map((vital, index) => (
-                          <div key={index} className="bg-white p-3 rounded border border-gray-200">
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+                          <div key={index} className="bg-white p-2 sm:p-3 rounded border border-gray-200">
+                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 text-[10px] sm:text-xs">
                               <div>
                                 <span className="text-gray-600">BP:</span>
                                 <span className="font-medium ml-1">
@@ -652,7 +720,7 @@ const IPDRecordsManagement = () => {
                                 <span className="font-medium ml-1">{vital.oxygenSaturation}%</span>
                               </div>
                             </div>
-                            <div className="text-xs text-gray-500 mt-2">
+                            <div className="text-[9px] sm:text-[10px] text-gray-500 mt-2">
                               {formatDateTime(vital.recordedDate)} - 
                               By: {vital.recordedBy?.firstName} {vital.recordedBy?.lastName}
                             </div>
@@ -664,29 +732,29 @@ const IPDRecordsManagement = () => {
 
                   {/* Current Medications */}
                   {selectedRecord.medications && selectedRecord.medications.length > 0 && (
-                    <div className="lg:col-span-2 bg-gray-50 p-4 rounded-lg">
-                      <h3 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
-                        <Pill size={18} />
+                    <div className="lg:col-span-2 bg-gray-50 p-3 sm:p-4 rounded-lg">
+                      <h3 className="font-semibold text-gray-800 mb-2 sm:mb-3 flex items-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-base">
+                        <Pill className="w-4 h-4 sm:w-5 sm:h-5" />
                         Current Medications
                       </h3>
                       <div className="space-y-2">
                         {selectedRecord.medications.map((med, index) => (
-                          <div key={index} className="bg-white p-3 rounded border border-gray-200">
-                            <div className="flex justify-between items-start">
-                              <div>
-                                <p className="font-medium text-gray-800">{med.medication}</p>
-                                <p className="text-sm text-gray-600">
+                          <div key={index} className="bg-white p-2 sm:p-3 rounded border border-gray-200">
+                            <div className="flex justify-between items-start gap-2">
+                              <div className="min-w-0 flex-1">
+                                <p className="font-medium text-gray-800 text-[10px] sm:text-xs md:text-sm truncate">{med.medication}</p>
+                                <p className="text-[10px] sm:text-xs text-gray-600">
                                   {med.dosage} - {med.frequency}
                                 </p>
                                 {med.notes && (
-                                  <p className="text-xs text-gray-500 mt-1">{med.notes}</p>
+                                  <p className="text-[9px] sm:text-[10px] text-gray-500 mt-1">{med.notes}</p>
                                 )}
                               </div>
-                              <div className="text-right text-xs text-gray-500">
+                              <div className="text-right text-[9px] sm:text-[10px] text-gray-500 flex-shrink-0">
                                 {formatDate(med.startDate)} - {med.endDate ? formatDate(med.endDate) : 'Ongoing'}
                               </div>
                             </div>
-                            <p className="text-xs text-gray-500 mt-2">
+                            <p className="text-[9px] sm:text-[10px] text-gray-500 mt-2">
                               Prescribed by: {med.prescribedBy?.firstName} {med.prescribedBy?.lastName}
                             </p>
                           </div>
@@ -697,16 +765,16 @@ const IPDRecordsManagement = () => {
 
                   {/* Nursing Notes */}
                   {selectedRecord.nursingNotes && selectedRecord.nursingNotes.length > 0 && (
-                    <div className="lg:col-span-2 bg-gray-50 p-4 rounded-lg">
-                      <h3 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
-                        <ClipboardList size={18} />
+                    <div className="lg:col-span-2 bg-gray-50 p-3 sm:p-4 rounded-lg">
+                      <h3 className="font-semibold text-gray-800 mb-2 sm:mb-3 flex items-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-base">
+                        <ClipboardList className="w-4 h-4 sm:w-5 sm:h-5" />
                         Nursing Notes
                       </h3>
-                      <div className="space-y-2 max-h-60 overflow-y-auto">
+                      <div className="space-y-2 max-h-48 sm:max-h-60 overflow-y-auto">
                         {selectedRecord.nursingNotes.slice().reverse().map((note, index) => (
-                          <div key={index} className="bg-white p-3 rounded border border-gray-200">
-                            <div className="flex justify-between items-start mb-1">
-                              <span className={`px-2 py-1 rounded text-xs font-medium ${
+                          <div key={index} className="bg-white p-2 sm:p-3 rounded border border-gray-200">
+                            <div className="flex justify-between items-start mb-1 gap-2">
+                              <span className={`px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-[9px] sm:text-[10px] font-medium flex-shrink-0 ${
                                 note.category === 'incident' ? 'bg-red-100 text-red-800' :
                                 note.category === 'medication' ? 'bg-green-100 text-green-800' :
                                 note.category === 'observation' ? 'bg-blue-100 text-blue-800' :
@@ -714,10 +782,10 @@ const IPDRecordsManagement = () => {
                               }`}>
                                 {note.category}
                               </span>
-                              <span className="text-xs text-gray-500">{formatDateTime(note.recordedDate)}</span>
+                              <span className="text-[9px] sm:text-[10px] text-gray-500">{formatDateTime(note.recordedDate)}</span>
                             </div>
-                            <p className="text-sm text-gray-700 mt-2">{note.note}</p>
-                            <p className="text-xs text-gray-500 mt-1">
+                            <p className="text-[10px] sm:text-xs text-gray-700 mt-2">{note.note}</p>
+                            <p className="text-[9px] sm:text-[10px] text-gray-500 mt-1">
                               By: {note.recordedBy?.firstName} {note.recordedBy?.lastName}
                             </p>
                           </div>
@@ -727,12 +795,12 @@ const IPDRecordsManagement = () => {
                   )}
 
                   {/* Emergency Contact */}
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <h3 className="font-semibold text-gray-800 mb-3">Emergency Contact</h3>
-                    <div className="space-y-2 text-sm">
+                  <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+                    <h3 className="font-semibold text-gray-800 mb-2 sm:mb-3 text-xs sm:text-sm md:text-base">Emergency Contact</h3>
+                    <div className="space-y-1 sm:space-y-2 text-[10px] sm:text-xs md:text-sm">
                       <div className="flex justify-between">
                         <span className="text-gray-600">Name:</span>
-                        <span className="font-medium">{selectedRecord.emergencyContact?.name}</span>
+                        <span className="font-medium truncate ml-2">{selectedRecord.emergencyContact?.name}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Phone:</span>
@@ -749,12 +817,12 @@ const IPDRecordsManagement = () => {
 
                   {/* Insurance Info */}
                   {selectedRecord.insurance?.provider && (
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <h3 className="font-semibold text-gray-800 mb-3">Insurance Information</h3>
-                      <div className="space-y-2 text-sm">
+                    <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+                      <h3 className="font-semibold text-gray-800 mb-2 sm:mb-3 text-xs sm:text-sm md:text-base">Insurance Information</h3>
+                      <div className="space-y-1 sm:space-y-2 text-[10px] sm:text-xs md:text-sm">
                         <div className="flex justify-between">
                           <span className="text-gray-600">Provider:</span>
-                          <span className="font-medium">{selectedRecord.insurance?.provider}</span>
+                          <span className="font-medium truncate ml-2">{selectedRecord.insurance?.provider}</span>
                         </div>
                         {selectedRecord.insurance?.policyNumber && (
                           <div className="flex justify-between">
@@ -773,18 +841,18 @@ const IPDRecordsManagement = () => {
 
         {/* Add Vitals Modal */}
         {showVitalsModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[60]">
-            <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full">
-              <div className="p-6 border-b border-gray-200 flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-800">Record Vital Signs</h3>
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-2 sm:p-4 z-[60]">
+            <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-3 sm:p-4 md:p-6 border-b border-gray-200 flex items-center justify-between sticky top-0 bg-white">
+                <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-800">Record Vital Signs</h3>
                 <button onClick={() => setShowVitalsModal(false)} className="text-gray-400 hover:text-gray-600">
-                  <X size={24} />
+                  <X className="w-5 h-5 sm:w-6 sm:h-6" />
                 </button>
               </div>
-              <form onSubmit={handleAddVitals} className="p-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <form onSubmit={handleAddVitals} className="p-3 sm:p-4 md:p-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 mb-1">
                       Blood Pressure (Systolic)
                     </label>
                     <input
@@ -794,12 +862,12 @@ const IPDRecordsManagement = () => {
                         ...vitalsData,
                         bloodPressure: { ...vitalsData.bloodPressure, systolic: e.target.value }
                       })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm"
                       placeholder="120"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 mb-1">
                       Blood Pressure (Diastolic)
                     </label>
                     <input
@@ -809,24 +877,24 @@ const IPDRecordsManagement = () => {
                         ...vitalsData,
                         bloodPressure: { ...vitalsData.bloodPressure, diastolic: e.target.value }
                       })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm"
                       placeholder="80"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 mb-1">
                       Heart Rate (bpm)
                     </label>
                     <input
                       type="number"
                       value={vitalsData.heartRate}
                       onChange={(e) => setVitalsData({ ...vitalsData, heartRate: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm"
                       placeholder="72"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 mb-1">
                       Temperature (°C)
                     </label>
                     <input
@@ -834,57 +902,57 @@ const IPDRecordsManagement = () => {
                       step="0.1"
                       value={vitalsData.temperature}
                       onChange={(e) => setVitalsData({ ...vitalsData, temperature: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm"
                       placeholder="37.0"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 mb-1">
                       Respiratory Rate
                     </label>
                     <input
                       type="number"
                       value={vitalsData.respiratoryRate}
                       onChange={(e) => setVitalsData({ ...vitalsData, respiratoryRate: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm"
                       placeholder="18"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 mb-1">
                       Oxygen Saturation (%)
                     </label>
                     <input
                       type="number"
                       value={vitalsData.oxygenSaturation}
                       onChange={(e) => setVitalsData({ ...vitalsData, oxygenSaturation: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm"
                       placeholder="98"
                     />
                   </div>
-                  <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <div className="sm:col-span-2">
+                    <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 mb-1">
                       Notes
                     </label>
                     <textarea
                       value={vitalsData.notes}
                       onChange={(e) => setVitalsData({ ...vitalsData, notes: e.target.value })}
-                      rows={3}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      rows={2}
+                      className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm"
                     />
                   </div>
                 </div>
-                <div className="flex gap-3 mt-6">
+                <div className="flex gap-2 sm:gap-3 mt-4 sm:mt-6">
                   <button
                     type="submit"
-                    className="flex-1 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition"
+                    className="flex-1 bg-blue-500 text-white py-2 px-3 sm:px-4 rounded-lg hover:bg-blue-600 transition text-xs sm:text-sm"
                   >
                     Record Vitals
                   </button>
                   <button
                     type="button"
                     onClick={() => setShowVitalsModal(false)}
-                    className="flex-1 bg-gray-200 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-300 transition"
+                    className="flex-1 bg-gray-200 text-gray-700 py-2 px-3 sm:px-4 rounded-lg hover:bg-gray-300 transition text-xs sm:text-sm"
                   >
                     Cancel
                   </button>
@@ -896,100 +964,100 @@ const IPDRecordsManagement = () => {
 
         {/* Add Medication Modal */}
         {showMedicationModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[60]">
-            <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full">
-              <div className="p-6 border-b border-gray-200 flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-800">Add Medication</h3>
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-2 sm:p-4 z-[60]">
+            <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-3 sm:p-4 md:p-6 border-b border-gray-200 flex items-center justify-between sticky top-0 bg-white">
+                <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-800">Add Medication</h3>
                 <button onClick={() => setShowMedicationModal(false)} className="text-gray-400 hover:text-gray-600">
-                  <X size={24} />
+                  <X className="w-5 h-5 sm:w-6 sm:h-6" />
                 </button>
               </div>
-              <form onSubmit={handleAddMedication} className="p-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+              <form onSubmit={handleAddMedication} className="p-3 sm:p-4 md:p-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                  <div className="sm:col-span-2">
+                    <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 mb-1">
                       Medication Name *
                     </label>
                     <input
                       type="text"
                       value={medicationData.medication}
                       onChange={(e) => setMedicationData({ ...medicationData, medication: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 mb-1">
                       Dosage *
                     </label>
                     <input
                       type="text"
                       value={medicationData.dosage}
                       onChange={(e) => setMedicationData({ ...medicationData, dosage: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm"
                       placeholder="e.g., 500mg"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 mb-1">
                       Frequency *
                     </label>
                     <input
                       type="text"
                       value={medicationData.frequency}
                       onChange={(e) => setMedicationData({ ...medicationData, frequency: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm"
                       placeholder="e.g., Three times daily"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 mb-1">
                       Start Date
                     </label>
                     <input
                       type="date"
                       value={medicationData.startDate}
                       onChange={(e) => setMedicationData({ ...medicationData, startDate: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 mb-1">
                       End Date
                     </label>
                     <input
                       type="date"
                       value={medicationData.endDate}
                       onChange={(e) => setMedicationData({ ...medicationData, endDate: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm"
                     />
                   </div>
-                  <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <div className="sm:col-span-2">
+                    <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 mb-1">
                       Notes
                     </label>
                     <textarea
                       value={medicationData.notes}
                       onChange={(e) => setMedicationData({ ...medicationData, notes: e.target.value })}
-                      rows={3}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      rows={2}
+                      className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm"
                       placeholder="Special instructions..."
                     />
                   </div>
                 </div>
-                <div className="flex gap-3 mt-6">
+                <div className="flex gap-2 sm:gap-3 mt-4 sm:mt-6">
                   <button
                     type="submit"
-                    className="flex-1 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition"
+                    className="flex-1 bg-blue-500 text-white py-2 px-3 sm:px-4 rounded-lg hover:bg-blue-600 transition text-xs sm:text-sm"
                   >
                     Add Medication
                   </button>
                   <button
                     type="button"
                     onClick={() => setShowMedicationModal(false)}
-                    className="flex-1 bg-gray-200 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-300 transition"
+                    className="flex-1 bg-gray-200 text-gray-700 py-2 px-3 sm:px-4 rounded-lg hover:bg-gray-300 transition text-xs sm:text-sm"
                   >
                     Cancel
                   </button>
@@ -1001,24 +1069,24 @@ const IPDRecordsManagement = () => {
 
         {/* Add Nursing Note Modal */}
         {showNursingNoteModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[60]">
-            <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full">
-              <div className="p-6 border-b border-gray-200 flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-800">Add Nursing Note</h3>
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-2 sm:p-4 z-[60]">
+            <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-3 sm:p-4 md:p-6 border-b border-gray-200 flex items-center justify-between sticky top-0 bg-white">
+                <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-800">Add Nursing Note</h3>
                 <button onClick={() => setShowNursingNoteModal(false)} className="text-gray-400 hover:text-gray-600">
-                  <X size={24} />
+                  <X className="w-5 h-5 sm:w-6 sm:h-6" />
                 </button>
               </div>
-              <form onSubmit={handleAddNursingNote} className="p-6">
-                <div className="space-y-4">
+              <form onSubmit={handleAddNursingNote} className="p-3 sm:p-4 md:p-6">
+                <div className="space-y-3 sm:space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 mb-1">
                       Category
                     </label>
                     <select
                       value={nursingNoteData.category}
                       onChange={(e) => setNursingNoteData({ ...nursingNoteData, category: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm"
                     >
                       {noteCategories.map(cat => (
                         <option key={cat.value} value={cat.value}>{cat.label}</option>
@@ -1026,29 +1094,29 @@ const IPDRecordsManagement = () => {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 mb-1">
                       Note *
                     </label>
                     <textarea
                       value={nursingNoteData.note}
                       onChange={(e) => setNursingNoteData({ ...nursingNoteData, note: e.target.value })}
-                      rows={5}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      rows={4}
+                      className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm"
                       required
                     />
                   </div>
                 </div>
-                <div className="flex gap-3 mt-6">
+                <div className="flex gap-2 sm:gap-3 mt-4 sm:mt-6">
                   <button
                     type="submit"
-                    className="flex-1 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition"
+                    className="flex-1 bg-blue-500 text-white py-2 px-3 sm:px-4 rounded-lg hover:bg-blue-600 transition text-xs sm:text-sm"
                   >
                     Add Note
                   </button>
                   <button
                     type="button"
                     onClick={() => setShowNursingNoteModal(false)}
-                    className="flex-1 bg-gray-200 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-300 transition"
+                    className="flex-1 bg-gray-200 text-gray-700 py-2 px-3 sm:px-4 rounded-lg hover:bg-gray-300 transition text-xs sm:text-sm"
                   >
                     Cancel
                   </button>
@@ -1060,53 +1128,53 @@ const IPDRecordsManagement = () => {
 
         {/* Add Diagnosis Modal */}
         {showDiagnosisModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[60]">
-            <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full">
-              <div className="p-6 border-b border-gray-200 flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-800">Add Diagnosis</h3>
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-2 sm:p-4 z-[60]">
+            <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-3 sm:p-4 md:p-6 border-b border-gray-200 flex items-center justify-between sticky top-0 bg-white">
+                <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-800">Add Diagnosis</h3>
                 <button onClick={() => setShowDiagnosisModal(false)} className="text-gray-400 hover:text-gray-600">
-                  <X size={24} />
+                  <X className="w-5 h-5 sm:w-6 sm:h-6" />
                 </button>
               </div>
-              <form onSubmit={handleAddDiagnosis} className="p-6">
-                <div className="space-y-4">
+              <form onSubmit={handleAddDiagnosis} className="p-3 sm:p-4 md:p-6">
+                <div className="space-y-3 sm:space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 mb-1">
                       Condition/Diagnosis *
                     </label>
                     <input
                       type="text"
                       value={diagnosisData.condition}
                       onChange={(e) => setDiagnosisData({ ...diagnosisData, condition: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm"
                       placeholder="e.g., Pneumonia (J18.9)"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 mb-1">
                       Notes
                     </label>
                     <textarea
                       value={diagnosisData.notes}
                       onChange={(e) => setDiagnosisData({ ...diagnosisData, notes: e.target.value })}
-                      rows={4}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      rows={3}
+                      className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm"
                       placeholder="Additional details about the diagnosis..."
                     />
                   </div>
                 </div>
-                <div className="flex gap-3 mt-6">
+                <div className="flex gap-2 sm:gap-3 mt-4 sm:mt-6">
                   <button
                     type="submit"
-                    className="flex-1 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition"
+                    className="flex-1 bg-blue-500 text-white py-2 px-3 sm:px-4 rounded-lg hover:bg-blue-600 transition text-xs sm:text-sm"
                   >
                     Add Diagnosis
                   </button>
                   <button
                     type="button"
                     onClick={() => setShowDiagnosisModal(false)}
-                    className="flex-1 bg-gray-200 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-300 transition"
+                    className="flex-1 bg-gray-200 text-gray-700 py-2 px-3 sm:px-4 rounded-lg hover:bg-gray-300 transition text-xs sm:text-sm"
                   >
                     Cancel
                   </button>
@@ -1118,24 +1186,24 @@ const IPDRecordsManagement = () => {
 
         {/* Discharge Patient Modal */}
         {showDischargeModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[60]">
-            <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full">
-              <div className="p-6 border-b border-gray-200 flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-800">Discharge Patient</h3>
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-2 sm:p-4 z-[60]">
+            <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-3 sm:p-4 md:p-6 border-b border-gray-200 flex items-center justify-between sticky top-0 bg-white">
+                <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-800">Discharge Patient</h3>
                 <button onClick={() => setShowDischargeModal(false)} className="text-gray-400 hover:text-gray-600">
-                  <X size={24} />
+                  <X className="w-5 h-5 sm:w-6 sm:h-6" />
                 </button>
               </div>
-              <form onSubmit={handleDischarge} className="p-6">
-                <div className="space-y-4">
+              <form onSubmit={handleDischarge} className="p-3 sm:p-4 md:p-6">
+                <div className="space-y-3 sm:space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 mb-1">
                       Discharge Reason *
                     </label>
                     <select
                       value={dischargeData.dischargeReason}
                       onChange={(e) => setDischargeData({ ...dischargeData, dischargeReason: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm"
                       required
                     >
                       {dischargeReasons.map(reason => (
@@ -1144,30 +1212,30 @@ const IPDRecordsManagement = () => {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 mb-1">
                       Discharge Summary *
                     </label>
                     <textarea
                       value={dischargeData.dischargeSummary}
                       onChange={(e) => setDischargeData({ ...dischargeData, dischargeSummary: e.target.value })}
-                      rows={6}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      rows={5}
+                      className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm"
                       placeholder="Provide a summary of the patient's stay, treatment, and discharge instructions..."
                       required
                     />
                   </div>
                 </div>
-                <div className="flex gap-3 mt-6">
+                <div className="flex gap-2 sm:gap-3 mt-4 sm:mt-6">
                   <button
                     type="submit"
-                    className="flex-1 bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-orange-600 transition"
+                    className="flex-1 bg-orange-500 text-white py-2 px-3 sm:px-4 rounded-lg hover:bg-orange-600 transition text-xs sm:text-sm"
                   >
                     Discharge Patient
                   </button>
                   <button
                     type="button"
                     onClick={() => setShowDischargeModal(false)}
-                    className="flex-1 bg-gray-200 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-300 transition"
+                    className="flex-1 bg-gray-200 text-gray-700 py-2 px-3 sm:px-4 rounded-lg hover:bg-gray-300 transition text-xs sm:text-sm"
                   >
                     Cancel
                   </button>
