@@ -50,7 +50,7 @@ function SignInDropdown() {
       {isOpen && (
         <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-100 overflow-hidden z-50">
           <div className="py-2">
-            
+            <a
               href="/login"
               className="flex items-center px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200 group"
               onClick={() => setIsOpen(false)}
@@ -67,7 +67,7 @@ function SignInDropdown() {
 
             <div className="border-t border-gray-100 my-1"></div>
 
-            
+            <a
               href="https://fufumo-pharmacy.com/"
               className="flex items-center px-4 py-3 text-gray-700 hover:bg-teal-50 hover:text-teal-600 transition-colors duration-200 group"
               onClick={() => setIsOpen(false)}
