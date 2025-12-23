@@ -70,7 +70,7 @@ const BillingDashboard = () => {
     };
     
     return (
-      <span className={`px-2 py-1 text-xs font-medium rounded-full ${statusColors[status] || 'bg-gray-100 text-gray-800'}`}>
+      <span className={`px-1.5 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium rounded-full ${statusColors[status] || 'bg-gray-100 text-gray-800'}`}>
         {status.charAt(0).toUpperCase() + status.slice(1)}
       </span>
     );
@@ -79,104 +79,105 @@ const BillingDashboard = () => {
   if (loading) return <LoadingSpinner />;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6 p-2 sm:p-4">
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Billing Dashboard</h1>
-          <p className="text-gray-600">Manage invoices, payments, and financial reports</p>
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800">Billing Dashboard</h1>
+          <p className="text-xs sm:text-sm text-gray-600">Manage invoices, payments, and financial reports</p>
         </div>
-        <div className="flex space-x-3">
+        <div className="flex space-x-2 w-full sm:w-auto">
           <button
             onClick={fetchBillingData}
-            className="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+            className="flex-1 sm:flex-none flex items-center justify-center px-2 sm:px-4 py-1.5 sm:py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-xs sm:text-sm"
           >
-            <RefreshCw className="w-4 h-4 mr-2" />
-            Refresh
+            <RefreshCw className="w-3 h-3 sm:w-4 sm:h-4 sm:mr-2" />
+            <span className="hidden sm:inline">Refresh</span>
           </button>
           <button
             onClick={() => navigate('/billing/invoices/new')}
-            className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            className="flex-1 sm:flex-none flex items-center justify-center px-2 sm:px-4 py-1.5 sm:py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-xs sm:text-sm"
           >
-            <Plus className="w-4 h-4 mr-2" />
-            New Invoice
+            <Plus className="w-3 h-3 sm:w-4 sm:h-4 sm:mr-2" />
+            <span className="hidden sm:inline">New Invoice</span>
+            <span className="sm:hidden">New</span>
           </button>
         </div>
       </div>
 
       {/* Statistics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white rounded-lg shadow p-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 md:gap-6">
+        <div className="bg-white rounded-lg shadow p-3 sm:p-4 md:p-6">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Total Revenue</p>
-              <p className="text-2xl font-bold text-gray-900">
+            <div className="min-w-0 flex-1">
+              <p className="text-[10px] sm:text-xs md:text-sm font-medium text-gray-600 truncate">Total Revenue</p>
+              <p className="text-sm sm:text-lg md:text-2xl font-bold text-gray-900 truncate">
                 {formatCurrency(statistics.invoices.totalAmount)}
               </p>
             </div>
-            <div className="bg-blue-100 p-3 rounded-full">
-              <DollarSign className="w-6 h-6 text-blue-600" />
+            <div className="bg-blue-100 p-1.5 sm:p-2 md:p-3 rounded-full flex-shrink-0 ml-2">
+              <DollarSign className="w-3 h-3 sm:w-4 sm:h-4 md:w-6 md:h-6 text-blue-600" />
             </div>
           </div>
-          <div className="mt-4">
-            <span className="text-sm text-gray-600">
+          <div className="mt-2 sm:mt-3 md:mt-4">
+            <span className="text-[9px] sm:text-xs md:text-sm text-gray-600">
               {statistics.invoices.totalInvoices || 0} invoices
             </span>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow p-3 sm:p-4 md:p-6">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Total Collected</p>
-              <p className="text-2xl font-bold text-green-600">
+            <div className="min-w-0 flex-1">
+              <p className="text-[10px] sm:text-xs md:text-sm font-medium text-gray-600 truncate">Total Collected</p>
+              <p className="text-sm sm:text-lg md:text-2xl font-bold text-green-600 truncate">
                 {formatCurrency(statistics.invoices.totalPaid)}
               </p>
             </div>
-            <div className="bg-green-100 p-3 rounded-full">
-              <TrendingUp className="w-6 h-6 text-green-600" />
+            <div className="bg-green-100 p-1.5 sm:p-2 md:p-3 rounded-full flex-shrink-0 ml-2">
+              <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 md:w-6 md:h-6 text-green-600" />
             </div>
           </div>
-          <div className="mt-4">
-            <span className="text-sm text-gray-600">
+          <div className="mt-2 sm:mt-3 md:mt-4">
+            <span className="text-[9px] sm:text-xs md:text-sm text-gray-600">
               {((statistics.invoices.totalPaid / statistics.invoices.totalAmount) * 100 || 0).toFixed(1)}% collected
             </span>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow p-3 sm:p-4 md:p-6">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Outstanding</p>
-              <p className="text-2xl font-bold text-orange-600">
+            <div className="min-w-0 flex-1">
+              <p className="text-[10px] sm:text-xs md:text-sm font-medium text-gray-600 truncate">Outstanding</p>
+              <p className="text-sm sm:text-lg md:text-2xl font-bold text-orange-600 truncate">
                 {formatCurrency(statistics.invoices.totalDue)}
               </p>
             </div>
-            <div className="bg-orange-100 p-3 rounded-full">
-              <FileText className="w-6 h-6 text-orange-600" />
+            <div className="bg-orange-100 p-1.5 sm:p-2 md:p-3 rounded-full flex-shrink-0 ml-2">
+              <FileText className="w-3 h-3 sm:w-4 sm:h-4 md:w-6 md:h-6 text-orange-600" />
             </div>
           </div>
-          <div className="mt-4">
-            <span className="text-sm text-gray-600">
+          <div className="mt-2 sm:mt-3 md:mt-4">
+            <span className="text-[9px] sm:text-xs md:text-sm text-gray-600">
               Pending collection
             </span>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow p-3 sm:p-4 md:p-6">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Overdue</p>
-              <p className="text-2xl font-bold text-red-600">
+            <div className="min-w-0 flex-1">
+              <p className="text-[10px] sm:text-xs md:text-sm font-medium text-gray-600 truncate">Overdue</p>
+              <p className="text-sm sm:text-lg md:text-2xl font-bold text-red-600 truncate">
                 {statistics.overdueCount || 0}
               </p>
             </div>
-            <div className="bg-red-100 p-3 rounded-full">
-              <AlertCircle className="w-6 h-6 text-red-600" />
+            <div className="bg-red-100 p-1.5 sm:p-2 md:p-3 rounded-full flex-shrink-0 ml-2">
+              <AlertCircle className="w-3 h-3 sm:w-4 sm:h-4 md:w-6 md:h-6 text-red-600" />
             </div>
           </div>
-          <div className="mt-4">
-            <span className="text-sm text-gray-600">
+          <div className="mt-2 sm:mt-3 md:mt-4">
+            <span className="text-[9px] sm:text-xs md:text-sm text-gray-600">
               Invoices overdue
             </span>
           </div>
@@ -185,29 +186,29 @@ const BillingDashboard = () => {
 
       {/* Payment Methods Chart */}
       {statistics.payments && statistics.payments.length > 0 && (
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-lg font-semibold mb-4">Payment Methods</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="bg-white rounded-lg shadow p-3 sm:p-4 md:p-6">
+          <h2 className="text-sm sm:text-base md:text-lg font-semibold mb-3 sm:mb-4">Payment Methods</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
             {statistics.payments.map((payment) => (
-              <div key={payment._id} className="text-center">
-                <p className="text-sm text-gray-600 capitalize">{payment._id.replace('_', ' ')}</p>
-                <p className="text-xl font-bold">{formatCurrency(payment.total)}</p>
-                <p className="text-xs text-gray-500">{payment.count} transactions</p>
+              <div key={payment._id} className="text-center p-2 bg-gray-50 rounded-lg">
+                <p className="text-[10px] sm:text-xs md:text-sm text-gray-600 capitalize truncate">{payment._id.replace('_', ' ')}</p>
+                <p className="text-xs sm:text-base md:text-xl font-bold truncate">{formatCurrency(payment.total)}</p>
+                <p className="text-[9px] sm:text-[10px] md:text-xs text-gray-500">{payment.count} transactions</p>
               </div>
             ))}
           </div>
         </div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
         {/* Recent Invoices */}
         <div className="bg-white rounded-lg shadow">
-          <div className="p-6 border-b border-gray-200">
+          <div className="p-3 sm:p-4 md:p-6 border-b border-gray-200">
             <div className="flex justify-between items-center">
-              <h2 className="text-lg font-semibold">Recent Invoices</h2>
+              <h2 className="text-sm sm:text-base md:text-lg font-semibold">Recent Invoices</h2>
               <button
                 onClick={() => navigate('/billing/invoices')}
-                className="text-sm text-blue-600 hover:text-blue-800"
+                className="text-[10px] sm:text-xs md:text-sm text-blue-600 hover:text-blue-800"
               >
                 View all →
               </button>
@@ -217,21 +218,21 @@ const BillingDashboard = () => {
             {recentInvoices.map((invoice) => (
               <div
                 key={invoice._id}
-                className="p-4 hover:bg-gray-50 cursor-pointer"
+                className="p-2 sm:p-3 md:p-4 hover:bg-gray-50 cursor-pointer"
                 onClick={() => navigate(`/billing/invoices/${invoice._id}`)}
               >
-                <div className="flex justify-between items-start">
-                  <div>
-                    <p className="font-medium text-gray-900">{invoice.invoiceNumber}</p>
-                    <p className="text-sm text-gray-600">
+                <div className="flex justify-between items-start gap-2">
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs sm:text-sm md:text-base font-medium text-gray-900 truncate">{invoice.invoiceNumber}</p>
+                    <p className="text-[10px] sm:text-xs md:text-sm text-gray-600 truncate">
                       {invoice.patient?.firstName} {invoice.patient?.lastName}
                     </p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-[9px] sm:text-[10px] md:text-xs text-gray-500">
                       {new Date(invoice.createdAt).toLocaleDateString()}
                     </p>
                   </div>
-                  <div className="text-right">
-                    <p className="font-medium">{formatCurrency(invoice.totalAmount)}</p>
+                  <div className="text-right flex-shrink-0">
+                    <p className="text-xs sm:text-sm md:text-base font-medium truncate">{formatCurrency(invoice.totalAmount)}</p>
                     {getStatusBadge(invoice.status)}
                   </div>
                 </div>
@@ -242,12 +243,12 @@ const BillingDashboard = () => {
 
         {/* Recent Payments */}
         <div className="bg-white rounded-lg shadow">
-          <div className="p-6 border-b border-gray-200">
+          <div className="p-3 sm:p-4 md:p-6 border-b border-gray-200">
             <div className="flex justify-between items-center">
-              <h2 className="text-lg font-semibold">Recent Payments</h2>
+              <h2 className="text-sm sm:text-base md:text-lg font-semibold">Recent Payments</h2>
               <button
                 onClick={() => navigate('/billing/payments')}
-                className="text-sm text-blue-600 hover:text-blue-800"
+                className="text-[10px] sm:text-xs md:text-sm text-blue-600 hover:text-blue-800"
               >
                 View all →
               </button>
@@ -255,22 +256,22 @@ const BillingDashboard = () => {
           </div>
           <div className="divide-y divide-gray-200">
             {recentPayments.map((payment) => (
-              <div key={payment._id} className="p-4 hover:bg-gray-50">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <p className="font-medium text-gray-900">{payment.paymentNumber}</p>
-                    <p className="text-sm text-gray-600">
+              <div key={payment._id} className="p-2 sm:p-3 md:p-4 hover:bg-gray-50">
+                <div className="flex justify-between items-start gap-2">
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs sm:text-sm md:text-base font-medium text-gray-900 truncate">{payment.paymentNumber}</p>
+                    <p className="text-[10px] sm:text-xs md:text-sm text-gray-600 truncate">
                       {payment.patient?.firstName} {payment.patient?.lastName}
                     </p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-[9px] sm:text-[10px] md:text-xs text-gray-500 truncate">
                       {payment.method.replace('_', ' ')} • {new Date(payment.paymentDate).toLocaleDateString()}
                     </p>
                   </div>
-                  <div className="text-right">
-                    <p className="font-medium text-green-600">
+                  <div className="text-right flex-shrink-0">
+                    <p className="text-xs sm:text-sm md:text-base font-medium text-green-600 truncate">
                       {formatCurrency(payment.amount)}
                     </p>
-                    <span className={`text-xs px-2 py-1 rounded-full ${
+                    <span className={`text-[9px] sm:text-[10px] md:text-xs px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full ${
                       payment.status === 'completed' 
                         ? 'bg-green-100 text-green-800' 
                         : 'bg-yellow-100 text-yellow-800'
@@ -286,44 +287,30 @@ const BillingDashboard = () => {
       </div>
 
       {/* Quick Actions */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-lg font-semibold mb-4">Quick Actions</h2>
-        <div className="grid grid-cols-2  gap-4">
+      <div className="bg-white rounded-lg shadow p-3 sm:p-4 md:p-6">
+        <h2 className="text-sm sm:text-base md:text-lg font-semibold mb-3 sm:mb-4">Quick Actions</h2>
+        <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4">
           <button
             onClick={() => navigate('/billing/invoices')}
-            className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-center"
+            className="p-2 sm:p-3 md:p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-center"
           >
-            <FileText className="w-6 h-6 mx-auto mb-2 text-gray-600" />
-            <span className="text-sm">Manage Invoices</span>
+            <FileText className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 mx-auto mb-1 sm:mb-2 text-gray-600" />
+            <span className="text-[10px] sm:text-xs md:text-sm block">Manage Invoices</span>
           </button>
-          {/* <button
-            onClick={() => navigate('/billing/reports')}
-            className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-center"
-          >
-            <Download className="w-6 h-6 mx-auto mb-2 text-gray-600" />
-            <span className="text-sm">Generate Reports</span>
-          </button> */}
           <button
             onClick={() => navigate('/billing/insurance')}
-            className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-center"
+            className="p-2 sm:p-3 md:p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-center"
           >
-            <FileText className="w-6 h-6 mx-auto mb-2 text-gray-600" />
-            <span className="text-sm">Insurance Claims</span>
+            <FileText className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 mx-auto mb-1 sm:mb-2 text-gray-600" />
+            <span className="text-[10px] sm:text-xs md:text-sm block">Insurance Claims</span>
           </button>
           <button
             onClick={() => navigate('/billing/statements')}
-            className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-center"
+            className="p-2 sm:p-3 md:p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-center"
           >
-            <Search className="w-6 h-6 mx-auto mb-2 text-gray-600" />
-            <span className="text-sm">Patient Statements</span>
+            <Search className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 mx-auto mb-1 sm:mb-2 text-gray-600" />
+            <span className="text-[10px] sm:text-xs md:text-sm block">Patient Statements</span>
           </button>
-          {/* <button
-            onClick={fetchBillingData}
-            className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-center"
-          >
-            <RefreshCw className="w-6 h-6 mx-auto mb-2 text-gray-600" />
-            <span className="text-sm">Refresh Data</span>
-          </button> */}
         </div>
       </div>
     </div>
