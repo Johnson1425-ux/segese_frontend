@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { ArrowLeft, Save, User, Loader2, MapPin, Phone, ShieldCheck, CrossIcon } from 'lucide-react';
+import { ArrowLeft, Save, User, Loader2, MapPin, Phone, ShieldCheck, Cross } from 'lucide-react';
 import { patientService } from '../utils/patientService.js';
 
 const PatientForm = () => {
@@ -167,7 +167,6 @@ const PatientForm = () => {
       newErrors['emergencyContact.phone'] = 'Emergency contact phone is required';
     }
 
-    // Validate insurance fields if hasInsurance is true
     if (formData.hasInsurance) {
       if (!formData.insurance?.provider?.trim()) {
         newErrors['insurance.provider'] = 'Insurance provider is required';
@@ -183,57 +182,53 @@ const PatientForm = () => {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  
-  if (!validateForm()) {
-    toast.error('Please fix the errors below');
-    return;
-  }
-
-  setIsSubmitting(true);
-  
-  try {
-    // Prepare submit data
-    const submitData = { ...formData };
+    e.preventDefault();
     
-    // If patient doesn't have insurance, clear insurance data
-    if (!submitData.hasInsurance) {
-      submitData.insurance = {
-        provider: '',
-        membershipNumber: '',
-      };
+    if (!validateForm()) {
+      toast.error('Please fix the errors below');
+      return;
     }
 
-    // ✅ ADD THIS: Remove email field if it's empty
-    if (!submitData.email || submitData.email.trim() === '') {
-      delete submitData.email;
-    }
-
-    // ✅ ADD THIS: Remove phone field if it's empty
-    if (!submitData.phone || submitData.phone.trim() === '') {
-      delete submitData.phone;
-    }
-
-    if (isEditing) {
-      await patientService.updatePatient(id, submitData);
-      toast.success('Patient updated successfully');
-    } else {
-      await patientService.createPatient(submitData);
-      toast.success('Patient created successfully');
-    }
-    navigate('/patients/search');
-  } catch (error) {
-    const message = error.response?.data?.message || 
-      (isEditing ? 'Failed to update patient' : 'Failed to create patient');
-    toast.error(message);
+    setIsSubmitting(true);
     
-    if (error.response?.data?.errors) {
-      setErrors(error.response.data.errors);
+    try {
+      const submitData = { ...formData };
+      
+      if (!submitData.hasInsurance) {
+        submitData.insurance = {
+          provider: '',
+          membershipNumber: '',
+        };
+      }
+
+      if (!submitData.email || submitData.email.trim() === '') {
+        delete submitData.email;
+      }
+
+      if (!submitData.phone || submitData.phone.trim() === '') {
+        delete submitData.phone;
+      }
+
+      if (isEditing) {
+        await patientService.updatePatient(id, submitData);
+        toast.success('Patient updated successfully');
+      } else {
+        await patientService.createPatient(submitData);
+        toast.success('Patient created successfully');
+      }
+      navigate('/patients/search');
+    } catch (error) {
+      const message = error.response?.data?.message || 
+        (isEditing ? 'Failed to update patient' : 'Failed to create patient');
+      toast.error(message);
+      
+      if (error.response?.data?.errors) {
+        setErrors(error.response.data.errors);
+      }
+    } finally {
+      setIsSubmitting(false);
     }
-  } finally {
-    setIsSubmitting(false);
-  }
-};
+  };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -287,14 +282,15 @@ const PatientForm = () => {
 
   return (
     <div className="max-w-6xl mx-auto min-h-screen p-4 sm:p-6 lg:p-8 font-sans">
+      {/* Header */}
       <div className="mb-6">
         <div className="flex items-center">
-          <User className="w-8 h-8 text-primary-600 mr-3" />
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">
+          <User className="w-6 h-6 sm:w-8 sm:h-8 text-primary-600 mr-2 sm:mr-3 flex-shrink-0" />
+          <div className="min-w-0 flex-1">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 truncate">
               {isEditing ? 'Edit Patient' : 'Add New Patient'}
             </h1>
-            <p className="text-gray-600">
+            <p className="text-sm sm:text-base text-gray-600">
               {isEditing ? 'Update patient information' : 'Enter patient details'}
             </p>
           </div>
@@ -303,13 +299,13 @@ const PatientForm = () => {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Personal Information */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-            <User className="mr-2 text-blue-500"/>
-            Client Basic Information
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6">
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6 flex items-center">
+            <User className="mr-2 text-blue-500 w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0"/>
+            <span className="truncate">Client Basic Information</span>
           </h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 First Name *
@@ -322,7 +318,7 @@ const PatientForm = () => {
                 className={`input-field ${errors.firstName ? 'border-red-500' : ''}`}
                 placeholder="Enter first name"
               />
-              {errors.firstName && <p className="mt-1 text-sm text-red-600">{errors.firstName}</p>}
+              {errors.firstName && <p className="mt-1 text-xs sm:text-sm text-red-600">{errors.firstName}</p>}
             </div>
 
             <div>
@@ -337,7 +333,7 @@ const PatientForm = () => {
                 className={`input-field ${errors.middleName ? 'border-red-500' : ''}`}
                 placeholder="Enter middle name"
               />
-              {errors.middleName && <p className="mt-1 text-sm text-red-600">{errors.middleName}</p>}
+              {errors.middleName && <p className="mt-1 text-xs sm:text-sm text-red-600">{errors.middleName}</p>}
             </div>
 
             <div>
@@ -352,10 +348,10 @@ const PatientForm = () => {
                 className={`input-field ${errors.lastName ? 'border-red-500' : ''}`}
                 placeholder="Enter last name"
               />
-              {errors.lastName && <p className="mt-1 text-sm text-red-600">{errors.lastName}</p>}
+              {errors.lastName && <p className="mt-1 text-xs sm:text-sm text-red-600">{errors.lastName}</p>}
             </div>
 
-            <div>
+            <div className="sm:col-span-2 lg:col-span-1">
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Email Address
               </label>
@@ -367,7 +363,7 @@ const PatientForm = () => {
                 className={`input-field ${errors.email ? 'border-red-500' : ''}`}
                 placeholder="Enter email address"
               />
-              {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
+              {errors.email && <p className="mt-1 text-xs sm:text-sm text-red-600">{errors.email}</p>}
             </div>
 
             <div>
@@ -382,7 +378,7 @@ const PatientForm = () => {
                 className={`input-field ${errors.phone ? 'border-red-500' : ''}`}
                 placeholder="Enter phone number"
               />
-              {errors.phone && <p className="mt-1 text-sm text-red-600">{errors.phone}</p>}
+              {errors.phone && <p className="mt-1 text-xs sm:text-sm text-red-600">{errors.phone}</p>}
             </div>
 
             <div>
@@ -396,7 +392,7 @@ const PatientForm = () => {
                 onChange={handleChange}
                 className={`input-field ${errors.dateOfBirth ? 'border-red-500' : ''}`}
               />
-              {errors.dateOfBirth && <p className="mt-1 text-sm text-red-600">{errors.dateOfBirth}</p>}
+              {errors.dateOfBirth && <p className="mt-1 text-xs sm:text-sm text-red-600">{errors.dateOfBirth}</p>}
             </div>
 
             <div>
@@ -416,7 +412,7 @@ const PatientForm = () => {
                   </option>
                 ))}
               </select>
-              {errors.gender && <p className="mt-1 text-sm text-red-600">{errors.gender}</p>}
+              {errors.gender && <p className="mt-1 text-xs sm:text-sm text-red-600">{errors.gender}</p>}
             </div>
 
             <div>
@@ -456,13 +452,13 @@ const PatientForm = () => {
         </div>
 
         {/* Address Information */}
-        <div className="card mt-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-            <MapPin className="mr-2 text-blue-500" size={20} />
-            Address Information
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6">
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6 flex items-center">
+            <MapPin className="mr-2 text-blue-500 w-5 h-5 flex-shrink-0" />
+            <span className="truncate">Address Information</span>
           </h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Country
@@ -472,7 +468,7 @@ const PatientForm = () => {
                 name="address.country"
                 value="Tanzania, United Republic of"
                 readOnly
-                className="input-field bg-gray-50 cursor-not-allowed"
+                className="input-field bg-gray-50 cursor-not-allowed text-sm"
                 placeholder="Enter country"
               />
             </div>
@@ -489,7 +485,7 @@ const PatientForm = () => {
                 className={`input-field ${errors['address.region'] ? 'border-red-500' : ''}`}
                 placeholder="Enter region"
               />
-              {errors['address.region'] && <p className="mt-1 text-sm text-red-600">{errors['address.region']}</p>}
+              {errors['address.region'] && <p className="mt-1 text-xs sm:text-sm text-red-600">{errors['address.region']}</p>}
             </div>
 
             <div>
@@ -520,7 +516,7 @@ const PatientForm = () => {
               />
             </div>
 
-            <div className="md:col-span-2">
+            <div className="sm:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Street Address *
               </label>
@@ -532,19 +528,19 @@ const PatientForm = () => {
                 className={`input-field ${errors['address.street'] ? 'border-red-500' : ''}`}
                 placeholder="Enter street address"
               />
-              {errors['address.street'] && <p className="mt-1 text-sm text-red-600">{errors['address.street']}</p>}
+              {errors['address.street'] && <p className="mt-1 text-xs sm:text-sm text-red-600">{errors['address.street']}</p>}
             </div>
           </div>
         </div>
 
         {/* Emergency Contact */}
-        <div className="card mt-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-            <Phone className="mr-2 text-blue-500 size" size={20} />
-            Emergency Contact
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6">
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6 flex items-center">
+            <Phone className="mr-2 text-blue-500 w-5 h-5 flex-shrink-0" />
+            <span className="truncate">Emergency Contact</span>
           </h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Emergency Contact Name *
@@ -557,7 +553,7 @@ const PatientForm = () => {
                 className={`input-field ${errors['emergencyContact.name'] ? 'border-red-500' : ''}`}
                 placeholder="Enter emergency contact name"
               />
-              {errors['emergencyContact.name'] && <p className="mt-1 text-sm text-red-600">{errors['emergencyContact.name']}</p>}
+              {errors['emergencyContact.name'] && <p className="mt-1 text-xs sm:text-sm text-red-600">{errors['emergencyContact.name']}</p>}
             </div>
 
             <div>
@@ -572,7 +568,7 @@ const PatientForm = () => {
                 className={`input-field ${errors['emergencyContact.phone'] ? 'border-red-500' : ''}`}
                 placeholder="Enter emergency contact phone"
               />
-              {errors['emergencyContact.phone'] && <p className="mt-1 text-sm text-red-600">{errors['emergencyContact.phone']}</p>}
+              {errors['emergencyContact.phone'] && <p className="mt-1 text-xs sm:text-sm text-red-600">{errors['emergencyContact.phone']}</p>}
             </div>
 
             <div>
@@ -595,13 +591,13 @@ const PatientForm = () => {
         </div>
 
         {/* Medical Information */}
-        <div className="card mt-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-            <CrossIcon className="mr-2 text-blue-500" />
-            Medical Information
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6">
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6 flex items-center">
+            <Cross className="mr-2 text-blue-500 w-5 h-5 flex-shrink-0" />
+            <span className="truncate">Medical Information</span>
           </h2>
           
-          <div className="grid grid-cols-1 gap-6">
+          <div className="grid grid-cols-1 gap-4 sm:gap-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Medical History
@@ -611,7 +607,7 @@ const PatientForm = () => {
                 value={formData.medicalHistory || ''}
                 onChange={handleChange}
                 rows="3"
-                className="input-field"
+                className="input-field text-sm"
                 placeholder="Enter medical history (conditions, surgeries, etc.)"
               />
             </div>
@@ -625,7 +621,7 @@ const PatientForm = () => {
                 value={formData.allergies || ''}
                 onChange={handleChange}
                 rows="3"
-                className="input-field"
+                className="input-field text-sm"
                 placeholder="Enter allergies (medications, foods, environmental, etc.)"
               />
             </div>
@@ -639,7 +635,7 @@ const PatientForm = () => {
                 value={formData.currentMedications || ''}
                 onChange={handleChange}
                 rows="3"
-                className="input-field"
+                className="input-field text-sm"
                 placeholder="Enter current medications and dosages"
               />
             </div>
@@ -647,13 +643,13 @@ const PatientForm = () => {
         </div>
 
         {/* Insurance Information */}
-        <div className="card mt-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-            <ShieldCheck className="mr-2 text-blue-500" />
-            Insurance Information
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6">
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6 flex items-center">
+            <ShieldCheck className="mr-2 text-blue-500 w-5 h-5 flex-shrink-0" />
+            <span className="truncate">Insurance Information</span>
           </h2>
           
-          <div className="mb-6 flex items-center">
+          <div className="mb-4 sm:mb-6 flex items-center">
             <input
               type="checkbox"
               id="hasInsurance"
@@ -668,7 +664,7 @@ const PatientForm = () => {
           </div>
 
           {formData.hasInsurance && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Insurance Provider *
@@ -684,7 +680,7 @@ const PatientForm = () => {
                     <option key={provider} value={provider}>{provider}</option>
                   ))}
                 </select>
-                {errors['insurance.provider'] && <p className="mt-1 text-sm text-red-600">{errors['insurance.provider']}</p>}
+                {errors['insurance.provider'] && <p className="mt-1 text-xs sm:text-sm text-red-600">{errors['insurance.provider']}</p>}
               </div>
 
               <div>
@@ -699,24 +695,25 @@ const PatientForm = () => {
                   className={`input-field ${errors['insurance.membershipNumber'] ? 'border-red-500' : ''}`}
                   placeholder="Enter membership number"
                 />
-                {errors['insurance.membershipNumber'] && <p className="mt-1 text-sm text-red-600">{errors['insurance.membershipNumber']}</p>}
+                {errors['insurance.membershipNumber'] && <p className="mt-1 text-xs sm:text-sm text-red-600">{errors['insurance.membershipNumber']}</p>}
               </div>
             </div>
           )}
         </div>
 
-        <div className="mt-6 flex justify-end space-x-4">
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row justify-end gap-3 sm:gap-4 sticky bottom-0 bg-white p-4 sm:p-0 -mx-4 sm:mx-0 border-t sm:border-t-0 border-gray-200">
           <button
             type="button"
             onClick={() => navigate('/patients/search')}
-            className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors"
+            className="w-full sm:w-auto px-4 py-2.5 sm:py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors text-sm sm:text-base font-medium"
             disabled={isSubmitting}
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="btn-primary flex items-center"
+            className="w-full sm:w-auto btn-primary flex items-center justify-center text-sm sm:text-base"
             disabled={isSubmitting}
           >
             {isSubmitting ? (
