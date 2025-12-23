@@ -52,7 +52,7 @@ function SignInDropdown() {
       {isOpen && (
         <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-100 overflow-hidden z-50">
           <div className="py-2">
-            
+            <a
               href="/login"
               className="flex items-center px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200 group"
               onClick={() => setIsOpen(false)}
@@ -69,7 +69,7 @@ function SignInDropdown() {
 
             <div className="border-t border-gray-100 my-1"></div>
 
-            
+            <a
               href="https://fufumo-pharmacy.com/"
               className="flex items-center px-4 py-3 text-gray-700 hover:bg-teal-50 hover:text-teal-600 transition-colors duration-200 group"
               onClick={() => setIsOpen(false)}
@@ -241,7 +241,7 @@ export default function ServicesPage() {
               >
                 About Us
               </NavLink>
-              
+              <a
                 href="#contact"
                 className="hover:text-blue-600 transition-colors duration-200"
               >
@@ -302,7 +302,7 @@ export default function ServicesPage() {
                 About Us
               </NavLink>
 
-              
+              <a
                 href="#contact"
                 onClick={() => setMobileMenuOpen(false)}
                 className="block w-full text-left px-4 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors"
@@ -417,14 +417,14 @@ export default function ServicesPage() {
               Our team is ready to provide you with the best healthcare services. Contact us today!
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
-              
+              <a
                 href="tel:+255762948291"
                 className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-white text-blue-600 rounded-lg hover:bg-gray-200 transition-all duration-300 shadow-lg font-semibold text-sm sm:text-base"
               >
                 <Phone className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                 Call Now
               </a>
-              
+              <a
                 href="/patient-login"
                 className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-blue-700 text-white border-2 border-white rounded-lg hover:bg-blue-800 transition-all duration-300 font-semibold text-sm sm:text-base"
               >
