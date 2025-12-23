@@ -197,7 +197,7 @@ export default function Home() {
                 style={{ backgroundImage: "url('/SMC Logo.png')" }}
               />
               <span className="text-sm sm:text-lg md:text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
-                SEGESE MEDICAL
+                SEGESE MEDICAL CLINIC
               </span>
             </div>
             
