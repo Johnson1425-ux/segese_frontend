@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { Plus, Edit, Trash2, Download, Upload } from 'lucide-react';
+import { Plus, Edit, Trash2, Download, Upload, DollarSign } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import api from '../utils/api.js';
 import serviceService from '../utils/serviceService.js';
@@ -173,20 +173,23 @@ const Services = () => {
   if (isError) return <div>Error loading services.</div>;
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-3xl font-bold text-gray-800">Manage Services</h1>
-        <div className="flex gap-2">
+    <div className="p-4 sm:p-6">
+      {/* Header */}
+      <div className="mb-4 sm:mb-6">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">Manage Services</h1>
+        
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
           <button
             onClick={downloadTemplate}
-            className="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+            className="flex items-center justify-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm sm:text-base"
           >
-            <Download className="h-5 w-5 mr-2" />
+            <Download className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
             Download Template
           </button>
           
-          <label className="flex items-center px-4 py-2 bg-teal-700 text-white rounded-lg hover:bg-teal-800 transition-colors cursor-pointer">
-            <Upload className="h-5 w-5 mr-2" />
+          <label className="flex items-center justify-center px-4 py-2 bg-teal-700 text-white rounded-lg hover:bg-teal-800 transition-colors cursor-pointer text-sm sm:text-base">
+            <Upload className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
             Upload Excel
             <input
               type="file"
@@ -197,8 +200,11 @@ const Services = () => {
             />
           </label>
 
-          <Link to="/services/new" className="btn-primary inline-flex items-center">
-            <Plus className="h-5 w-5 mr-2" />
+          <Link 
+            to="/services/new" 
+            className="btn-primary inline-flex items-center justify-center text-sm sm:text-base"
+          >
+            <Plus className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
             Add New Service
           </Link>
         </div>
@@ -206,53 +212,125 @@ const Services = () => {
 
       {/* Upload Status Messages */}
       {uploading && (
-        <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-md">
-          <p className="text-blue-800">Uploading services...</p>
+        <div className="mb-4 p-3 sm:p-4 bg-blue-50 border border-blue-200 rounded-md">
+          <p className="text-blue-800 text-sm sm:text-base">Uploading services...</p>
         </div>
       )}
 
       {uploadSuccess && (
-        <div className="mb-4 p-4 bg-green-50 border border-green-200 rounded-md">
-          <p className="text-green-800">{uploadSuccess}</p>
+        <div className="mb-4 p-3 sm:p-4 bg-green-50 border border-green-200 rounded-md">
+          <p className="text-green-800 text-sm sm:text-base">{uploadSuccess}</p>
         </div>
       )}
 
       {uploadError && (
-        <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-md">
-          <p className="text-red-800 font-medium">Error:</p>
-          <p className="text-red-700 whitespace-pre-line text-sm mt-1">{uploadError}</p>
+        <div className="mb-4 p-3 sm:p-4 bg-red-50 border border-red-200 rounded-md">
+          <p className="text-red-800 font-medium text-sm sm:text-base">Error:</p>
+          <p className="text-red-700 whitespace-pre-line text-xs sm:text-sm mt-1">{uploadError}</p>
         </div>
       )}
 
-      <div className="bg-white shadow-md rounded-lg overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Price (TZS)</th>
-              <th className="relative px-6 py-3"><span className="sr-only">Actions</span></th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {services?.map((service) => (
-              <tr key={service._id}>
-                <td className="px-6 py-4 whitespace-nowrap">{service.name}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{service.category}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-right">{service.price.toLocaleString()}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <Link to={`/services/edit/${service._id}`} className="text-indigo-600 hover:text-indigo-900">
-                    <Edit className="inline h-5 w-5" />
-                  </Link>
-                  <button onClick={() => handleDeleteClick(service)} className="text-red-600 hover:text-red-900">
-                    <Trash2 className="h-5 w-5" />
-                  </button>
-                </td>
+      {/* Desktop Table View */}
+      <div className="hidden md:block bg-white shadow-md rounded-lg overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
+                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Price (TZS)</th>
+                <th className="relative px-6 py-3"><span className="sr-only">Actions</span></th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {services?.map((service) => (
+                <tr key={service._id}>
+                  <td className="px-6 py-4 whitespace-nowrap">{service.name}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{service.category}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-right">{service.price.toLocaleString()}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <div className="flex justify-end gap-2">
+                      <Link 
+                        to={`/services/edit/${service._id}`} 
+                        className="text-indigo-600 hover:text-indigo-900"
+                      >
+                        <Edit className="h-5 w-5" />
+                      </Link>
+                      <button 
+                        onClick={() => handleDeleteClick(service)} 
+                        className="text-red-600 hover:text-red-900"
+                      >
+                        <Trash2 className="h-5 w-5" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
+
+      {/* Mobile Card View */}
+      <div className="md:hidden space-y-4">
+        {services?.map((service) => (
+          <div 
+            key={service._id} 
+            className="bg-white shadow-md rounded-lg p-4 border border-gray-200"
+          >
+            {/* Service Header */}
+            <div className="flex items-start justify-between mb-3">
+              <div className="flex-1 min-w-0">
+                <h3 className="text-base font-semibold text-gray-900 truncate">
+                  {service.name}
+                </h3>
+                <p className="text-sm text-gray-500 mt-1">{service.category}</p>
+              </div>
+            </div>
+
+            {/* Price */}
+            <div className="flex items-center mb-3 pb-3 border-b border-gray-200">
+              <DollarSign className="w-5 h-5 text-green-600 mr-2 flex-shrink-0" />
+              <span className="text-lg font-bold text-gray-900">
+                {service.price.toLocaleString()} TZS
+              </span>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex gap-2">
+              <Link 
+                to={`/services/edit/${service._id}`}
+                className="flex-1 flex items-center justify-center px-4 py-2 bg-indigo-50 text-indigo-700 rounded-lg hover:bg-indigo-100 transition-colors text-sm font-medium"
+              >
+                <Edit className="w-4 h-4 mr-2" />
+                Edit
+              </Link>
+              <button 
+                onClick={() => handleDeleteClick(service)}
+                className="flex-1 flex items-center justify-center px-4 py-2 bg-red-50 text-red-700 rounded-lg hover:bg-red-100 transition-colors text-sm font-medium"
+              >
+                <Trash2 className="w-4 h-4 mr-2" />
+                Delete
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Empty State */}
+      {services?.length === 0 && (
+        <div className="text-center py-12 bg-white rounded-lg shadow-md">
+          <DollarSign className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+          <p className="text-gray-500">No services found</p>
+          <Link 
+            to="/services/new"
+            className="inline-flex items-center mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Add Your First Service
+          </Link>
+        </div>
+      )}
 
       <ConfirmationDialog 
         isOpen={dialogOpen}
