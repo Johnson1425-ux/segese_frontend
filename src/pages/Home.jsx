@@ -432,14 +432,14 @@ export default function Home() {
             Our team is ready to help you 24/7. Book an appointment or visit us today.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
-            
+            <a
               href="tel:+255762948291"
               className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-white text-blue-600 rounded-lg hover:bg-gray-200 transition-all duration-300 shadow-lg font-semibold text-sm sm:text-base"
             >
               <Phone className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
               Call Now
             </a>
-            
+            <a
               href="/patient-login"
               className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-blue-700 text-white border-2 border-white rounded-lg hover:bg-blue-800 transition-all duration-300 font-semibold text-sm sm:text-base"
             >
