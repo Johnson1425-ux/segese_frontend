@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Menu } from 'lucide-react';
+import { Menu } from 'lucide-react'; // Make sure this import is here
 import { useAuth } from '../../context/AuthContext.jsx';
 import Sidebar from '../Sidebar.jsx';
 
@@ -22,8 +22,8 @@ const Layout = ({ children }) => {
       />
       
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Mobile Header */}
-        <header className="lg:hidden bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-3 flex items-center justify-between shadow-sm">
+        {/* Mobile Header - This should be visible on small screens */}
+        <header className="lg:hidden bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-3 flex items-center justify-between shadow-sm z-30">
           <button
             onClick={() => setMobileMenuOpen(true)}
             className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
@@ -32,7 +32,7 @@ const Layout = ({ children }) => {
             <Menu className="w-6 h-6 text-gray-600 dark:text-gray-300" />
           </button>
           <h1 className="text-lg font-semibold text-gray-900 dark:text-white">Segese Medical</h1>
-          <div className="w-10"></div> {/* Spacer for centering */}
+          <div className="w-10"></div>
         </header>
 
         {/* Main Content */}
