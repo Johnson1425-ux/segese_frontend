@@ -74,7 +74,7 @@ const PatientForm = () => {
         firstName: patientData.firstName || '',
         middleName: patientData.middleName || '',
         lastName: patientData.lastName || '',
-        email: patientData.email || '',
+        email: patientData.email || undefined,
         phone: patientData.phone || '',
         dateOfBirth: patientData.dateOfBirth || '',
         gender: patientData.gender || '',
@@ -183,45 +183,57 @@ const PatientForm = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
+  
+  if (!validateForm()) {
+    toast.error('Please fix the errors below');
+    return;
+  }
+
+  setIsSubmitting(true);
+  
+  try {
+    // Prepare submit data
+    const submitData = { ...formData };
     
-    if (!validateForm()) {
-      toast.error('Please fix the errors below');
-      return;
+    // If patient doesn't have insurance, clear insurance data
+    if (!submitData.hasInsurance) {
+      submitData.insurance = {
+        provider: '',
+        membershipNumber: '',
+      };
     }
 
-    setIsSubmitting(true);
-    
-    try {
-      // If patient doesn't have insurance, clear insurance data
-      const submitData = { ...formData };
-      if (!submitData.hasInsurance) {
-        submitData.insurance = {
-          provider: '',
-          membershipNumber: '',
-        };
-      }
-
-      if (isEditing) {
-        await patientService.updatePatient(id, submitData);
-        toast.success('Patient updated successfully');
-      } else {
-        await patientService.createPatient(submitData);
-        toast.success('Patient created successfully');
-      }
-      navigate('/patients/search');
-    } catch (error) {
-      const message = error.response?.data?.message || 
-        (isEditing ? 'Failed to update patient' : 'Failed to create patient');
-      toast.error(message);
-      
-      if (error.response?.data?.errors) {
-        setErrors(error.response.data.errors);
-      }
-    } finally {
-      setIsSubmitting(false);
+    // ✅ ADD THIS: Remove email field if it's empty
+    if (!submitData.email || submitData.email.trim() === '') {
+      delete submitData.email;
     }
-  };
+
+    // ✅ ADD THIS: Remove phone field if it's empty
+    if (!submitData.phone || submitData.phone.trim() === '') {
+      delete submitData.phone;
+    }
+
+    if (isEditing) {
+      await patientService.updatePatient(id, submitData);
+      toast.success('Patient updated successfully');
+    } else {
+      await patientService.createPatient(submitData);
+      toast.success('Patient created successfully');
+    }
+    navigate('/patients/search');
+  } catch (error) {
+    const message = error.response?.data?.message || 
+      (isEditing ? 'Failed to update patient' : 'Failed to create patient');
+    toast.error(message);
+    
+    if (error.response?.data?.errors) {
+      setErrors(error.response.data.errors);
+    }
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -345,7 +357,7 @@ const PatientForm = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Email Address *
+                Email Address
               </label>
               <input
                 type="email"
@@ -360,7 +372,7 @@ const PatientForm = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Phone Number *
+                Phone Number
               </label>
               <input
                 type="tel"
