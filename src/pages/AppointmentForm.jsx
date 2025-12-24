@@ -188,44 +188,44 @@ const AppointmentForm = () => {
   if (isLoading) return <LoadingSpinner />;
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">
+    <div className="max-w-4xl mx-auto p-4 md:p-6 bg-white rounded-lg shadow-md">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 md:mb-6 gap-3">
+        <h1 className="text-xl md:text-2xl font-bold text-gray-800">
           {isEditing ? 'Edit Appointment' : 'Book New Appointment'}
         </h1>
         <button
           onClick={() => navigate('/appointments')}
-          className="btn-secondary flex items-center"
+          className="btn-secondary flex items-center text-sm md:text-base w-full sm:w-auto justify-center"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back
         </button>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
           {/* Patient Search */}
-          <div ref={patientSearchRef}>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+          <div ref={patientSearchRef} className="relative">
+            <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1 md:mb-2">
               Patient *
             </label>
             <div className="relative">
-              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 md:w-5 md:h-5 text-gray-400" />
               <input
                 type="text"
                 value={patientSearchTerm}
                 onChange={handlePatientSearchChange}
                 onFocus={() => setShowPatientDropdown(true)}
                 placeholder="Search for a patient..."
-                className="input-field pl-10"
+                className="input-field pl-9 md:pl-10 text-sm md:text-base h-10 md:h-auto"
               />
               {showPatientDropdown && patientSearchResults.length > 0 && (
-                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto">
+                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-48 md:max-h-60 overflow-y-auto">
                   {patientSearchResults.map(patient => (
                     <div
                       key={patient._id}
                       onClick={() => handlePatientSelect(patient)}
-                      className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                      className="px-3 md:px-4 py-2 md:py-2.5 hover:bg-gray-100 cursor-pointer text-sm md:text-base active:bg-gray-200"
                     >
                       {patient.firstName} {patient.lastName}
                     </div>
@@ -236,29 +236,34 @@ const AppointmentForm = () => {
           </div>
 
           {/* Doctor Search */}
-          <div ref={doctorSearchRef}>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+          <div ref={doctorSearchRef} className="relative">
+            <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1 md:mb-2">
               Doctor *
             </label>
             <div className="relative">
-              <Stethoscope className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Stethoscope className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 md:w-5 md:h-5 text-gray-400" />
               <input
                 type="text"
                 value={doctorSearchTerm}
                 onChange={handleDoctorSearchChange}
                 onFocus={() => setShowDoctorDropdown(true)}
                 placeholder="Search for a doctor..."
-                className="input-field pl-10"
+                className="input-field pl-9 md:pl-10 text-sm md:text-base h-10 md:h-auto"
               />
               {showDoctorDropdown && doctorSearchResults.length > 0 && (
-                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto">
+                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-48 md:max-h-60 overflow-y-auto">
                   {doctorSearchResults.map(doctor => (
                     <div
                       key={doctor._id}
                       onClick={() => handleDoctorSelect(doctor)}
-                      className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                      className="px-3 md:px-4 py-2 md:py-2.5 hover:bg-gray-100 cursor-pointer active:bg-gray-200"
                     >
-                      Dr. {doctor.firstName} {doctor.lastName} ({doctor.specialization})
+                      <div className="text-sm md:text-base font-medium">
+                        Dr. {doctor.firstName} {doctor.lastName}
+                      </div>
+                      <div className="text-xs md:text-sm text-gray-500 truncate">
+                        {doctor.specialization}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -266,9 +271,9 @@ const AppointmentForm = () => {
             </div>
           </div>
 
-          {/* Other form fields remain the same */}
+          {/* Appointment Date */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1 md:mb-2">
               Appointment Date *
             </label>
             <input
@@ -276,12 +281,13 @@ const AppointmentForm = () => {
               name="date"
               value={formData.date}
               onChange={handleChange}
-              className="input-field"
+              className="input-field text-sm md:text-base h-10 md:h-auto"
             />
           </div>
 
+          {/* Appointment Time */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1 md:mb-2">
               Appointment Time *
             </label>
             <input
@@ -289,19 +295,20 @@ const AppointmentForm = () => {
               name="time"
               value={formData.time}
               onChange={handleChange}
-              className="input-field"
+              className="input-field text-sm md:text-base h-10 md:h-auto"
             />
           </div>
 
+          {/* Appointment Type */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1 md:mb-2">
               Appointment Type *
             </label>
             <select
               name="type"
               value={formData.type}
               onChange={handleChange}
-              className="input-field"
+              className="input-field text-sm md:text-base h-10 md:h-auto"
             >
               <option value="">Select Type</option>
               {/* Values are now lowercase to match the schema */}
@@ -313,15 +320,16 @@ const AppointmentForm = () => {
             </select>
           </div>
 
+          {/* Duration */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1 md:mb-2">
               Duration *
             </label>
             <select
               name="duration"
               value={formData.duration}
               onChange={handleChange}
-              className="input-field"
+              className="input-field text-sm md:text-base h-10 md:h-auto"
             >
               <option value="15 minutes">15 minutes</option>
               <option value="30 minutes">30 minutes</option>
@@ -331,25 +339,27 @@ const AppointmentForm = () => {
           </div>
         </div>
 
-        <div className="mt-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Notes *
-            </label>
-            <textarea
-              name="notes"
-              value={formData.notes}
-              onChange={handleChange}
-              rows="4"
-              className="input-field"
-              placeholder="Enter appointment notes, symptoms, or special instructions..."
-            />
-          </div>
+        {/* Notes */}
+        <div className="mt-4 md:mt-6">
+          <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1 md:mb-2">
+            Notes *
+          </label>
+          <textarea
+            name="notes"
+            value={formData.notes}
+            onChange={handleChange}
+            rows="3"
+            className="input-field text-sm md:text-base min-h-[80px] md:min-h-[100px]"
+            placeholder="Enter appointment notes, symptoms, or special instructions..."
+          />
+        </div>
 
-        <div className="mt-6 flex justify-end space-x-4">
+        {/* Action Buttons */}
+        <div className="mt-4 md:mt-6 flex flex-col-reverse sm:flex-row justify-end gap-3 sm:gap-4">
           <button
             type="button"
             onClick={() => navigate('/appointments')}
-            className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors"
+            className="px-4 py-2 md:py-2.5 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors text-sm md:text-base w-full sm:w-auto"
             disabled={isSubmitting}
           >
             Cancel
@@ -357,7 +367,7 @@ const AppointmentForm = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="btn-primary flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
+            className="btn-primary flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base px-4 py-2 md:py-2.5 w-full sm:w-auto"
           >
             {isSubmitting ? (
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
