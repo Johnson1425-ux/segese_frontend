@@ -57,10 +57,10 @@ const Appointments = () => {
   // Handle permission check
   if (!isAuthenticated) {
     return (
-      <div className="p-6">
+      <div className="p-4 md:p-6">
         <div className="bg-yellow-50 border border-yellow-200 rounded-md p-4">
-          <h3 className="text-lg font-medium text-yellow-800">Authentication Required</h3>
-          <p className="text-yellow-700">Please log in to view appointments.</p>
+          <h3 className="text-base md:text-lg font-medium text-yellow-800">Authentication Required</h3>
+          <p className="text-sm md:text-base text-yellow-700">Please log in to view appointments.</p>
         </div>
       </div>
     );
@@ -72,17 +72,17 @@ const Appointments = () => {
   
   if (isError) {
     return (
-      <div className="p-6">
+      <div className="p-4 md:p-6">
         <div className="bg-red-50 border border-red-200 rounded-md p-4">
-          <h3 className="text-lg font-medium text-red-800">Error Loading Appointments</h3>
-          <p className="text-red-700">{error?.response?.data?.message || error?.message || 'Unknown error occurred'}</p>
-          <p className="text-sm text-red-600 mt-2">Status: {error?.response?.status}</p>
+          <h3 className="text-base md:text-lg font-medium text-red-800">Error Loading Appointments</h3>
+          <p className="text-sm md:text-base text-red-700">{error?.response?.data?.message || error?.message || 'Unknown error occurred'}</p>
+          <p className="text-xs md:text-sm text-red-600 mt-2">Status: {error?.response?.status}</p>
           
           <button
             onClick={() => {
               queryClient.invalidateQueries('appointments');
             }}
-            className="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+            className="mt-4 px-3 py-1.5 md:px-4 md:py-2 bg-red-600 text-white text-sm rounded hover:bg-red-700"
           >
             Retry
           </button>
@@ -92,21 +92,22 @@ const Appointments = () => {
   }
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-800">Appointments</h1>
+    <div className="p-4 md:p-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 md:mb-6 gap-3">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Appointments</h1>
         {canManage && (
           <Link
             to="/appointments/new"
-            className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            className="inline-flex items-center px-3 py-2 md:px-4 md:py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 w-full sm:w-auto justify-center"
           >
-            <Plus className="h-5 w-5 mr-2" />
+            <Plus className="h-4 w-4 md:h-5 md:w-5 mr-2" />
             Add New Appointment
           </Link>
         )}
       </div>
 
-      <div className="bg-white shadow-md rounded-lg overflow-hidden">
+      {/* Desktop Table View - Hidden on Mobile */}
+      <div className="hidden md:block bg-white shadow-md rounded-lg overflow-hidden">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
@@ -168,6 +169,83 @@ const Appointments = () => {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* Mobile Card View - Visible only on Mobile */}
+      <div className="md:hidden space-y-3">
+        {appointments && appointments.length > 0 ? (
+          appointments.map((appointment) => (
+            <div key={appointment._id} className="bg-white shadow-md rounded-lg p-4 border border-gray-200">
+              {/* Header with Status and Actions */}
+              <div className="flex justify-between items-start mb-3">
+                <span className={`px-2 py-1 inline-flex text-xs leading-4 font-semibold rounded-full ${
+                  appointment.status === 'Scheduled' ? 'bg-blue-100 text-blue-800' :
+                  appointment.status === 'Completed' ? 'bg-green-100 text-green-800' :
+                  'bg-red-100 text-red-800'
+                }`}>
+                  {appointment.status}
+                </span>
+                {canManage && (
+                  <div className="flex gap-2">
+                    <Link 
+                      to={`/appointments/edit/${appointment._id}`} 
+                      className="text-indigo-600 hover:text-indigo-900"
+                    >
+                      <Edit className="h-4 w-4" />
+                    </Link>
+                    <button 
+                      onClick={() => handleDeleteClick(appointment)} 
+                      className="text-red-600 hover:text-red-900"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* Patient & Doctor Info */}
+              <div className="space-y-2">
+                <div>
+                  <span className="text-xs font-medium text-gray-500 uppercase">Patient</span>
+                  <p className="text-sm text-gray-900 font-medium truncate">
+                    {appointment.patient?.firstName} {appointment.patient?.lastName}
+                  </p>
+                </div>
+                
+                <div>
+                  <span className="text-xs font-medium text-gray-500 uppercase">Doctor</span>
+                  <p className="text-sm text-gray-900 truncate">
+                    {appointment.doctor?.firstName} {appointment.doctor?.lastName}
+                  </p>
+                </div>
+                
+                <div>
+                  <span className="text-xs font-medium text-gray-500 uppercase">Date & Time</span>
+                  <p className="text-sm text-gray-900">
+                    {new Date(appointment.date).toLocaleString('en-US', { 
+                      month: 'short', 
+                      day: 'numeric', 
+                      year: 'numeric',
+                      hour: 'numeric',
+                      minute: '2-digit'
+                    })}
+                  </p>
+                </div>
+                
+                <div>
+                  <span className="text-xs font-medium text-gray-500 uppercase">Reason</span>
+                  <p className="text-sm text-gray-900 truncate">
+                    {appointment.reason}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="bg-white shadow-md rounded-lg p-6 text-center">
+            <p className="text-gray-500 text-sm">No appointments found</p>
+          </div>
+        )}
       </div>
       
       <ConfirmationDialog
