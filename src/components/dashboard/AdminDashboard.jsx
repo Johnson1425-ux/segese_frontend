@@ -105,7 +105,7 @@ const AdminDashboard = () => {
   return (
     <div className="space-y-4 md:space-y-6">
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
         <StatCard
           title="Total Patients"
           value={stats.totalPatients ?? 0}
