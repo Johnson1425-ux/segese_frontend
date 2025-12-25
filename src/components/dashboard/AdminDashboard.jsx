@@ -6,50 +6,61 @@ import { User, Bed, Stethoscope, FileText, DollarSign, AlertCircle } from 'lucid
 
 const colorMap = {
   blue: {
-    border: 'border-blue-500',
-    bg: 'bg-blue-100',
-    text: 'text-blue-600'
+    iconBg: 'bg-blue-100',
+    iconText: 'text-blue-600',
+    valueBg: 'bg-white',
+    valueText: 'text-gray-900'
   },
   green: {
-    border: 'border-green-500',
-    bg: 'bg-green-100',
-    text: 'text-green-600'
+    iconBg: 'bg-green-100',
+    iconText: 'text-green-600',
+    valueBg: 'bg-white',
+    valueText: 'text-green-600'
   },
   purple: {
-    border: 'border-purple-500',
-    bg: 'bg-purple-100',
-    text: 'text-purple-600'
+    iconBg: 'bg-purple-100',
+    iconText: 'text-purple-600',
+    valueBg: 'bg-white',
+    valueText: 'text-gray-900'
   },
   orange: {
-    border: 'border-orange-500',
-    bg: 'bg-orange-100',
-    text: 'text-orange-600'
+    iconBg: 'bg-orange-100',
+    iconText: 'text-orange-600',
+    valueBg: 'bg-white',
+    valueText: 'text-orange-600'
   },
   emerald: {
-    border: 'border-emerald-500',
-    bg: 'bg-emerald-100',
-    text: 'text-emerald-600'
+    iconBg: 'bg-emerald-100',
+    iconText: 'text-emerald-600',
+    valueBg: 'bg-white',
+    valueText: 'text-gray-900'
   },
   red: {
-    border: 'border-red-500',
-    bg: 'bg-red-100',
-    text: 'text-red-600'
+    iconBg: 'bg-red-100',
+    iconText: 'text-red-600',
+    valueBg: 'bg-white',
+    valueText: 'text-red-600'
   }
 };
 
-const StatCard = ({ title, value, icon: Icon, color = 'blue' }) => {
+const StatCard = ({ title, value, subtitle, icon: Icon, color = 'blue' }) => {
   const colors = colorMap[color] || colorMap.blue;
 
   return (
-    <div className={`bg-white rounded-lg shadow p-4 md:p-6 border-l-4 ${colors.border}`}>
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-gray-600 text-xs md:text-sm font-medium">{title}</p>
-          <p className="text-2xl md:text-3xl font-bold text-gray-900 mt-1 md:mt-2">{value}</p>
+    <div className="bg-white rounded-2xl shadow-sm p-5 md:p-6 border border-gray-100">
+      <div className="flex items-start justify-between mb-4">
+        <h3 className="text-gray-600 text-sm md:text-base font-medium">{title}</h3>
+        <div className={`${colors.iconBg} rounded-full p-2 md:p-2.5`}>
+          <Icon className={`w-5 h-5 md:w-6 md:h-6 ${colors.iconText}`} />
         </div>
-        <div className={`${colors.bg} ${colors.text} rounded-full p-2 md:p-3`}>
-          <Icon className="w-5 h-5 md:w-6 md:h-6" />
-        </div>
+      </div>
+      <div className="space-y-2">
+        <p className={`text-2xl md:text-3xl lg:text-4xl font-bold ${colors.valueText}`}>
+          {value}
+        </p>
+        {subtitle && (
+          <p className="text-gray-500 text-xs md:text-sm">{subtitle}</p>
+        )}
       </div>
     </div>
   );
@@ -104,48 +115,54 @@ const AdminDashboard = () => {
 
   return (
     <div className="space-y-4 md:space-y-6">
-      {/* Stats Grid */}
+      {/* Stats Grid - 2 columns on mobile, 4 on desktop */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
         <StatCard
           title="Total Patients"
           value={stats.totalPatients ?? 0}
+          subtitle={`${stats.totalPatients ?? 0} registered`}
           icon={User}
           color="blue"
         />
         <StatCard
           title="Active Visits"
           value={stats.activeVisits ?? 0}
+          subtitle={`${stats.activeVisits ?? 0} ongoing`}
           icon={Bed}
           color="green"
         />
         <StatCard
           title="Available Doctors"
           value={stats.totalDoctors ?? 0}
+          subtitle={`${stats.totalDoctors ?? 0} on duty`}
           icon={Stethoscope}
           color="purple"
         />
         <StatCard
           title="Appointments Today"
           value={stats.appointmentsToday ?? 0}
+          subtitle={`${stats.appointmentsToday ?? 0} scheduled`}
           icon={FileText}
           color="orange"
         />
         <StatCard
           title="Total Revenue"
           value={`TSh ${stats.totalRevenue ? stats.totalRevenue.toLocaleString() : 0}`}
+          subtitle={`${stats.totalInvoices ?? 0} invoices`}
           icon={DollarSign}
           color="emerald"
         />
         <StatCard
           title="Pending Bills"
           value={stats.pendingBills ?? 0}
+          subtitle="Pending collection"
           icon={AlertCircle}
           color="red"
         />
       </div>
 
       {/* Recent Activity */}
-      <div className="bg-white rounded-lg shadow p-4 md:p-6">
+      <div className="bg-white rounded-2xl shadow-sm p-4 md:p-6 border border-gray-100">
         <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-3 md:mb-4">Recent Activity</h2>
         <div className="divide-y divide-gray-200">
           {activities.length > 0 ? (
