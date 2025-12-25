@@ -41,14 +41,14 @@ const StatCard = ({ title, value, icon: Icon, color = 'blue' }) => {
   const colors = colorMap[color] || colorMap.blue;
 
   return (
-    <div className={`bg-white rounded-lg shadow p-6 border-l-4 ${colors.border}`}>
+    <div className={`bg-white rounded-lg shadow p-4 md:p-6 border-l-4 ${colors.border}`}>
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-gray-600 text-sm font-medium">{title}</p>
-          <p className="text-3xl font-bold text-gray-900 mt-2">{value}</p>
+          <p className="text-gray-600 text-xs md:text-sm font-medium">{title}</p>
+          <p className="text-2xl md:text-3xl font-bold text-gray-900 mt-1 md:mt-2">{value}</p>
         </div>
-        <div className={`${colors.bg} ${colors.text} rounded-full p-3`}>
-          <Icon className="w-6 h-6" />
+        <div className={`${colors.bg} ${colors.text} rounded-full p-2 md:p-3`}>
+          <Icon className="w-5 h-5 md:w-6 md:h-6" />
         </div>
       </div>
     </div>
@@ -56,10 +56,10 @@ const StatCard = ({ title, value, icon: Icon, color = 'blue' }) => {
 };
 
 const ActivityItem = ({ activity }) => (
-  <div className="py-4 border-b border-gray-200 last:border-b-0">
+  <div className="py-3 md:py-4 border-b border-gray-200 last:border-b-0">
     <div className="flex items-start">
       <div
-        className={`w-2 h-2 rounded-full mt-2 mr-3 ${
+        className={`w-2 h-2 rounded-full mt-2 mr-2 md:mr-3 flex-shrink-0 ${
           activity.type === 'admission'
             ? 'bg-green-500'
             : activity.type === 'discharge'
@@ -67,9 +67,9 @@ const ActivityItem = ({ activity }) => (
             : 'bg-yellow-500'
         }`}
       ></div>
-      <div className="flex-1">
-        <p className="font-medium text-gray-900">{activity.description}</p>
-        <p className="text-sm text-gray-500">
+      <div className="flex-1 min-w-0">
+        <p className="font-medium text-gray-900 text-sm md:text-base">{activity.description}</p>
+        <p className="text-xs md:text-sm text-gray-500">
           {new Date(activity.timestamp).toLocaleTimeString()}
         </p>
       </div>
@@ -91,8 +91,8 @@ const AdminDashboard = () => {
 
   if (statsError || activityError) {
     return (
-      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-        <p className="text-red-700">
+      <div className="bg-red-50 border border-red-200 rounded-lg p-3 md:p-4">
+        <p className="text-red-700 text-sm md:text-base">
           Error loading dashboard: {statsError?.message || activityError?.message}
         </p>
       </div>
@@ -103,9 +103,9 @@ const AdminDashboard = () => {
   const activities = activityData?.data.data || [];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6">
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
         <StatCard
           title="Total Patients"
           value={stats.totalPatients ?? 0}
@@ -145,15 +145,15 @@ const AdminDashboard = () => {
       </div>
 
       {/* Recent Activity */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-xl font-bold text-gray-900 mb-4">Recent Activity</h2>
+      <div className="bg-white rounded-lg shadow p-4 md:p-6">
+        <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-3 md:mb-4">Recent Activity</h2>
         <div className="divide-y divide-gray-200">
           {activities.length > 0 ? (
             activities.map((activity) => (
               <ActivityItem key={activity.id} activity={activity} />
             ))
           ) : (
-            <p className="text-gray-500">No recent activity</p>
+            <p className="text-gray-500 text-sm md:text-base">No recent activity</p>
           )}
         </div>
       </div>
