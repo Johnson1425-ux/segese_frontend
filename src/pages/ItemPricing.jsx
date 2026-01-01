@@ -317,31 +317,34 @@ export default function ItemPricing() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-50 p-2 sm:p-4 md:p-6">
       <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 sm:mb-4 md:mb-6 gap-3">
           <div>
-            <h1 className="text-3xl font-bold text-gray-800">Medicine Pricing</h1>
-            <p className="text-gray-600 mt-1">Manage medicine catalog and insurance prices</p>
+            <h1 className="text-lg sm:text-2xl md:text-3xl font-bold text-gray-800">Medicine Pricing</h1>
+            <p className="text-[10px] sm:text-xs md:text-sm text-gray-600 mt-1">Manage medicine catalog and insurance prices</p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2 w-full sm:w-auto">
             <button
               onClick={downloadTemplate}
-              className="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+              className="flex items-center px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-[10px] sm:text-xs md:text-sm"
             >
-              <Download className="w-4 h-4 mr-2" />
-              Download Template
+              <Download className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">Download Template</span>
+              <span className="sm:hidden">Template</span>
             </button>
             <button
               onClick={downloadCurrentData}
-              className="flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+              className="flex items-center px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-[10px] sm:text-xs md:text-sm"
             >
-              <Download className="w-4 h-4 mr-2" />
-              Export Data
+              <Download className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">Export Data</span>
+              <span className="sm:hidden">Export</span>
             </button>
-            <label className="flex items-center px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors cursor-pointer">
-              <Upload className="w-4 h-4 mr-2" />
-              Upload Excel
+            <label className="flex items-center px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors cursor-pointer text-[10px] sm:text-xs md:text-sm">
+              <Upload className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">Upload Excel</span>
+              <span className="sm:hidden">Upload</span>
               <input
                 type="file"
                 accept=".xlsx,.xls"
@@ -351,27 +354,27 @@ export default function ItemPricing() {
             </label>
             <button
               onClick={openAddModal}
-              className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="flex items-center px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-[10px] sm:text-xs md:text-sm"
             >
-              <Plus className="w-4 h-4 mr-2" />
+              <Plus className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
               Add Medicine
             </button>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-md p-6 overflow-x-auto">
+        <div className="bg-white rounded-xl shadow-md p-2 sm:p-4 md:p-6 overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Medicine</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Base Price</th>
+                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase">Medicine</th>
+                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-gray-500 uppercase">Type</th>
+                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-right text-[10px] sm:text-xs font-medium text-gray-500 uppercase">Base Price</th>
                 {CATEGORIES.map((cat) => (
-                  <th key={cat} className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
+                  <th key={cat} className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-right text-[10px] sm:text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
                     {DISPLAY[cat]}
                   </th>
                 ))}
-                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Actions</th>
+                <th className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 text-center text-[10px] sm:text-xs font-medium text-gray-500 uppercase">Actions</th>
               </tr>
             </thead>
 
@@ -380,7 +383,7 @@ export default function ItemPricing() {
                 <tr>
                   <td
                     colSpan={3 + CATEGORIES.length + 1}
-                    className="p-4 text-center text-gray-500"
+                    className="p-4 text-center text-gray-500 text-[10px] sm:text-xs md:text-sm"
                   >
                     No medicines yet. Add your first medicine to get started.
                   </td>
@@ -389,38 +392,42 @@ export default function ItemPricing() {
 
               {medicines.map((item) => (
                 <tr key={item._id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4">
-                    <div className="text-sm font-medium text-gray-900">{item.name}</div>
+                  <td className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4">
+                    <div className="text-[11px] sm:text-xs md:text-sm font-medium text-gray-900 truncate max-w-[120px] sm:max-w-[150px] md:max-w-none">
+                      {item.name}
+                    </div>
                     {item.strength && (
-                      <div className="text-xs text-gray-500">{item.strength}</div>
+                      <div className="text-[9px] sm:text-[10px] md:text-xs text-gray-500 truncate">{item.strength}</div>
                     )}
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-600">{item.type}</td>
-                  <td className="px-6 py-4 text-right text-sm font-medium text-gray-900">
+                  <td className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4 text-[11px] sm:text-xs md:text-sm text-gray-600">{item.type}</td>
+                  <td className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4 text-right text-[11px] sm:text-xs md:text-sm font-medium text-gray-900">
                     {item.sellingPrice?.toLocaleString()}
                   </td>
                   {CATEGORIES.map((cat) => (
-                    <td key={cat} className="px-6 py-4 text-right text-sm text-gray-600">
+                    <td key={cat} className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4 text-right text-[11px] sm:text-xs md:text-sm text-gray-600">
                       {Number.isFinite(item.prices?.[cat])
                         ? item.prices[cat].toLocaleString()
                         : '-'}
                     </td>
                   ))}
-                  <td className="px-6 py-4 text-center">
-                    <button
-                      onClick={() => openEditModal(item)}
-                      className="inline-flex items-center px-3 py-1 bg-blue-600 text-white text-sm rounded-lg mr-2 hover:bg-blue-700"
-                    >
-                      <Edit size={14} className="mr-1" />
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(item._id, item.name)}
-                      className="inline-flex items-center px-3 py-1 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700"
-                    >
-                      <Trash2 size={14} className="mr-1" />
-                      Delete
-                    </button>
+                  <td className="px-2 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4 text-center">
+                    <div className="flex flex-col sm:flex-row gap-1 sm:gap-2 justify-center">
+                      <button
+                        onClick={() => openEditModal(item)}
+                        className="inline-flex items-center justify-center px-2 sm:px-3 py-1 bg-blue-600 text-white text-[10px] sm:text-xs rounded-lg hover:bg-blue-700"
+                      >
+                        <Edit className="w-3 h-3 sm:w-3.5 sm:h-3.5 sm:mr-1" />
+                        <span className="hidden sm:inline">Edit</span>
+                      </button>
+                      <button
+                        onClick={() => handleDelete(item._id, item.name)}
+                        className="inline-flex items-center justify-center px-2 sm:px-3 py-1 bg-red-600 text-white text-[10px] sm:text-xs rounded-lg hover:bg-red-700"
+                      >
+                        <Trash2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 sm:mr-1" />
+                        <span className="hidden sm:inline">Delete</span>
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -430,45 +437,45 @@ export default function ItemPricing() {
 
         {/* Upload Preview Modal */}
         {showUploadModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-            <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-              <h2 className="text-xl font-bold mb-4">Review Import Data</h2>
-              <p className="text-sm text-gray-600 mb-4">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 p-2 sm:p-4">
+            <div className="bg-white rounded-xl shadow-lg p-3 sm:p-4 md:p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+              <h2 className="text-base sm:text-lg md:text-xl font-bold mb-3 sm:mb-4">Review Import Data</h2>
+              <p className="text-[10px] sm:text-xs md:text-sm text-gray-600 mb-3 sm:mb-4">
                 {uploadData.length} items ready to import. Existing medicines will be updated.
               </p>
 
-              <div className="overflow-x-auto mb-4 max-h-96">
-                <table className="min-w-full divide-y divide-gray-200 text-sm">
+              <div className="overflow-x-auto mb-3 sm:mb-4 max-h-80 sm:max-h-96">
+                <table className="min-w-full divide-y divide-gray-200 text-xs sm:text-sm">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500">Medicine</th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500">Type</th>
-                      <th className="px-3 py-2 text-right text-xs font-medium text-gray-500">Base Price</th>
-                      <th className="px-3 py-2 text-right text-xs font-medium text-gray-500">BRITAM</th>
-                      <th className="px-3 py-2 text-right text-xs font-medium text-gray-500">NHIF</th>
+                      <th className="px-2 sm:px-3 py-1.5 sm:py-2 text-left text-[10px] sm:text-xs font-medium text-gray-500">Medicine</th>
+                      <th className="px-2 sm:px-3 py-1.5 sm:py-2 text-left text-[10px] sm:text-xs font-medium text-gray-500">Type</th>
+                      <th className="px-2 sm:px-3 py-1.5 sm:py-2 text-right text-[10px] sm:text-xs font-medium text-gray-500">Base Price</th>
+                      <th className="px-2 sm:px-3 py-1.5 sm:py-2 text-right text-[10px] sm:text-xs font-medium text-gray-500">BRITAM</th>
+                      <th className="px-2 sm:px-3 py-1.5 sm:py-2 text-right text-[10px] sm:text-xs font-medium text-gray-500">NHIF</th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
                     {uploadData.map((item, idx) => (
                       <tr key={idx}>
-                        <td className="px-3 py-2">{item.name}</td>
-                        <td className="px-3 py-2">{item.type}</td>
-                        <td className="px-3 py-2 text-right">{item.sellingPrice}</td>
-                        <td className="px-3 py-2 text-right">{item.prices.BRITAM}</td>
-                        <td className="px-3 py-2 text-right">{item.prices.NHIF}</td>
+                        <td className="px-2 sm:px-3 py-1.5 sm:py-2 text-[11px] sm:text-xs">{item.name}</td>
+                        <td className="px-2 sm:px-3 py-1.5 sm:py-2 text-[11px] sm:text-xs">{item.type}</td>
+                        <td className="px-2 sm:px-3 py-1.5 sm:py-2 text-right text-[11px] sm:text-xs">{item.sellingPrice}</td>
+                        <td className="px-2 sm:px-3 py-1.5 sm:py-2 text-right text-[11px] sm:text-xs">{item.prices.BRITAM}</td>
+                        <td className="px-2 sm:px-3 py-1.5 sm:py-2 text-right text-[11px] sm:text-xs">{item.prices.NHIF}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
 
-              <div className="flex justify-end gap-3">
+              <div className="flex justify-end gap-2 sm:gap-3">
                 <button
                   onClick={() => {
                     setShowUploadModal(false);
                     setUploadData([]);
                   }}
-                  className="px-4 py-2 border rounded-lg hover:bg-gray-50"
+                  className="px-3 sm:px-4 py-1.5 sm:py-2 border rounded-lg hover:bg-gray-50 text-[10px] sm:text-xs md:text-sm"
                   disabled={uploading}
                 >
                   Cancel
@@ -476,7 +483,7 @@ export default function ItemPricing() {
                 <button
                   onClick={handleImport}
                   disabled={uploading}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                  className="px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 text-[10px] sm:text-xs md:text-sm"
                 >
                   {uploading ? 'Importing...' : `Import ${uploadData.length} Items`}
                 </button>
@@ -487,16 +494,16 @@ export default function ItemPricing() {
 
         {/* Add/Edit Modal */}
         {showModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-            <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-              <h2 className="text-xl font-bold mb-4">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 p-2 sm:p-4">
+            <div className="bg-white rounded-xl shadow-lg p-3 sm:p-4 md:p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+              <h2 className="text-base sm:text-lg md:text-xl font-bold mb-3 sm:mb-4">
                 {editId ? "Edit Medicine" : "Add Medicine"}
               </h2>
 
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-3 sm:space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 mb-1">
                       Medicine Name *
                     </label>
                     <input
@@ -504,12 +511,12 @@ export default function ItemPricing() {
                       value={form.name || ""}
                       onChange={handleChange}
                       placeholder="e.g., Paracetamol"
-                      className="w-full border rounded-lg p-2"
+                      className="w-full border rounded-lg p-1.5 sm:p-2 text-[11px] sm:text-xs md:text-sm"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 mb-1">
                       Generic Name
                     </label>
                     <input
@@ -517,19 +524,19 @@ export default function ItemPricing() {
                       value={form.genericName || ""}
                       onChange={handleChange}
                       placeholder="e.g., Acetaminophen"
-                      className="w-full border rounded-lg p-2"
+                      className="w-full border rounded-lg p-1.5 sm:p-2 text-[11px] sm:text-xs md:text-sm"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 mb-1">
                       Type *
                     </label>
                     <select
                       name="type"
                       value={form.type || ""}
                       onChange={handleChange}
-                      className="w-full border rounded-lg p-2"
+                      className="w-full border rounded-lg p-1.5 sm:p-2 text-[11px] sm:text-xs md:text-sm"
                     >
                       <option value="">Select type</option>
                       <option value="Tablet">Tablet</option>
@@ -544,7 +551,7 @@ export default function ItemPricing() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 mb-1">
                       Strength
                     </label>
                     <input
@@ -552,19 +559,19 @@ export default function ItemPricing() {
                       value={form.strength || ""}
                       onChange={handleChange}
                       placeholder="e.g., 500mg"
-                      className="w-full border rounded-lg p-2"
+                      className="w-full border rounded-lg p-1.5 sm:p-2 text-[11px] sm:text-xs md:text-sm"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 mb-1">
                       Category
                     </label>
                     <select
                       name="category"
                       value={form.category || ""}
                       onChange={handleChange}
-                      className="w-full border rounded-lg p-2"
+                      className="w-full border rounded-lg p-1.5 sm:p-2 text-[11px] sm:text-xs md:text-sm"
                     >
                       <option value="">Select category</option>
                       <option value="Antibiotic">Antibiotic</option>
@@ -579,7 +586,7 @@ export default function ItemPricing() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 mb-1">
                       Manufacturer
                     </label>
                     <input
@@ -587,12 +594,12 @@ export default function ItemPricing() {
                       value={form.manufacturer || ""}
                       onChange={handleChange}
                       placeholder="e.g., Pfizer"
-                      className="w-full border rounded-lg p-2"
+                      className="w-full border rounded-lg p-1.5 sm:p-2 text-[11px] sm:text-xs md:text-sm"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 mb-1">
                       Base Selling Price (TZS) *
                     </label>
                     <input
@@ -601,14 +608,14 @@ export default function ItemPricing() {
                       value={form.sellingPrice || ""}
                       onChange={handleChange}
                       placeholder="0"
-                      className="w-full border rounded-lg p-2"
+                      className="w-full border rounded-lg p-1.5 sm:p-2 text-[11px] sm:text-xs md:text-sm"
                       min="0"
                       step="0.01"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 mb-1">
                       Reorder Level
                     </label>
                     <input
@@ -617,18 +624,18 @@ export default function ItemPricing() {
                       value={form.reorderLevel || ""}
                       onChange={handleChange}
                       placeholder="10"
-                      className="w-full border rounded-lg p-2"
+                      className="w-full border rounded-lg p-1.5 sm:p-2 text-[11px] sm:text-xs md:text-sm"
                       min="0"
                     />
                   </div>
                 </div>
 
-                <div className="border-t pt-4 mt-4">
-                  <h3 className="text-lg font-semibold mb-3">Insurance Prices</h3>
-                  <div className="grid grid-cols-2 gap-4">
+                <div className="border-t pt-3 sm:pt-4 mt-3 sm:mt-4">
+                  <h3 className="text-sm sm:text-base md:text-lg font-semibold mb-2 sm:mb-3">Insurance Prices</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     {CATEGORIES.map((cat) => (
                       <div key={cat}>
-                        <label className="block text-sm text-gray-700 mb-1">
+                        <label className="block text-[10px] sm:text-xs md:text-sm text-gray-700 mb-1">
                           {DISPLAY[cat]}
                         </label>
                         <input
@@ -636,7 +643,7 @@ export default function ItemPricing() {
                           value={form.prices?.[cat] || ""}
                           onChange={(e) => handlePriceChange(cat, e.target.value)}
                           placeholder="0"
-                          className="w-full border rounded-lg p-2"
+                          className="w-full border rounded-lg p-1.5 sm:p-2 text-[11px] sm:text-xs md:text-sm"
                           min="0"
                           step="0.01"
                         />
@@ -646,10 +653,10 @@ export default function ItemPricing() {
                 </div>
               </div>
 
-              <div className="mt-6 flex justify-end gap-3">
+              <div className="mt-4 sm:mt-6 flex justify-end gap-2 sm:gap-3">
                 <button
                   onClick={() => setShowModal(false)}
-                  className="px-4 py-2 border rounded-lg hover:bg-gray-50"
+                  className="px-3 sm:px-4 py-1.5 sm:py-2 border rounded-lg hover:bg-gray-50 text-[10px] sm:text-xs md:text-sm"
                   disabled={loading}
                 >
                   Cancel
@@ -657,7 +664,7 @@ export default function ItemPricing() {
                 <button
                   onClick={handleSave}
                   disabled={loading}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                  className="px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 text-[10px] sm:text-xs md:text-sm"
                 >
                   {loading ? 'Saving...' : 'Save'}
                 </button>
