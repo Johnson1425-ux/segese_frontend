@@ -437,7 +437,7 @@ const AppContent = () => {
             </ProtectedRoute>
           } />
           <Route path="/item-pricing" element={
-            <ProtectedRoute requiredRoles={['admin']}>
+            <ProtectedRoute requiredRoles={['admin', 'pharmacist']}>
               <ItemPricing />
             </ProtectedRoute>
           } />
