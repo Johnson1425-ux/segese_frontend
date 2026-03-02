@@ -9,12 +9,12 @@ export default function DispensingBook() {
 
   useEffect(() => {
     const fetchRecords = async () => {
-        try {
-            const res = await api.get('/dispensing');
-            setRecords(res.data.data);
-        } catch (error) {
-            console.error("Failed to fetch dispensing records", error);
-        }
+      try {
+        const res = await api.get('/dispensing');
+        setRecords(res.data.data);
+      } catch (error) {
+        console.error("Failed to fetch dispensing records", error);
+      }
     };
     fetchRecords();
   }, []);

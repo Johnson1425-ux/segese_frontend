@@ -9,6 +9,22 @@ import serviceService from '../utils/serviceService.js';
 import { billingService } from '../utils/billingService.js';
 import LoadingSpinner from '../components/common/LoadingSpinner.jsx';
 
+// Get current Tanzania time for datetime-local input
+const getTanzaniaDateTime = () => {
+  const now = new Date();
+  const tanzaniaTime = new Date(now.toLocaleString('en-US', {
+    timeZone: 'Africa/Dar_es_Salaam'
+  }));
+  
+  const year = tanzaniaTime.getFullYear();
+  const month = String(tanzaniaTime.getMonth() + 1).padStart(2, '0');
+  const day = String(tanzaniaTime.getDate()).padStart(2, '0');
+  const hours = String(tanzaniaTime.getHours()).padStart(2, '0');
+  const minutes = String(tanzaniaTime.getMinutes()).padStart(2, '0');
+  
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
+};
+
 const VisitForm = () => {
     const navigate = useNavigate();
     const { id } = useParams();
@@ -19,7 +35,7 @@ const VisitForm = () => {
     const [formData, setFormData] = useState({
         patientId: '',
         doctorId: '',
-        visitDate: new Date().toISOString().split('T')[0],
+        visitDate: getTanzaniaDateTime(),
         reason: '',
         status: 'Pending Payment',
         type: 'consultation', // Default type to satisfy backend validation
@@ -57,8 +73,7 @@ const VisitForm = () => {
                 // Filter for consultation service only
                 const allServices = servicesRes.data.data || [];
                 const consultation = allServices.find(service => 
-                    service.category.toLowerCase() === 'consultation' || 
-                    service.name.toLowerCase().includes('consultation')
+                    service.name.toLowerCase() === 'consultation fees'
                 );
                 
                 if (consultation) {

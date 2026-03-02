@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import api from '../utils/api';
 import { useAuth } from '../context/AuthContext';
 import { 
   Activity, User, Plus, Edit, Eye, FileText, Heart,
   Pill, Stethoscope, ClipboardList, Calendar, Clock,
   TrendingUp, AlertCircle, CheckCircle, XCircle, Search,
-  Download, Filter, X, BedDouble, UserCheck
+  Download, Filter, X, BedDouble, UserCheck, ArrowRight, MoreHorizontal
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
+import TransferPatientModal from './TransferPatientModal.jsx';
 
 const IPDRecordsManagement = () => {
   const { user, hasRole } = useAuth();
@@ -20,12 +21,16 @@ const IPDRecordsManagement = () => {
   const [showNursingNoteModal, setShowNursingNoteModal] = useState(false);
   const [showDiagnosisModal, setShowDiagnosisModal] = useState(false);
   const [showDischargeModal, setShowDischargeModal] = useState(false);
+  const [showTransferModal, setShowTransferModal] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState(null);
 
   // Filters
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
   const [filterWard, setFilterWard] = useState('');
   const [wards, setWards] = useState([]);
+
+  const dropDownRef = useRef(null);
 
   // Form states
   const [vitalsData, setVitalsData] = useState({
@@ -204,11 +209,28 @@ const IPDRecordsManagement = () => {
       console.error('Error details:', error.response?.data);
       
       const errorMessage = error.response?.data?.message || 
-                          error.response?.data?.error || 
-                          'Failed to discharge patient';
+      error.response?.data?.error || 'Failed to discharge patient';
       toast.error(errorMessage);
     }
   };
+
+  const handleTransferSuccess = (updatedRecord) => {
+    // Update the record in the list
+    setRecords(prevRecords =>
+      prevRecords.map(record =>
+        record._id === updatedRecord._id ? updatedRecord : record
+      )
+    );
+    
+    // If viewing details, update selected record
+    if (selectedRecord?._id === updatedRecord._id) {
+      setSelectedRecord(updatedRecord);
+    }
+  };
+
+  const toggleDropdown = (recordId) => {
+    setOpenDropdown(openDropdown === recordId ? null : recordId);
+  }
 
   const resetVitalsForm = () => {
     setVitalsData({
@@ -289,6 +311,112 @@ const IPDRecordsManagement = () => {
     }
   };
 
+  // Actions Dropdown Component
+  const ActionsDropdown = ({ record, isOpen, onToggle }) => {
+    const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+    const buttonRef = useRef(null);
+    const dropdownMenuRef = useRef(null);
+
+    useEffect(() => {
+      if (isOpen && buttonRef.current) {
+        const buttonRect = buttonRef.current.getBoundingClientRect();
+        const dropdownWidth = 192; // 48 * 4 = 12rem
+        const viewportHeight = window.innerHeight;
+        const dropdownHeight = 140; // Approximate height of dropdown
+        
+        // Calculate if dropdown should appear above or below the button
+        const spaceBelow = viewportHeight - buttonRect.bottom;
+        const shouldAppearAbove = spaceBelow < dropdownHeight && buttonRect.top > dropdownHeight;
+        
+        setDropdownPosition({
+          top: shouldAppearAbove ? buttonRect.top - dropdownHeight - 4 : buttonRect.bottom + 4,
+          left: Math.max(8, buttonRect.right - dropdownWidth) // Ensure it doesn't go off-screen
+        });
+      }
+    }, [isOpen]);
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (dropdownMenuRef.current && !dropdownMenuRef.current.contains(event.target) && 
+            buttonRef.current && !buttonRef.current.contains(event.target)) {
+          setOpenDropdown(null);
+        }
+      };
+
+      if (isOpen) {
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+      }
+    }, [isOpen]);
+
+    return (
+      <div className="relative">
+        <button
+          ref={buttonRef}
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggle(record._id);
+          }}
+          className="p-1 sm:p-2 text-black rounded-full hover:bg-gray-100 transition-colors duration-200"
+          title="More actions"
+        >
+          <MoreHorizontal className="w-4 h-6 sm:w-4 sm:h-4" />
+        </button>
+        
+        {isOpen && (
+          <>
+            {/* Higher z-index backdrop */}
+            <div 
+              className="fixed inset-0 z-[9998]" 
+              onClick={() => setOpenDropdown(null)} 
+            />
+            
+            {/* Dropdown menu with very high z-index */}
+            <div 
+              ref={dropdownMenuRef}
+              className="fixed bg-white rounded-md shadow-2xl border border-gray-200 py-1 z-[9999] w-40 sm:w-48"
+              style={{
+                top: `${dropdownPosition.top}px`,
+                left: `${dropdownPosition.left}px`,
+                boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {canDischarge && selectedRecord.status !== 'discharged' && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowDischargeModal(true);
+                  }}
+                  className="flex items-center w-full px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-sm text-black hover:bg-gray-100 font-semibold transition-colors duration-200 cursor-pointer"
+                >
+                  <UserCheck className="w-3 h-3 sm:w-4 sm:h-4" />
+                   Discharge Patient
+                </button>
+              )}
+
+              <hr className="my-1 border-gray-200" />
+              
+              {canTransfer && selectedRecord.status !== 'discharged' && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowTransferModal(true);
+                  }}
+                  className="flex items-center w-full px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-sm text-black hover:bg-gray-100 font-semibold transition-colors duration-200 cursor-pointer"
+                >
+                  <ArrowRight className="w-4 h-4" />
+                  Transfer Patient
+                </button>
+              )}
+            </div>
+          </>
+        )}
+      </div>
+    );
+  };
+
   const filteredRecords = records.filter(record => {
     const patientName = `${record.patient?.firstName || ''} ${record.patient?.lastName || ''}`.toLowerCase();
     const admissionNumber = record.admissionNumber?.toLowerCase() || '';
@@ -302,6 +430,7 @@ const IPDRecordsManagement = () => {
   const canAddVitals = hasRole('doctor') || hasRole('nurse') || hasRole('admin');
   const canAddNursingNote = hasRole('nurse') || hasRole('admin');
   const canDischarge = hasRole('doctor') || hasRole('admin');
+  const canTransfer = hasRole('doctor') || hasRole('nurse') || hasRole('admin');
 
   return (
     <div className="bg-gray-50 min-h-screen p-2 sm:p-4 md:p-6 lg:p-8">
@@ -589,15 +718,11 @@ const IPDRecordsManagement = () => {
                       <span className="sm:hidden">Diagnosis</span>
                     </button>
                   )}
-                  {canDischarge && selectedRecord.status !== 'discharged' && (
-                    <button
-                      onClick={() => setShowDischargeModal(true)}
-                      className="col-span-2 sm:col-span-1 flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition sm:ml-auto text-[10px] sm:text-xs md:text-sm"
-                    >
-                      <UserCheck className="w-3 h-3 sm:w-4 sm:h-4" />
-                      Discharge Patient
-                    </button>
-                  )}
+                  <ActionsDropdown 
+                    record={selectedRecord}
+                    isOpen={openDropdown === selectedRecord._id}
+                    onToggle={toggleDropdown}
+                  />
                 </div>
               </div>
 
@@ -826,7 +951,7 @@ const IPDRecordsManagement = () => {
                         </div>
                         {selectedRecord.insurance?.policyNumber && (
                           <div className="flex justify-between">
-                            <span className="text-gray-600">Policy #:</span>
+                            <span className="text-gray-600">Membership No:</span>
                             <span className="font-medium">{selectedRecord.insurance?.policyNumber}</span>
                           </div>
                         )}
@@ -1245,6 +1370,14 @@ const IPDRecordsManagement = () => {
           </div>
         )}
       </div>
+
+      {showTransferModal && selectedRecord && (
+        <TransferPatientModal
+          record={selectedRecord}
+          onClose={() => setShowTransferModal(false)}
+          onSuccess={handleTransferSuccess}
+        />
+      )}
     </div>
   );
 };

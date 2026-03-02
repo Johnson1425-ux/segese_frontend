@@ -75,6 +75,7 @@ const PrescriptionForm = ({ visitId, patientId, existingPrescriptions }) => {
     mutation.mutate({ 
       visitId,
       medication: data.medication.value,
+      type:data.medication.type,
       dosage: data.dosage,
       frequency: data.frequency,
       duration: data.duration,
@@ -158,37 +159,6 @@ const PrescriptionForm = ({ visitId, patientId, existingPrescriptions }) => {
           </button>
         </div>
       </form>
-
-      <h4 className="font-semibold mb-2">Existing Prescriptions</h4>
-      {existingPrescriptions && existingPrescriptions.length > 0 ? (
-        <ul className="space-y-2">
-          {existingPrescriptions.map(p => (
-            <li key={p._id} className="p-3 border rounded-md bg-gray-50">
-              <div className="flex justify-between items-start">
-                <div>
-                  <p className="font-medium">{p.medication}</p>
-                  <p className="text-sm text-gray-600">
-                    {p.dosage} • {p.frequency}
-                    {p.duration && ` • ${p.duration}`}
-                  </p>
-                  {p.notes && (
-                    <p className="text-sm text-gray-500 mt-1">{p.notes}</p>
-                  )}
-                </div>
-                {p.isActive !== undefined && (
-                  <span className={`text-xs px-2 py-1 rounded ${
-                    p.isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
-                  }`}>
-                    {p.isActive ? 'Active' : 'Inactive'}
-                  </span>
-                )}
-              </div>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className="text-gray-500 text-sm">No prescriptions yet.</p>
-      )}
     </div>
   );
 };

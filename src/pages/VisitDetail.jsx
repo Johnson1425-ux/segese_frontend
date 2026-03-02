@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import api from '../utils/api';
+import { useAuth } from '../context/AuthContext';
+import VitalsForm from '../components/visit/VitalsForm';
 import DiagnosisForm from '../components/visit/DiagnosisForm';
 import LabOrderForm from '../components/visit/LabOrderForm';
 import PrescriptionForm from '../components/visit/PrescriptionForm';
@@ -9,8 +11,9 @@ import RadiologyOrderForm from '../components/visit/RadiologyOrderForm';
 
 export default function VisitDetail() {
   const { id } = useParams();
+  const { user } = useAuth(); // Get current user
   const [visit, setVisit] = useState(null);
-  const [activeTab, setActiveTab] = useState('diagnosis');
+  const [activeTab, setActiveTab] = useState('vitals'); // Default to vitals for receptionist
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -29,6 +32,15 @@ export default function VisitDetail() {
     };
     fetchVisit();
   }, [id]);
+
+  // Set default tab based on user role
+  useEffect(() => {
+    if (user?.role === 'receptionist') {
+      setActiveTab('vitals');
+    } else if (user?.role === 'doctor') {
+      setActiveTab('diagnosis');
+    }
+  }, [user]);
 
   if (loading) {
     return (
@@ -53,12 +65,19 @@ export default function VisitDetail() {
 
   if (!visit) return null;
 
-  const tabs = [
-    { id: 'diagnosis', label: 'Diagnosis' },
-    { id: 'labs', label: 'Lab Tests' },
-    { id: 'radiology', label: 'Radiology' },
-    { id: 'prescription', label: 'Prescription' }
+  // Define tabs based on user role
+  const allTabs = [
+    { id: 'vitals', label: 'Vitals', allowedRoles: ['admin', 'doctor', 'nurse', 'receptionist'] },
+    { id: 'diagnosis', label: 'Diagnosis', allowedRoles: ['admin', 'doctor'] },
+    { id: 'labs', label: 'Lab Tests', allowedRoles: ['admin', 'doctor'] },
+    { id: 'radiology', label: 'Radiology', allowedRoles: ['admin', 'doctor'] },
+    { id: 'prescription', label: 'Prescription', allowedRoles: ['admin', 'doctor'] }
   ];
+
+  // Filter tabs based on user role
+  const tabs = allTabs.filter(tab => 
+    tab.allowedRoles.includes(user?.role)
+  );
 
   return (
     <div className="p-2 sm:p-4 md:p-6 lg:p-8">
@@ -75,7 +94,15 @@ export default function VisitDetail() {
           Visit Details for {visit.patient?.firstName} {visit.patient?.lastName}
         </h1>
         <div className="mt-2 text-[10px] sm:text-xs md:text-sm text-gray-600">
-          <p>Visit Date: {new Date(visit.visitDate).toLocaleDateString()}</p>
+          <p>Visit Date: 
+            {new Date(visit.visitDate).toLocaleString('en-US', {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit'
+            })}
+          </p>
           <p>Doctor: Dr. {visit.doctor?.firstName} {visit.doctor?.lastName}</p>
         </div>
       </div>
@@ -101,6 +128,57 @@ export default function VisitDetail() {
 
       {/* Tab Content */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4 md:p-6">
+        {activeTab === 'vitals' && (
+          <div>
+            <h2 className="text-sm sm:text-base md:text-xl font-semibold text-gray-800 mb-3 sm:mb-4">
+              Vitals
+            </h2>
+            <VitalsForm visitId={id} patientId={visit.patient?._id} />
+            
+            {/* List existing vitals */}
+            {visit.vitalSigns && visit.vitalSigns.length > 0 && (
+              <div className="mt-4 sm:mt-6">
+                <h3 className="text-xs sm:text-sm md:text-base font-medium text-gray-700 mb-2 sm:mb-3">
+                  Previous Vitals
+                </h3>
+                <div className="space-y-2">
+                  {visit.vitalSigns.map((vitals, index) => (
+                    <div 
+                      key={vitals._id || index} 
+                      className="bg-gray-50 rounded-lg p-2 sm:p-3 border border-gray-200"
+                    >
+                      <div className="grid grid-cols-2 gap-2 text-[11px] sm:text-xs md:text-sm">
+                        <p><strong>Temperature:</strong> {vitals.temperature}°C</p>
+                        <p><strong>BP:</strong> {vitals.bloodPressure}</p>
+                        <p><strong>Heart Rate:</strong> {vitals.heartRate} bpm</p>
+                        <p><strong>O2 Sat:</strong> {vitals.oxygenSaturation}%</p>
+                      </div>
+                      <div className="mt-2 pt-2 border-t border-gray-200 flex flex-wrap gap-2 sm:gap-4 text-[10px] sm:text-xs text-gray-500">
+                        {vitals.recordedAt && (
+                          <p>
+                            <strong>Recorded:</strong> {new Date(vitals.recordedAt).toLocaleString('en-US', {
+                              year: 'numeric',
+                              month: 'short',
+                              day: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })}
+                          </p>
+                        )}
+                        {vitals.recordedBy && (
+                          <p>
+                            <strong>By:</strong> {vitals.recordedBy.firstName} {vitals.recordedBy.lastName}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
         {activeTab === 'diagnosis' && (
           <div>
             <h2 className="text-sm sm:text-base md:text-xl font-semibold text-gray-800 mb-3 sm:mb-4">
@@ -109,20 +187,25 @@ export default function VisitDetail() {
             <DiagnosisForm visitId={id} patientId={visit.patient?._id} />
             
             {/* List existing diagnoses */}
-            {visit.diagnoses && visit.diagnoses.length > 0 && (
+            {visit.diagnosis && visit.diagnosis.length > 0 && (
               <div className="mt-4 sm:mt-6">
                 <h3 className="text-xs sm:text-sm md:text-base font-medium text-gray-700 mb-2 sm:mb-3">
                   Previous Diagnoses
                 </h3>
                 <div className="space-y-2">
-                  {visit.diagnoses.map((diagnosis, index) => (
+                  {visit.diagnosis.map((diagnosis, index) => (
                     <div 
                       key={diagnosis._id || index} 
                       className="bg-gray-50 rounded-lg p-2 sm:p-3 border border-gray-200"
                     >
-                      <p className="text-[11px] sm:text-xs md:text-sm text-gray-800">
-                        {diagnosis.condition || diagnosis.diagnosis}
+                      <p className="text-[11px] sm:text-xs md:text-sm text-gray-800 font-medium">
+                        {diagnosis.condition}
                       </p>
+                      {diagnosis.icd10Code && (
+                        <p className="text-[10px] sm:text-xs text-gray-600 mt-1">
+                          <strong>ICD-10:</strong> {diagnosis.icd10Code}
+                        </p>
+                      )}
                       {diagnosis.notes && (
                         <p className="text-[10px] sm:text-xs text-gray-600 mt-1">
                           {diagnosis.notes}
@@ -160,8 +243,8 @@ export default function VisitDetail() {
                           {order.testName}
                         </span>
                         <span className={`px-1.5 sm:px-2 py-0.5 sm:py-1 text-[9px] sm:text-[10px] font-semibold rounded-full flex-shrink-0 ${
-                          order.status === 'completed' ? 'bg-green-100 text-green-800' :
-                          order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                          order.status === 'completed' || order.status === 'Completed' ? 'bg-green-100 text-green-800' :
+                          order.status === 'pending' || order.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' :
                           'bg-blue-100 text-blue-800'
                         }`}>
                           {order.status}
@@ -172,9 +255,9 @@ export default function VisitDetail() {
                           <strong>Result:</strong> {order.results}
                         </p>
                       )}
-                      {order.requestedDate && (
+                      {order.createdAt && (
                         <p className="text-[9px] sm:text-[10px] text-gray-500 mt-1">
-                          Requested: {new Date(order.requestedDate).toLocaleDateString()}
+                          Requested: {new Date(order.createdAt).toLocaleDateString()}
                         </p>
                       )}
                     </li>
@@ -206,16 +289,22 @@ export default function VisitDetail() {
                     >
                       <div className="flex justify-between items-start gap-2 mb-1 sm:mb-2">
                         <span className="text-[11px] sm:text-xs md:text-sm font-medium text-gray-800">
-                          {order.testType || order.examType}
+                          {order.scanType} - {order.bodyPart}
                         </span>
                         <span className={`px-1.5 sm:px-2 py-0.5 sm:py-1 text-[9px] sm:text-[10px] font-semibold rounded-full flex-shrink-0 ${
-                          order.status === 'completed' ? 'bg-green-100 text-green-800' :
-                          order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                          'bg-blue-100 text-blue-800'
+                          order.status === 'Completed' ? 'bg-green-100 text-green-800' :
+                          order.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' :
+                          order.status === 'In Progress' ? 'bg-blue-100 text-blue-800' :
+                          'bg-gray-100 text-gray-800'
                         }`}>
                           {order.status}
                         </span>
                       </div>
+                      {order.reason && (
+                        <p className="text-[10px] sm:text-xs text-gray-600 mt-1">
+                          <strong>Reason:</strong> {order.reason}
+                        </p>
+                      )}
                       {order.findings && (
                         <p className="text-[10px] sm:text-xs text-gray-600 mt-1 sm:mt-2">
                           <strong>Findings:</strong> {order.findings}
@@ -248,8 +337,18 @@ export default function VisitDetail() {
                       key={prescription._id} 
                       className="bg-gray-50 rounded-lg p-2 sm:p-3 md:p-4 border border-gray-200"
                     >
-                      <div className="text-[11px] sm:text-xs md:text-sm font-medium text-gray-800 mb-1">
-                        {prescription.medication || prescription.medicine}
+                      <div className="flex justify-between items-start gap-2 mb-1">
+                        <div className="text-[11px] sm:text-xs md:text-sm font-medium text-gray-800">
+                          {prescription.medication}
+                        </div>
+                        <span className={`px-1.5 sm:px-2 py-0.5 sm:py-1 text-[9px] sm:text-[10px] font-semibold rounded-full flex-shrink-0 ${
+                          prescription.status === 'Dispensed' ? 'bg-green-100 text-green-800' :
+                          prescription.status === 'Quantified' ? 'bg-blue-100 text-blue-800' :
+                          prescription.status === 'Pending Quantification' ? 'bg-yellow-100 text-yellow-800' :
+                          'bg-gray-100 text-gray-800'
+                        }`}>
+                          {prescription.status}
+                        </span>
                       </div>
                       <div className="text-[10px] sm:text-xs text-gray-600 space-y-0.5">
                         {prescription.dosage && (
@@ -261,8 +360,8 @@ export default function VisitDetail() {
                         {prescription.duration && (
                           <p><strong>Duration:</strong> {prescription.duration}</p>
                         )}
-                        {prescription.instructions && (
-                          <p><strong>Instructions:</strong> {prescription.instructions}</p>
+                        {prescription.notes && (
+                          <p><strong>Notes:</strong> {prescription.notes}</p>
                         )}
                       </div>
                     </li>

@@ -184,23 +184,7 @@ const BillingDashboard = () => {
         </div>
       </div>
 
-      {/* Payment Methods Chart */}
-      {statistics.payments && statistics.payments.length > 0 && (
-        <div className="bg-white rounded-lg shadow p-3 sm:p-4 md:p-6">
-          <h2 className="text-sm sm:text-base md:text-lg font-semibold mb-3 sm:mb-4">Payment Methods</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
-            {statistics.payments.map((payment) => (
-              <div key={payment._id} className="text-center p-2 bg-gray-50 rounded-lg">
-                <p className="text-[10px] sm:text-xs md:text-sm text-gray-600 capitalize truncate">{payment._id.replace('_', ' ')}</p>
-                <p className="text-xs sm:text-base md:text-xl font-bold truncate">{formatCurrency(payment.total)}</p>
-                <p className="text-[9px] sm:text-[10px] md:text-xs text-gray-500">{payment.count} transactions</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
+      <div >
         {/* Recent Invoices */}
         <div className="bg-white rounded-lg shadow">
           <div className="p-3 sm:p-4 md:p-6 border-b border-gray-200">
@@ -242,7 +226,7 @@ const BillingDashboard = () => {
         </div>
 
         {/* Recent Payments */}
-        <div className="bg-white rounded-lg shadow">
+        {/* <div className="bg-white rounded-lg shadow">
           <div className="p-3 sm:p-4 md:p-6 border-b border-gray-200">
             <div className="flex justify-between items-center">
               <h2 className="text-sm sm:text-base md:text-lg font-semibold">Recent Payments</h2>
@@ -283,7 +267,7 @@ const BillingDashboard = () => {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
       </div>
 
       {/* Quick Actions */}

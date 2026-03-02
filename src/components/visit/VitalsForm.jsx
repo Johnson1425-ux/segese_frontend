@@ -14,6 +14,7 @@ const VitalsForm = ({ visitId, existingVitals }) => {
     onSuccess: () => {
       toast.success('Vitals updated successfully!');
       queryClient.invalidateQueries(['visit', visitId]);
+      reset();
     },
     onError: (error) => toast.error(error.response?.data?.message || 'Failed to update vitals.'),
   });

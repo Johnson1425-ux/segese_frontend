@@ -69,15 +69,27 @@ const InvoiceDetail = () => {
           </button>
           <button onClick={handlePrint} className="btn-secondary flex items-center text-xs sm:text-sm">
             <Printer className="w-3 h-3 sm:w-4 sm:h-4 sm:mr-2" />
-            <span className="hidden sm:inline">Print Invoice</span>
+            <span className="hidden sm:inline">Print Receipt</span>
             <span className="sm:hidden">Print</span>
           </button>
+        </div>
+
+        {/* Status Badge */}
+        <div className="mb-3 sm:mb-4 md:mb-6 flex flex-col sm:flex-row items-start sm:items-center gap-2">
+          <span className={`inline-block text-xs sm:text-sm md:text-lg font-semibold px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded-full ${getStatusChip(invoice.status)}`}>
+            Status: {invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1)}
+          </span>
+          {invoice.items && (
+            <span className="text-[10px] sm:text-xs md:text-sm text-gray-600">
+              ({invoice.items.filter(item => item.paid).length} of {invoice.items.length} items paid)
+            </span>
+          )}
         </div>
 
         {/* Printable Invoice Content */}
         <div ref={printRef} className="bg-white rounded-lg shadow-md p-3 sm:p-6 md:p-8 printable-area">
           {/* Header */}
-          <div className="flex flex-col sm:flex-row justify-between items-start mb-4 sm:mb-6 md:mb-8 border-b pb-3 sm:pb-4 md:pb-6 gap-3">
+          <div className="flex flex-col sm:flex-row justify-between items-start mb-4 sm:mb-6 md:mb-8 border-b pb-1 sm:pb-1 md:pb-1 gap-3">
             <div>
               <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800">INVOICE</h1>
               <p className="text-gray-500 text-sm sm:text-base md:text-lg mt-1">{invoice.invoiceNumber}</p>
@@ -90,20 +102,9 @@ const InvoiceDetail = () => {
             </div>
           </div>
 
-          {/* Status Badge */}
-          <div className="mb-3 sm:mb-4 md:mb-6 flex flex-col sm:flex-row items-start sm:items-center gap-2">
-            <span className={`inline-block text-xs sm:text-sm md:text-lg font-semibold px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded-full ${getStatusChip(invoice.status)}`}>
-              Status: {invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1)}
-            </span>
-            {invoice.items && (
-              <span className="text-[10px] sm:text-xs md:text-sm text-gray-600">
-                ({invoice.items.filter(item => item.paid).length} of {invoice.items.length} items paid)
-              </span>
-            )}
-          </div>
 
           {/* Patient and Date Info */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8 mb-4 sm:mb-6 md:mb-8">
+          <div className="flex flex-col sm:flex-row justify-between items-start mb-4 sm:mb-6 md:mb-8 border-b pb-1 sm:pb-1 md:pb-1 gap-3">
             <div>
               <h3 className="text-[10px] sm:text-xs md:text-sm font-semibold text-gray-500 uppercase mb-1 sm:mb-2">Bill To:</h3>
               <p className="text-sm sm:text-base md:text-lg font-medium text-gray-800">
@@ -119,9 +120,10 @@ const InvoiceDetail = () => {
                 <p className="text-gray-600 text-[10px] sm:text-xs md:text-sm mt-1">Patient ID: {invoice.patient.patientId}</p>
               )}
             </div>
-            <div className="text-left md:text-right">
+
+            <div className="text-left sm:text-right">
               <div className="mb-2">
-                <span className="font-semibold text-gray-700 text-xs sm:text-sm">Invoice Date:</span>
+                <span className="font-semibold text-gray-700 text-xs sm:text-sm">Date of issue:</span>
                 <p className="text-gray-800 text-xs sm:text-sm">{new Date(invoice.createdAt).toLocaleDateString('en-US', {
                   year: 'numeric',
                   month: 'long',
@@ -130,7 +132,7 @@ const InvoiceDetail = () => {
               </div>
               {invoice.dueDate && (
                 <div className="mb-2">
-                  <span className="font-semibold text-gray-700 text-xs sm:text-sm">Due Date:</span>
+                  <span className="font-semibold text-gray-700 text-xs sm:text-sm">Date due:</span>
                   <p className="text-gray-800 text-xs sm:text-sm">{new Date(invoice.dueDate).toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'long',
@@ -149,7 +151,6 @@ const InvoiceDetail = () => {
 
           {/* Invoice Items Table - ALL ITEMS for screen view */}
           <div className="mb-4 sm:mb-6 md:mb-8 screen-only overflow-x-auto">
-            <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-800 mb-2 sm:mb-3 md:mb-4">All Invoice Items</h3>
             <table className="w-full min-w-[500px]">
               <thead>
                 <tr className="border-b-2 border-gray-300">
@@ -203,14 +204,13 @@ const InvoiceDetail = () => {
           {/* PAID Items Table - ONLY for print */}
           {paidItems.length > 0 && (
             <div className="mb-8 print-only">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Paid Items</h3>
               <table className="w-full">
                 <thead>
-                  <tr className="border-b-2 border-gray-300">
-                    <th className="text-left py-3 font-semibold text-gray-700">Description</th>
-                    <th className="text-center py-3 font-semibold text-gray-700">Qty</th>
-                    <th className="text-right py-3 font-semibold text-gray-700">Unit Price</th>
-                    <th className="text-right py-3 font-semibold text-gray-700">Amount</th>
+                  <tr className="border-b border-gray-300">
+                    <th className="text-left py-1 font-semibold text-gray-700">Description</th>
+                    <th className="text-center py-1 font-semibold text-gray-700">Qty</th>
+                    <th className="text-right py-1 font-semibold text-gray-700">Unit Price</th>
+                    <th className="text-right py-1 font-semibold text-gray-700">Amount</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -218,16 +218,6 @@ const InvoiceDetail = () => {
                     <tr key={index} className="border-b border-gray-200 bg-green-50">
                       <td className="py-3">
                         <div className="font-medium text-gray-800">{item.description}</div>
-                        {item.type && (
-                          <div className="text-xs text-gray-500 mt-1">
-                            Type: {item.type}
-                          </div>
-                        )}
-                        {item.paidAt && (
-                          <div className="text-xs text-green-600 mt-1">
-                            Paid on: {new Date(item.paidAt).toLocaleDateString()}
-                          </div>
-                        )}
                       </td>
                       <td className="py-3 text-center text-gray-700">{item.quantity || 1}</td>
                       <td className="py-3 text-right text-gray-700">
@@ -246,15 +236,15 @@ const InvoiceDetail = () => {
           {/* Totals Section - Screen only shows full details */}
           <div className="flex justify-end mb-4 sm:mb-6 md:mb-8 screen-only">
             <div className="w-full sm:w-2/3 md:w-1/2 lg:w-1/3">
-              <div className="flex justify-between py-1.5 sm:py-2 border-b border-gray-200 text-xs sm:text-sm">
-                <span className="text-gray-600">Subtotal:</span>
+              <div className="flex justify-between border-t border-b border-gray-200 text-xs sm:text-sm">
+                <span className="text-gray">Subtotal:</span>
                 <span className="font-medium text-gray-800">
                   {invoice.totalAmount.toLocaleString()} TZS
                 </span>
               </div>
               
               {invoice.amountPaid > 0 && (
-                <div className="flex justify-between py-1.5 sm:py-2 border-b border-gray-200 text-green-600 text-xs sm:text-sm">
+                <div className="flex justify-between border-b border-gray-200 text-green-600 text-xs sm:text-sm">
                   <span>Amount Paid:</span>
                   <span className="font-medium">
                     -{invoice.amountPaid.toLocaleString()} TZS
@@ -262,8 +252,8 @@ const InvoiceDetail = () => {
                 </div>
               )}
               
-              <div className="flex justify-between py-2 sm:py-3 font-bold text-base sm:text-lg md:text-xl text-gray-900 border-t-2 border-gray-300 mt-2">
-                <span>Balance Due:</span>
+              <div className="flex justify-between font-bold text-base sm:text-sm text-xs text-gray-900 border-gray-300">
+                <span>Amount Due:</span>
                 <span className={invoice.balanceDue > 0 ? 'text-red-600' : 'text-green-600'}>
                   {invoice.balanceDue.toLocaleString()} TZS
                 </span>
@@ -285,7 +275,7 @@ const InvoiceDetail = () => {
 
           {/* Payment History */}
           {invoice.payments && invoice.payments.length > 0 && (
-            <div className="mb-4 sm:mb-6 md:mb-8 border-t pt-3 sm:pt-4 md:pt-6">
+            <div className="mb-4 sm:mb-6 md:mb-8 pt-3 sm:pt-4 md:pt-6">
               <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-800 mb-2 sm:mb-3 md:mb-4">Payment History</h3>
               <div className="overflow-x-auto">
                 <table className="w-full min-w-[400px]">
@@ -317,7 +307,7 @@ const InvoiceDetail = () => {
           )}
 
           {/* Footer */}
-          <div className="border-t pt-3 sm:pt-4 md:pt-6 mt-4 sm:mt-6 md:mt-8">
+          <div className="pt-3 sm:pt-4 md:pt-6 mt-4 sm:mt-6 md:mt-8">
             <div className="text-center text-gray-600 text-[10px] sm:text-xs md:text-sm">
               <p className="mb-2">Thank you for your business!</p>
               <p>For any queries regarding this invoice, please contact our billing department.</p>

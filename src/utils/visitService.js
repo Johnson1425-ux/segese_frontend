@@ -33,7 +33,7 @@ export const visitService = {
 
   // --- NEW METHODS ---
   updateVitals: async ({ visitId, vitalsData }) => {
-    const response = await api.put(`/visits/${visitId}/vitals`, vitalsData);
+    const response = await api.post(`/visits/${visitId}/vitals`, vitalsData);
     return response.data;
   },
 

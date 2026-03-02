@@ -8,7 +8,7 @@ export const doctorService = {
   },
 
   getDoctorQueue: async () => {
-    const response = await api.get('/doctors/my-queue');
+    const response = await api.get('/doctors/my-queue?');
     return response.data;
   },
 

@@ -702,7 +702,7 @@ const PatientForm = () => {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row justify-end gap-3 sm:gap-4 sticky bottom-0 bg-white p-4 sm:p-0 -mx-4 sm:mx-0 border-t sm:border-t-0 border-gray-200">
+        <div className="flex flex-col sm:flex-row justify-end gap-3 sm:gap-4 sticky bottom-0  p-4 sm:p-0 -mx-4 sm:mx-0 border-t sm:border-t-0 border-gray-200">
           <button
             type="button"
             onClick={() => navigate('/patients/search')}

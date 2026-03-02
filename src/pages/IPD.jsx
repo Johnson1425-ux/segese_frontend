@@ -5,6 +5,23 @@ import {
   FileText, User, Plus, Calendar, MapPin, Users, Activity,
   RefreshCw, XCircle
 } from 'lucide-react';
+import { toast } from "react-hot-toast";
+
+// Get current Tanzania time for datetime-local input
+const getTanzaniaDateTime = () => {
+  const now = new Date();
+  const tanzaniaTime = new Date(now.toLocaleString('en-US', {
+    timeZone: 'Africa/Dar_es_Salaam'
+  }));
+  
+  const year = tanzaniaTime.getFullYear();
+  const month = String(tanzaniaTime.getMonth() + 1).padStart(2, '0');
+  const day = String(tanzaniaTime.getDate()).padStart(2, '0');
+  const hours = String(tanzaniaTime.getHours()).padStart(2, '0');
+  const minutes = String(tanzaniaTime.getMinutes()).padStart(2, '0');
+  
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
+};
 
 const IPD = () => {
   // State management
@@ -38,7 +55,7 @@ const IPD = () => {
     patient: '',
     ward: '',
     bed: '',
-    admissionDate: new Date().toISOString().slice(0, 16),
+    admissionDate: getTanzaniaDateTime(),
     admissionReason: '',
     admittingDoctor: '',
     attendingPhysician: '',
@@ -203,8 +220,6 @@ const IPD = () => {
     }
 
     setLoading(true);
-    setError(null);
-    setSuccess(null);
     
     try {
       const admissionPayload = {
@@ -234,7 +249,7 @@ const IPD = () => {
       const response = await api.post('/ipd-records', admissionPayload);
       
       if (response.status === 201) {
-        setSuccess(`Patient admitted successfully! Admission Number: ${response.data.data.admissionNumber}`);
+        toast.success(`Patient admitted successfully! Admission Number: ${response.data.data.admissionNumber}`);
         
         // Reset form
         setAdmissionData({
@@ -267,15 +282,12 @@ const IPD = () => {
         setSelectedPatient(null);
         setAvailableBeds([]);
         await loadWards();
-        
-        // Clear success message after 5 seconds
-        setTimeout(() => setSuccess(null), 5000);
       }
     } catch (error) {
       console.error('Error admitting patient:', error);
       console.error('Error response:', error.response?.data);
       const errorMessage = error.response?.data?.message || 'Failed to admit patient. Please try again.';
-      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -295,6 +307,7 @@ const IPD = () => {
   const formatDateTime = (dateString) => {
     if (!dateString) return 'N/A';
     return new Date(dateString).toLocaleString('en-TZ', {
+      timeZone: 'Africa/Dar_es_Salaam',
       year: 'numeric',
       month: 'short',
       day: 'numeric',
