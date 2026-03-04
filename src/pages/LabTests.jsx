@@ -186,14 +186,14 @@ export default function LabTests() {
   // Patient's All Tests View
   return (
     <div className="p-4 sm:p-6">
-      <div className="flex items-center gap-4 mb-6">
+      <div className="mb-6">
         <button
           onClick={() => setSelectedPatient(null)}
-          className="text-black rounded hover:bg-gray-200"
+          className="flex items-center gap-2 text-gray-700 hover:text-primary hover:bg-gray-100 px-4 py-2 rounded-lg transition-colors"
         >
-          <ArrowLeft className="h-6 w-6 mr-2" />
+          <ArrowLeft className="h-5 w-5" />
+          <span>Back to Patients</span>
         </button>
-        Back to Patients
       </div>
 
       <div className="bg-white rounded-xl shadow-md p-6 mb-6">
@@ -208,6 +208,7 @@ export default function LabTests() {
         </p>
       </div>
 
+      {/* Desktop Table View - Hidden on mobile */}
       <div className="hidden md:block bg-white shadow-md rounded-lg overflow-hidden">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
@@ -249,6 +250,43 @@ export default function LabTests() {
             <p className="text-gray-500 text-center py-8">No lab tests found.</p>
           )}
         </div>
+      </div>
+
+      {/* Mobile Card View - Hidden on desktop */}
+      <div className="md:hidden grid grid-cols-1 gap-4">
+        {selectedPatient.tests.map((test) => (
+          <div
+            key={test._id}
+            className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm"
+          >
+            <div className="mb-3">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                {test.testName}
+              </h3>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-sm text-gray-600">
+                  Ordered: {new Date(test.createdAt).toLocaleDateString()}
+                </span>
+              </div>
+              <div className="mb-3">
+                <span className="px-2 py-1 text-sm rounded-full bg-yellow-100 text-yellow-800">
+                  {test.status}
+                </span>
+              </div>
+            </div>
+            <Link 
+              to={`/lab-tests/${test._id}`} 
+              className="btn-primary text-sm font-medium inline-block px-4 py-2 rounded-lg w-full text-center"
+            >
+              Add Result
+            </Link>
+          </div>
+        ))}
+        {selectedPatient.tests.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-gray-500">No lab tests found.</p>
+          </div>
+        )}
       </div>
     </div>
   );
