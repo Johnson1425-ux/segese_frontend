@@ -8,15 +8,15 @@ import api from ‘../utils/api’;
 import jsPDF from ‘jspdf’;
 import ‘jspdf-autotable’;
 
-/* ─────────────────────────────────────────────
+/* ———————————————
 Helpers
-───────────────────────────────────────────── */
+——————————————— */
 const fmt = (n) => Number(n || 0).toLocaleString();
 const fmtTZS = (n) => `TZS ${fmt(n)}`;
 const fmtDate = (d) => {
-if (!d) return ‘—’;
+if (!d) return ‘–’;
 try { return new Date(d).toLocaleDateString(‘en-GB’, { day: ‘2-digit’, month: ‘short’, year: ‘numeric’ }); }
-catch { return ‘—’; }
+catch { return ‘–’; }
 };
 
 const ageGroup = (dob) => {
@@ -29,9 +29,9 @@ if (months < 720) return ‘5To60Years’;
 return ‘over60Years’;
 };
 
-/* ─────────────────────────────────────────────
+/* ———————————————
 Stat Card
-───────────────────────────────────────────── */
+——————————————— */
 const StatCard = ({ icon: Icon, label, value, sub, color, badge }) => (
 
   <div className={`rounded-xl p-5 text-white shadow-md ${color} flex flex-col gap-3`}>
@@ -47,9 +47,9 @@ const StatCard = ({ icon: Icon, label, value, sub, color, badge }) => (
   </div>
 );
 
-/* ─────────────────────────────────────────────
+/* ———————————————
 Report Table
-───────────────────────────────────────────── */
+——————————————— */
 const ReportTable = ({ report, data }) => {
 const rows = (() => {
 if (Array.isArray(data)) return data;
@@ -71,84 +71,84 @@ return (
 const columns = (() => {
 const id = report.id;
 if ([‘patient-visits’,‘all-patient-visits’,‘visits-summary’].includes(id)) return [
-{ label: ‘Visit ID’,  get: r => r.visitId || r._id?.slice(-6)?.toUpperCase() || ‘—’ },
-{ label: ‘Patient’,   get: r => `${r.patient?.firstName||''} ${r.patient?.lastName||''}`.trim() || ‘—’ },
-{ label: ‘Doctor’,    get: r => `${r.doctor?.firstName||''} ${r.doctor?.lastName||''}`.trim() || ‘—’ },
+{ label: ‘Visit ID’,  get: r => r.visitId || r._id?.slice(-6)?.toUpperCase() || ‘–’ },
+{ label: ‘Patient’,   get: r => `${r.patient?.firstName||''} ${r.patient?.lastName||''}`.trim() || ‘–’ },
+{ label: ‘Doctor’,    get: r => `${r.doctor?.firstName||''} ${r.doctor?.lastName||''}`.trim() || ‘–’ },
 { label: ‘Date’,      get: r => fmtDate(r.visitDate || r.createdAt) },
-{ label: ‘Type’,      get: r => r.type || ‘—’ },
-{ label: ‘Status’,    get: r => r.status || ‘—’, badge: true },
+{ label: ‘Type’,      get: r => r.type || ‘–’ },
+{ label: ‘Status’,    get: r => r.status || ‘–’, badge: true },
 ];
 if (id.startsWith(‘invoice’)) return [
-{ label: ‘Invoice #’,  get: r => r.invoiceNumber || ‘—’ },
-{ label: ‘Patient’,    get: r => `${r.patient?.firstName||''} ${r.patient?.lastName||''}`.trim() || ‘—’ },
+{ label: ‘Invoice #’,  get: r => r.invoiceNumber || ‘–’ },
+{ label: ‘Patient’,    get: r => `${r.patient?.firstName||''} ${r.patient?.lastName||''}`.trim() || ‘–’ },
 { label: ‘Total’,      get: r => fmtTZS(r.totalAmount) },
 { label: ‘Paid’,       get: r => fmtTZS(r.amountPaid) },
 { label: ‘Balance’,    get: r => fmtTZS(r.balanceDue) },
-{ label: ‘Status’,     get: r => r.status || ‘—’, badge: true },
+{ label: ‘Status’,     get: r => r.status || ‘–’, badge: true },
 { label: ‘Date’,       get: r => fmtDate(r.createdAt) },
 ];
 if (id.startsWith(‘ipd’)) return [
-{ label: ‘Admission #’, get: r => r.admissionNumber || r._id?.slice(-6)?.toUpperCase() || ‘—’ },
-{ label: ‘Patient’,     get: r => `${r.patient?.firstName||''} ${r.patient?.lastName||''}`.trim() || ‘—’ },
-{ label: ‘Ward’,        get: r => r.ward?.name || ‘—’ },
-{ label: ‘Bed’,         get: r => r.bed?.bedNumber || ‘—’ },
-{ label: ‘Type’,        get: r => r.admissionType || ‘—’ },
+{ label: ‘Admission #’, get: r => r.admissionNumber || r._id?.slice(-6)?.toUpperCase() || ‘–’ },
+{ label: ‘Patient’,     get: r => `${r.patient?.firstName||''} ${r.patient?.lastName||''}`.trim() || ‘–’ },
+{ label: ‘Ward’,        get: r => r.ward?.name || ‘–’ },
+{ label: ‘Bed’,         get: r => r.bed?.bedNumber || ‘–’ },
+{ label: ‘Type’,        get: r => r.admissionType || ‘–’ },
 { label: ‘Admitted’,    get: r => fmtDate(r.admissionDate) },
-{ label: ‘Discharged’,  get: r => fmtDate(r.dischargeDate) || ‘—’ },
-{ label: ‘Status’,      get: r => r.status || ‘—’, badge: true },
+{ label: ‘Discharged’,  get: r => fmtDate(r.dischargeDate) || ‘–’ },
+{ label: ‘Status’,      get: r => r.status || ‘–’, badge: true },
 ];
 if (id === ‘prescriptions’) return [
-{ label: ‘Medicine’,   get: r => r.medication || ‘—’ },
-{ label: ‘Patient’,    get: r => `${r.patient?.firstName||''} ${r.patient?.lastName||''}`.trim() || ‘—’ },
-{ label: ‘Dosage’,     get: r => r.dosage || ‘—’ },
-{ label: ‘Frequency’,  get: r => r.frequency || ‘—’ },
-{ label: ‘Status’,     get: r => r.status || ‘—’, badge: true },
+{ label: ‘Medicine’,   get: r => r.medication || ‘–’ },
+{ label: ‘Patient’,    get: r => `${r.patient?.firstName||''} ${r.patient?.lastName||''}`.trim() || ‘–’ },
+{ label: ‘Dosage’,     get: r => r.dosage || ‘–’ },
+{ label: ‘Frequency’,  get: r => r.frequency || ‘–’ },
+{ label: ‘Status’,     get: r => r.status || ‘–’, badge: true },
 { label: ‘Date’,       get: r => fmtDate(r.createdAt) },
 ];
 if (id === ‘lab-tests’) return [
-{ label: ‘Test’,       get: r => r.testName || ‘—’ },
-{ label: ‘Patient’,    get: r => `${r.patient?.firstName||''} ${r.patient?.lastName||''}`.trim() || ‘—’ },
+{ label: ‘Test’,       get: r => r.testName || ‘–’ },
+{ label: ‘Patient’,    get: r => `${r.patient?.firstName||''} ${r.patient?.lastName||''}`.trim() || ‘–’ },
 { label: ‘Results’,    get: r => r.results || ‘Pending’ },
-{ label: ‘Status’,     get: r => r.status || ‘—’, badge: true },
+{ label: ‘Status’,     get: r => r.status || ‘–’, badge: true },
 { label: ‘Date’,       get: r => fmtDate(r.createdAt) },
 ];
 if (id === ‘radiology’) return [
-{ label: ‘Scan Type’,  get: r => r.scanType || ‘—’ },
-{ label: ‘Body Part’,  get: r => r.bodyPart || ‘—’ },
-{ label: ‘Patient’,    get: r => `${r.patient?.firstName||''} ${r.patient?.lastName||''}`.trim() || ‘—’ },
-{ label: ‘Status’,     get: r => r.status || ‘—’, badge: true },
+{ label: ‘Scan Type’,  get: r => r.scanType || ‘–’ },
+{ label: ‘Body Part’,  get: r => r.bodyPart || ‘–’ },
+{ label: ‘Patient’,    get: r => `${r.patient?.firstName||''} ${r.patient?.lastName||''}`.trim() || ‘–’ },
+{ label: ‘Status’,     get: r => r.status || ‘–’, badge: true },
 { label: ‘Date’,       get: r => fmtDate(r.createdAt) },
 ];
 if (id.startsWith(‘procedures’)) return [
-{ label: ‘Procedure’,  get: r => r.procedure_name || r.procedureName || ‘—’ },
-{ label: ‘Patient’,    get: r => `${r.patient?.firstName||''} ${r.patient?.lastName||''}`.trim() || ‘—’ },
-{ label: ‘Surgeon’,    get: r => `${r.surgeon?.firstName||''} ${r.surgeon?.lastName||''}`.trim() || ‘—’ },
-{ label: ‘Theatre’,    get: r => r.theatre?.name || ‘—’ },
+{ label: ‘Procedure’,  get: r => r.procedure_name || r.procedureName || ‘–’ },
+{ label: ‘Patient’,    get: r => `${r.patient?.firstName||''} ${r.patient?.lastName||''}`.trim() || ‘–’ },
+{ label: ‘Surgeon’,    get: r => `${r.surgeon?.firstName||''} ${r.surgeon?.lastName||''}`.trim() || ‘–’ },
+{ label: ‘Theatre’,    get: r => r.theatre?.name || ‘–’ },
 { label: ‘Date’,       get: r => fmtDate(r.procedure_date || r.procedureDate) },
-{ label: ‘Status’,     get: r => r.status || ‘—’, badge: true },
+{ label: ‘Status’,     get: r => r.status || ‘–’, badge: true },
 ];
 if (id === ‘dispensing-records’) return [
-{ label: ‘Medicine’,   get: r => r.medication || r.medicineName || r.medicine_name || ‘—’ },
-{ label: ‘Patient’,    get: r => `${r.patient?.firstName||''} ${r.patient?.lastName||''}`.trim() || ‘—’ },
-{ label: ‘Qty’,        get: r => r.quantityDispensed || r.quantity || ‘—’ },
-{ label: ‘Pharmacist’, get: r => `${r.pharmacist?.firstName||''} ${r.pharmacist?.lastName||''}`.trim() || ‘—’ },
+{ label: ‘Medicine’,   get: r => r.medication || r.medicineName || r.medicine_name || ‘–’ },
+{ label: ‘Patient’,    get: r => `${r.patient?.firstName||''} ${r.patient?.lastName||''}`.trim() || ‘–’ },
+{ label: ‘Qty’,        get: r => r.quantityDispensed || r.quantity || ‘–’ },
+{ label: ‘Pharmacist’, get: r => `${r.pharmacist?.firstName||''} ${r.pharmacist?.lastName||''}`.trim() || ‘–’ },
 { label: ‘Date’,       get: r => fmtDate(r.dispensedDate || r.createdAt) },
 ];
 if (id === ‘direct-dispensing’) return [
-{ label: ‘Medicine’,  get: r => r.medicineName || r.medication || ‘—’ },
-{ label: ‘Qty’,       get: r => r.quantity || ‘—’ },
+{ label: ‘Medicine’,  get: r => r.medicineName || r.medication || ‘–’ },
+{ label: ‘Qty’,       get: r => r.quantity || ‘–’ },
 { label: ‘Amount’,    get: r => fmtTZS(r.totalAmount || r.amount) },
 { label: ‘Date’,      get: r => fmtDate(r.createdAt) },
 ];
 if (id === ‘medicines-inventory’) return [
-{ label: ‘Name’,      get: r => r.name || ‘—’ },
-{ label: ‘Category’,  get: r => r.category || ‘—’ },
+{ label: ‘Name’,      get: r => r.name || ‘–’ },
+{ label: ‘Category’,  get: r => r.category || ‘–’ },
 { label: ‘Stock’,     get: r => fmt(r.quantityInStock) },
-{ label: ‘Unit’,      get: r => r.unit || ‘—’ },
+{ label: ‘Unit’,      get: r => r.unit || ‘–’ },
 { label: ‘Price’,     get: r => fmtTZS(r.sellingPrice) },
 ];
 const keys = Object.keys(rows[0] || {}).filter(k => typeof rows[0][k] !== ‘object’).slice(0, 6);
-return keys.map(k => ({ label: k, get: r => String(r[k] ?? ‘—’) }));
+return keys.map(k => ({ label: k, get: r => String(r[k] ?? ‘–’) }));
 })();
 
 const statusColor = (s = ‘’) => {
@@ -195,9 +195,9 @@ Showing first 200 of {fmt(rows.length)} records. Export for full data.
 );
 };
 
-/* ─────────────────────────────────────────────
+/* ———————————————
 HMIS Summary Views
-───────────────────────────────────────────── */
+——————————————— */
 const HMISSummary = ({ data, reportId }) => {
 if (!data?.data) return null;
 const d = data.data;
@@ -246,7 +246,7 @@ if (reportId === ‘hmis-opd’) return (
 if (reportId === ‘hmis-ipd’) return (
 <div className="space-y-5">
 <div className="grid grid-cols-3 gap-4">
-{[{label:‘Total Admissions’,value:fmt(d.totalAdmissions),color:‘violet’},{label:‘Deaths’,value:fmt(d.deaths),color:‘red’},{label:‘Avg Stay (days)’,value:d.averageLengthOfStay??’—’,color:‘blue’}].map(s=>(
+{[{label:‘Total Admissions’,value:fmt(d.totalAdmissions),color:‘violet’},{label:‘Deaths’,value:fmt(d.deaths),color:‘red’},{label:‘Avg Stay (days)’,value:d.averageLengthOfStay??’–’,color:‘blue’}].map(s=>(
 <div key={s.label} className={`bg-${s.color}-50 rounded-xl p-4 text-center`}>
 <div className={`text-3xl font-bold text-${s.color}-700`}>{s.value}</div>
 <div className={`text-xs text-${s.color}-500 mt-1`}>{s.label}</div>
@@ -288,7 +288,7 @@ if (reportId === ‘hmis-ipd’) return (
 
 if (reportId === ‘hmis-bed-occupancy’) return (
 <div className="space-y-3">
-{[{label:‘Currently Occupied Beds’,value:fmt(d.occupiedBeds),color:‘blue’},{label:‘Maternity Ward — Admitted’,value:fmt(d.maternityWard?.admitted),color:‘pink’},{label:‘Other Wards — Admitted’,value:fmt(d.otherWards?.admitted),color:‘violet’}].map(s=>(
+{[{label:‘Currently Occupied Beds’,value:fmt(d.occupiedBeds),color:‘blue’},{label:‘Maternity Ward – Admitted’,value:fmt(d.maternityWard?.admitted),color:‘pink’},{label:‘Other Wards – Admitted’,value:fmt(d.otherWards?.admitted),color:‘violet’}].map(s=>(
 <div key={s.label} className={`flex items-center justify-between bg-${s.color}-50 rounded-xl px-5 py-3`}>
 <span className={`text-sm text-${s.color}-600`}>{s.label}</span>
 <span className={`text-xl font-bold text-${s.color}-700`}>{s.value}</span>
@@ -335,10 +335,10 @@ if (reportId === ‘hmis-tracer-medicine’) return (
 return null;
 };
 
-/* ─────────────────────────────────────────────
+/* ———————————————
 Billing Statistics Summary
 Uses confirmed fields: invoices.{totalInvoices,totalAmount,totalPaid,totalDue}, payments[{_id,count,total}], overdueCount
-───────────────────────────────────────────── */
+——————————————— */
 const BillingStatsSummary = ({ data }) => {
 const inv = data?.data?.invoices || {};
 const payments = data?.data?.payments || [];
@@ -380,10 +380,10 @@ return (
 );
 };
 
-/* ─────────────────────────────────────────────
+/* ———————————————
 IPD Statistics Summary
 Uses confirmed fields: currentAdmissions, statusCounts[{_id,count}]
-───────────────────────────────────────────── */
+——————————————— */
 const IPDStatsSummary = ({ data }) => {
 const d = data?.data || {};
 return (
@@ -410,9 +410,9 @@ return (
 );
 };
 
-/* ─────────────────────────────────────────────
+/* ———————————————
 PDF Export
-───────────────────────────────────────────── */
+——————————————— */
 const buildPDF = (rawData, report, dateRange, facilityName) => {
 const doc = new jsPDF();
 const pw = doc.internal.pageSize.getWidth();
@@ -421,7 +421,7 @@ doc.text(report.name, 14, 20);
 doc.setFontSize(9); doc.setFont(undefined, ‘normal’);
 doc.text(`Facility: ${facilityName}`, 14, 28);
 doc.text(`Generated: ${new Date().toLocaleString()}`, 14, 34);
-if (dateRange.start) doc.text(`Period: ${dateRange.start} → ${dateRange.end||'Present'}`, 14, 40);
+if (dateRange.start) doc.text(`Period: ${dateRange.start} -> ${dateRange.end||'Present'}`, 14, 40);
 
 const rows = Array.isArray(rawData) ? rawData
 : rawData?.data?.invoices ? rawData.data.invoices
@@ -457,9 +457,9 @@ for(let i=1;i<=pages;i++){doc.setPage(i);doc.setFontSize(7.5);doc.text(`Page ${i
 return doc;
 };
 
-/* ─────────────────────────────────────────────
+/* ———————————————
 HMIS Processors
-───────────────────────────────────────────── */
+——————————————— */
 const processOPDData = (rawData) => {
 const visits = rawData?.data||(Array.isArray(rawData)?rawData:[]);
 const empty=()=>({male:0,female:0,total:0});
@@ -534,9 +534,9 @@ return {medicine:name,serviceProvided:found?‘Yes’:‘No’,available:found&&
 })};
 };
 
-/* ─────────────────────────────────────────────
+/* ———————————————
 Main Component
-───────────────────────────────────────────── */
+——————————————— */
 const Reports = () => {
 const [selectedReport, setSelectedReport] = useState(null);
 const [dateRange, setDateRange] = useState({ start: ‘’, end: ‘’ });
@@ -555,11 +555,11 @@ api.get(’/billing/statistics’),
 api.get(’/ipd-records/statistics’),
 api.get(’/visits’),
 ]);
-// /api/billing/statistics → { data: { invoices: { totalPaid, totalDue }, overdueCount } }
+// /api/billing/statistics -> { data: { invoices: { totalPaid, totalDue }, overdueCount } }
 const billing = billingRes.status===‘fulfilled’ ? billingRes.value?.data?.data : null;
-// /api/ipd-records/statistics → { data: { currentAdmissions } }
+// /api/ipd-records/statistics -> { data: { currentAdmissions } }
 const ipd = ipdRes.status===‘fulfilled’ ? ipdRes.value?.data?.data : null;
-// /api/visits → { data: […] } only isActive:true
+// /api/visits -> { data: […] } only isActive:true
 const visits = visitsRes.status===‘fulfilled’ ? visitsRes.value?.data?.data : null;
 setStats({
 activeVisits:      Array.isArray(visits) ? visits.length : 0,
@@ -573,7 +573,7 @@ currentAdmissions: ipd?.currentAdmissions       || 0,
 
 const reportCategories = [
 { id:‘hmis’, title:‘HMIS Reports’, icon:FileText, color:‘from-indigo-600 to-indigo-700’, reports:[
-// isActive=all → backend returns full historical dataset, not just active visits
+// isActive=all -> backend returns full historical dataset, not just active visits
 { id:‘hmis-opd’,             name:‘OPD Monthly Report’,       description:‘Outpatient visits by diagnosis & demographics’, endpoint:’/visits’,          type:‘hmis’, params:{isActive:‘all’,limit:1000} },
 { id:‘hmis-ipd’,             name:‘IPD Monthly Report’,       description:‘Inpatient admissions summary’,                  endpoint:’/ipd-records’,     type:‘hmis’, params:{limit:1000} },
 { id:‘hmis-bed-occupancy’,   name:‘Bed Occupancy Report’,     description:‘Ward bed usage & occupancy rates’,              endpoint:’/ipd-records’,     type:‘hmis’, params:{limit:1000} },
@@ -746,7 +746,7 @@ return (
     {loading && (
       <div className="bg-white rounded-xl border border-gray-200 p-10 flex items-center justify-center gap-3 mb-6">
         <RefreshCw className="w-5 h-5 text-blue-600 animate-spin" />
-        <span className="text-gray-600 text-sm">Generating report…</span>
+        <span className="text-gray-600 text-sm">Generating report...</span>
       </div>
     )}
 
@@ -767,8 +767,8 @@ return (
             <h3 className="text-base font-semibold text-gray-900">{selectedReport?.name}</h3>
             <p className="text-xs text-gray-400 mt-0.5">
               {recordCount!==null ? `${fmt(recordCount)} record${recordCount!==1?'s':''}` : 'Summary'}
-              {dateRange.start ? ` · ${dateRange.start} → ${dateRange.end||'now'}` : ''}
-              {' · '}{new Date().toLocaleString()}
+              {dateRange.start ? ` ? ${dateRange.start} -> ${dateRange.end||'now'}` : ''}
+              {' ? '}{new Date().toLocaleString()}
             </p>
           </div>
           <div className="flex gap-2">
