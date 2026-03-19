@@ -312,29 +312,19 @@ export const AuthProvider = ({ children }) => {
 
   // Reset password
   const resetPassword = async (token, newPassword) => {
-    try {
-      const response = await api.put(`/auth/reset-password/${token}`, {
-        password: newPassword
-      });
-      
-      const { user, token: newToken } = response.data.data;
-      
-      localStorage.setItem('token', newToken);
-      api.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
-      
-      dispatch({
-        type: 'AUTH_SUCCESS',
-        payload: { user, token: newToken }
-      });
-      
-      toast.success('Password reset successfully');
-      return { success: true };
-    } catch (error) {
-      const message = error.response?.data?.message || 'Password reset failed';
-      toast.error(message);
-      return { success: false, message };
-    }
-  };
+  try {
+    await api.put(`/auth/reset-password/${token}`, {
+      password: newPassword
+    });
+
+    toast.success('Password reset successfully');
+    return { success: true };
+  } catch (error) {
+    const message = error.response?.data?.message || 'Password reset failed';
+    toast.error(message);
+    throw error; // re-throw so ResetPasswordForm can catch it
+  }
+};
 
   // Verify email
   const verifyEmail = async (token) => {
