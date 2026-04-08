@@ -5,7 +5,7 @@ import { toast } from 'react-hot-toast';
 import { visitService } from '../../utils/visitService';
 
 const VitalsForm = ({ visitId, existingVitals }) => {
-  const { register, handleSubmit, formState: { isSubmitting } } = useForm({
+  const { register, handleSubmit, reset, formState: { isSubmitting } } = useForm({
     defaultValues: existingVitals || {},
   });
   const queryClient = useQueryClient();
@@ -41,6 +41,10 @@ const VitalsForm = ({ visitId, existingVitals }) => {
         <div>
           <label className="label-field">Oxygen Saturation (%)</label>
           <input type="number" {...register('oxygenSaturation', { valueAsNumber: true })} className="input-field" />
+        </div>
+        <div>
+          <label className="label-field">Body Weight (kg)</label>
+          <input type="number" step="0.1" {...register('weight', { valueAsNumber: true })} className="input-field" />
         </div>
       </div>
       <div className="flex justify-end">
