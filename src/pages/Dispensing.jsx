@@ -282,6 +282,33 @@ export default function Dispensing() {
     });
   };
 
+  // Delete prescription handler
+  const handleDeletePrescription = async (prescriptionId) => {
+    if (!window.confirm('Are you sure you want to permanently delete this prescription? This cannot be undone.')) return;
+
+    try {
+      setLoading(true);
+      await api.delete(`/prescriptions/${prescriptionId}`);
+      toast.success('Prescription deleted');
+
+      // Update selectedPatient state so modal updates instantly
+      setSelectedPatient((prev) => {
+        if (!prev) return prev;
+        const updatedPrescriptions = prev.prescriptions.filter((p) => p._id !== prescriptionId);
+        // Close modal if no prescriptions left
+        if (updatedPrescriptions.length === 0) return null;
+        return { ...prev, prescriptions: updatedPrescriptions };
+      });
+
+      fetchPendingPrescriptions();
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to delete prescription');
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleQuantify = async () => {
     if (!quantifyData.quantifiedQuantity || quantifyData.quantifiedQuantity <= 0) {
       toast.error("Please enter a valid quantity");
@@ -1695,7 +1722,7 @@ export default function Dispensing() {
         </div>
       )}
 
-      {/* Patient Prescriptions Modal */}
+      {/* Patient Prescriptions Modal (Quantification Tab) */}
       {selectedPatient && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl shadow-2xl w-full max-w-6xl max-h-[90vh] overflow-hidden flex flex-col">
@@ -1762,7 +1789,7 @@ export default function Dispensing() {
                           Status
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Action
+                          Actions
                         </th>
                       </tr>
                     </thead>
@@ -1805,15 +1832,29 @@ export default function Dispensing() {
                             </span>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm">
-                            <button
-                              onClick={() => handleSelectForQuantify(pres)}
-                              className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
-                            >
-                              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                              </svg>
-                              Quantify
-                            </button>
+                            <div className="flex items-center space-x-2">
+                              <button
+                                onClick={() => handleSelectForQuantify(pres)}
+                                className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
+                              >
+                                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                                </svg>
+                                Quantify
+                              </button>
+                              {user?.role === 'pharmacist' && (
+                                <button
+                                  onClick={() => handleDeletePrescription(pres._id)}
+                                  disabled={loading}
+                                  className="inline-flex items-center px-3 py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                                  title="Delete prescription"
+                                >
+                                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                  </svg>
+                                </button>
+                              )}
+                            </div>
                           </td>
                         </tr>
                       ))}
@@ -1861,15 +1902,29 @@ export default function Dispensing() {
                       </div>
                     </div>
 
-                    <button
-                      onClick={() => handleSelectForQuantify(pres)}
-                      className="w-full inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                    >
-                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                      </svg>
-                      Quantify
-                    </button>
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => handleSelectForQuantify(pres)}
+                        className="flex-1 inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                      >
+                        <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                        </svg>
+                        Quantify
+                      </button>
+                      {user?.role === 'pharmacist' && (
+                        <button
+                          onClick={() => handleDeletePrescription(pres._id)}
+                          disabled={loading}
+                          className="px-3 py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                          title="Delete prescription"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
+                        </button>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>

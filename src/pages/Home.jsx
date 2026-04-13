@@ -511,7 +511,7 @@ export default function Home() {
           </div>
 
           <div className="border-t border-gray-800 pt-6 sm:pt-8 text-center text-sm sm:text-base text-gray-400">
-            <p>&copy; 2025 Segese Medical Clinic & Fufumo Pharmacy. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} Segese Medical Clinic & Fufumo Pharmacy. All rights reserved.</p>
           </div>
         </div>
       </footer>
