@@ -182,7 +182,7 @@ export default function Home() {
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
           isScrolled 
             ? 'bg-white shadow-lg py-3' 
-            : 'bg-white/95 backdrop-blur-sm shadow-md py-4'
+            : 'bg-transparent py-5'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -196,17 +196,19 @@ export default function Home() {
                 className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg transform group-hover:scale-110 transition-transform duration-300 bg-cover bg-center flex-shrink-0"
                 style={{ backgroundImage: "url('/SMC Logo.png')" }}
               />
-              <span className="text-sm sm:text-lg md:text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+              <span className={`text-sm sm:text-lg md:text-xl font-bold transition-all duration-300 ${isScrolled ? 'bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent' : 'text-white'}`}>
                 SEGESE MEDICAL CLINIC
               </span>
             </div>
             
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex space-x-6 lg:space-x-8 text-gray-700 font-medium">
+            <nav className="hidden md:flex space-x-6 lg:space-x-8 font-medium">
               <button
                 onClick={scrollToTop}
-                className={`hover:text-blue-600 transition-colors duration-200 ${
-                  activeLink === "home" ? "text-blue-600 font-semibold" : ""
+                className={`transition-colors duration-200 ${
+                  isScrolled
+                    ? activeLink === "home" ? "text-blue-600 font-semibold" : "text-gray-700 hover:text-blue-600"
+                    : activeLink === "home" ? "text-white font-semibold" : "text-gray-300 hover:text-white"
                 }`}
               >
                 Home
@@ -215,8 +217,10 @@ export default function Home() {
               <NavLink
                 to="/our-services"
                 className={({ isActive }) =>
-                  `hover:text-blue-600 transition-colors duration-200 ${
-                    isActive ? "text-blue-600 font-semibold" : ""
+                  `transition-colors duration-200 ${
+                    isScrolled
+                      ? isActive ? "text-blue-600 font-semibold" : "text-gray-700 hover:text-blue-600"
+                      : isActive ? "text-white font-semibold" : "text-gray-300 hover:text-white"
                   }`
                 }
               >
@@ -226,8 +230,10 @@ export default function Home() {
               <NavLink
                 to="/about"
                 className={({ isActive }) =>
-                  `hover:text-blue-600 transition-colors duration-200 ${
-                    isActive ? "text-blue-600 font-semibold" : ""
+                  `transition-colors duration-200 ${
+                    isScrolled
+                      ? isActive ? "text-blue-600 font-semibold" : "text-gray-700 hover:text-blue-600"
+                      : isActive ? "text-white font-semibold" : "text-gray-300 hover:text-white"
                   }`
                 }
               >
@@ -236,8 +242,10 @@ export default function Home() {
 
               <a
                 href="#contact"
-                className={`hover:text-blue-600 transition-colors duration-200 ${
-                  activeLink === "contact" ? "text-blue-600 font-semibold" : ""
+                className={`transition-colors duration-200 ${
+                  isScrolled
+                    ? activeLink === "contact" ? "text-blue-600 font-semibold" : "text-gray-700 hover:text-blue-600"
+                    : activeLink === "contact" ? "text-white font-semibold" : "text-gray-300 hover:text-white"
                 }`}
               >
                 Contact
@@ -251,7 +259,7 @@ export default function Home() {
               {/* Mobile menu button */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="md:hidden p-2 text-gray-700 hover:text-blue-600 focus:outline-none"
+                className={`md:hidden p-2 focus:outline-none transition-colors ${isScrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-gray-300'}`}
               >
                 {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </button>
@@ -260,11 +268,13 @@ export default function Home() {
 
           {/* Mobile Menu */}
           {mobileMenuOpen && (
-            <nav className="md:hidden mt-4 pb-4 space-y-2">
+            <nav className={`md:hidden mt-4 pb-4 space-y-2 rounded-xl px-2 ${isScrolled ? '' : 'bg-[#0b1a2e]/90 backdrop-blur-sm border border-white/10'}`}>
               <button
                 onClick={scrollToTop}
-                className={`block w-full text-left px-4 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors ${
-                  activeLink === "home" ? "bg-blue-50 text-blue-600 font-semibold" : ""
+                className={`block w-full text-left px-4 py-2 rounded-lg transition-colors ${
+                  activeLink === "home"
+                    ? isScrolled ? "bg-blue-50 text-blue-600 font-semibold" : "bg-white/10 text-white font-semibold"
+                    : isScrolled ? "text-gray-700 hover:bg-blue-50 hover:text-blue-600" : "text-gray-300 hover:bg-white/10 hover:text-white"
                 }`}
               >
                 Home
@@ -274,8 +284,10 @@ export default function Home() {
                 to="/our-services"
                 onClick={() => setMobileMenuOpen(false)}
                 className={({ isActive }) =>
-                  `block w-full text-left px-4 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors ${
-                    isActive ? "bg-blue-50 text-blue-600 font-semibold" : ""
+                  `block w-full text-left px-4 py-2 rounded-lg transition-colors ${
+                    isActive
+                      ? isScrolled ? "bg-blue-50 text-blue-600 font-semibold" : "bg-white/10 text-white font-semibold"
+                      : isScrolled ? "text-gray-700 hover:bg-blue-50 hover:text-blue-600" : "text-gray-300 hover:bg-white/10 hover:text-white"
                   }`
                 }
               >
@@ -286,8 +298,10 @@ export default function Home() {
                 to="/about"
                 onClick={() => setMobileMenuOpen(false)}
                 className={({ isActive }) =>
-                  `block w-full text-left px-4 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors ${
-                    isActive ? "bg-blue-50 text-blue-600 font-semibold" : ""
+                  `block w-full text-left px-4 py-2 rounded-lg transition-colors ${
+                    isActive
+                      ? isScrolled ? "bg-blue-50 text-blue-600 font-semibold" : "bg-white/10 text-white font-semibold"
+                      : isScrolled ? "text-gray-700 hover:bg-blue-50 hover:text-blue-600" : "text-gray-300 hover:bg-white/10 hover:text-white"
                   }`
                 }
               >
@@ -297,8 +311,10 @@ export default function Home() {
               <a
                 href="#contact"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block w-full text-left px-4 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors ${
-                  activeLink === "contact" ? "bg-blue-50 text-blue-600 font-semibold" : ""
+                className={`block w-full text-left px-4 py-2 rounded-lg transition-colors ${
+                  activeLink === "contact"
+                    ? isScrolled ? "bg-blue-50 text-blue-600 font-semibold" : "bg-white/10 text-white font-semibold"
+                    : isScrolled ? "text-gray-700 hover:bg-blue-50 hover:text-blue-600" : "text-gray-300 hover:bg-white/10 hover:text-white"
                 }`}
               >
                 Contact
@@ -309,77 +325,116 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <main
-        id="home"
-        className="relative pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 md:pb-20 px-4 sm:px-6 overflow-hidden"
-        style={{
-          backgroundImage: "url('/images/bg2.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-r from-white/95 to-white/80"></div>
-        
-        <div className="relative max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
-            {/* Left Side */}
-            <div className="space-y-4 sm:space-y-6">
-              <div className="inline-flex items-center px-3 sm:px-4 py-2 bg-blue-50 rounded-full text-blue-700 text-xs sm:text-sm font-medium">
-                <Activity className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
+      <main id="home" className="relative overflow-hidden min-h-screen flex items-center">
+        {/* Full-bleed split background */}
+        <div className="absolute inset-0 flex">
+          {/* Left dark panel */}
+          <div className="w-full md:w-1/2 bg-[#0b1a2e]" />
+          {/* Right image panel */}
+          <div
+            className="hidden md:block w-1/2 relative"
+            style={{
+              backgroundImage: "url('/images/DoctorMapula.jpg')",
+              backgroundSize: "cover",
+              backgroundPosition: "center top",
+            }}
+          >
+            {/* Feather left edge into dark panel */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0b1a2e] via-[#0b1a2e]/50 to-transparent" />
+          </div>
+        </div>
+
+        {/* Subtle dot grid texture on dark side */}
+        <div
+          className="absolute inset-0 md:w-1/2 opacity-[0.04]"
+          style={{
+            backgroundImage: "radial-gradient(circle, #ffffff 1px, transparent 1px)",
+            backgroundSize: "28px 28px",
+          }}
+        />
+
+        {/* Content */}
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 pt-36 pb-24">
+          <div className="max-w-lg lg:max-w-2xl space-y-8">
+
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/10">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
+              <span className="text-blue-300 text-xs sm:text-sm font-medium tracking-widest uppercase">
                 Quality Healthcare Since 2009
-              </div>
-              
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight">
-                Your Health, <br />
-                <span className="bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
-                  Our Priority
-                </span>
-              </h1>
-              
-              <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed">
-                Segese Medical Clinic & Fufumo Pharmacy provides comprehensive healthcare 
-                services with compassion, expertise, and state-of-the-art facilities.
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4">
-                <NavLink
-                  to="/our-services"
-                  className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 shadow-lg hover:shadow-xl font-semibold text-sm sm:text-base"
-                >
-                  Our Services
-                  <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
-                </NavLink>
-                
-                <a
-                  href="#contact"
-                  className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-white text-blue-600 border-2 border-blue-600 rounded-lg hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 font-semibold text-sm sm:text-base"
-                >
-                  Contact Us
-                </a>
-              </div>
-
-              {/* Stats */}
-              <div className="grid grid-cols-2 gap-3 sm:gap-4 pt-6 sm:pt-8">
-                {stats.map((stat, idx) => (
-                  <div key={idx} className="text-center p-3 bg-white/50 rounded-lg">
-                    <div className="text-2xl sm:text-3xl font-bold text-blue-600">{stat.number}</div>
-                    <div className="text-xs sm:text-sm text-gray-600 mt-1">{stat.label}</div>
-                  </div>
-                ))}
-              </div>
+              </span>
             </div>
 
-            {/* Right Side - Hidden on mobile */}
-            <div className="relative hidden md:block">
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-200 to-blue-300 rounded-3xl transform rotate-6"></div>
-              <img
-                src="/images/DoctorMapula.jpg"
-                alt="Medical Professional"
-                className="relative rounded-3xl shadow-2xl transform hover:scale-105 transition-transform duration-300 w-full h-auto"
-              />
+            {/* Headline */}
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-[4.5rem] font-black text-white leading-[1.06] tracking-tight">
+              Your Health,<br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-300">
+                Our Priority.
+              </span>
+            </h1>
+
+            {/* Divider accent */}
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-0.5 bg-blue-500 rounded-full" />
+              <div className="w-3 h-0.5 bg-blue-500/40 rounded-full" />
+            </div>
+
+            {/* Subtext */}
+            <p className="text-gray-300 text-base sm:text-lg leading-relaxed max-w-md">
+              Segese Medical Clinic & Fufumo Pharmacy delivers comprehensive, compassionate care — from OPD and surgery to pharmacy and diagnostics.
+            </p>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-3 pt-1">
+              <NavLink
+                to="/our-services"
+                className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-semibold rounded-xl transition-all duration-200 shadow-xl shadow-blue-900/50 text-sm sm:text-base"
+              >
+                Our Services
+                <ChevronRight className="w-4 h-4" />
+              </NavLink>
+              <a
+                href="#contact"
+                className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-white/8 hover:bg-white/15 border border-white/20 text-white font-semibold rounded-xl backdrop-blur-sm transition-all duration-200 text-sm sm:text-base"
+                style={{ backgroundColor: 'rgba(255,255,255,0.08)' }}
+              >
+                Contact Us
+              </a>
+            </div>
+
+            {/* Stats strip */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-white/10 rounded-2xl overflow-hidden border border-white/10 mt-4">
+              {stats.map((stat, idx) => {
+                const Icon = stat.icon;
+                return (
+                  <div
+                    key={idx}
+                    className="bg-white/5 hover:bg-white/10 transition-colors px-4 py-5 flex flex-col items-center text-center gap-1.5"
+                  >
+                    <Icon className="w-4 h-4 text-blue-400" />
+                    <div className="text-2xl font-extrabold text-white leading-none tracking-tight">
+                      {stat.number}
+                    </div>
+                    <div className="text-xs text-gray-400 font-medium">{stat.label}</div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
+
+        {/* Mobile: faint doctor image ghost at bottom-right */}
+        <div
+          className="md:hidden absolute bottom-0 right-0 w-40 h-56 pointer-events-none"
+          style={{
+            backgroundImage: "url('/images/DoctorMapula.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center top",
+            opacity: 0.15,
+            maskImage: "linear-gradient(to left, black 20%, transparent 100%)",
+            WebkitMaskImage: "linear-gradient(to left, black 20%, transparent 100%)",
+          }}
+        />
       </main>
 
       {/* Info Section */}
@@ -511,7 +566,7 @@ export default function Home() {
           </div>
 
           <div className="border-t border-gray-800 pt-6 sm:pt-8 text-center text-sm sm:text-base text-gray-400">
-            <p>&copy; {new Date().getFullYear()} Segese Medical Clinic & Fufumo Pharmacy. All rights reserved.</p>
+            <p>&copy; 2025 Segese Medical Clinic & Fufumo Pharmacy. All rights reserved.</p>
           </div>
         </div>
       </footer>
