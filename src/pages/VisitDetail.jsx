@@ -152,6 +152,7 @@ export default function VisitDetail() {
                         <p><strong>BP:</strong> {vitals.bloodPressure}</p>
                         <p><strong>Heart Rate:</strong> {vitals.heartRate} bpm</p>
                         <p><strong>O2 Sat:</strong> {vitals.oxygenSaturation}%</p>
+                        <p><strong>Body weight:</strong> {vitals.weight} kg</p>
                       </div>
                       <div className="mt-2 pt-2 border-t border-gray-200 flex flex-wrap gap-2 sm:gap-4 text-[10px] sm:text-xs text-gray-500">
                         {vitals.recordedAt && (
