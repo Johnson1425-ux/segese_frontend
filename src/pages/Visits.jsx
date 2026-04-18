@@ -50,7 +50,11 @@ const Visits = () => {
   );
 
   const visits = visitsData?.data || [];
-  const totalPages = visitsData?.totalPages || 1;
+  const totalResults = visitsData?.total || 0;
+  const limit =10;
+  
+  //Calculate total pages manually
+  const totalPages = Math.ceil(totalResults / limit) || 1;
 
   if (isLoading) return <LoadingSpinner />;
   if (isError) return <div className="text-red-500 p-4 text-xs sm:text-sm">Error loading visits.</div>;
