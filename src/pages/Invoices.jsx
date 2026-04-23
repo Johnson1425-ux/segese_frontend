@@ -18,7 +18,7 @@ const Invoices = () => {
     );
 
     const invoices = invoiceData?.data?.data?.invoices || [];
-    const totalPages = invoiceData?.data?.data?.pagination?.totalPages || 1;
+    const totalPages = invoiceData?.data?.data?.pagination?.pages || 1;
 
     const getStatusChip = (status) => {
         const statusClasses = {
