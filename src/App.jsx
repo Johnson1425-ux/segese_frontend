@@ -111,22 +111,22 @@ const ProtectedRoute = ({ children, requiredPermissions = [], requiredRoles = []
 };
 
 // Theme Toggle Button
-const ThemeToggle = ({ className = '' }) => {
-  const { isDark, toggleTheme } = useTheme();
-  return (
-    <button
-      onClick={toggleTheme}
-      aria-label="Toggle dark mode"
-      className={`p-2 rounded-lg transition-colors duration-200 ${
-        isDark
-          ? 'bg-gray-700 hover:bg-gray-600 text-yellow-400'
-          : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
-      } ${className}`}
-    >
-      {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-    </button>
-  );
-};
+// const ThemeToggle = ({ className = '' }) => {
+//   const { isDark, toggleTheme } = useTheme();
+//   return (
+//     <button
+//       onClick={toggleTheme}
+//       aria-label="Toggle dark mode"
+//       className={`p-2 rounded-lg transition-colors duration-200 ${
+//         isDark
+//           ? 'bg-gray-700 hover:bg-gray-600 text-yellow-400'
+//           : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+//       } ${className}`}
+//     >
+//       {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+//     </button>
+//   );
+// };
 
 // Layout Component
 const AppLayout = ({ children }) => {
@@ -416,7 +416,7 @@ const App = () => {
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <HelmetProvider>
         <QueryClientProvider client={queryClient}>
-          <ThemeProvider>
+          {/* <ThemeProvider> */}
             <AuthProvider>
               <AppContent />
               <Toaster
@@ -438,7 +438,7 @@ const App = () => {
                 }}
               />
             </AuthProvider>
-          </ThemeProvider>
+          {/* </ThemeProvider> */}
         </QueryClientProvider>
       </HelmetProvider>
     </ErrorBoundary>
