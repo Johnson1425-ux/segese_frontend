@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useTheme } from '../context/ThemeContext.jsx';
 import { 
   Home, 
   Users, 
@@ -30,7 +31,10 @@ import {
   Menu,
   X,
   Scissors,
-  Building2
+  Building2,
+  Sun,
+  Moon,
+  SyringeIcon
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
 
@@ -47,6 +51,8 @@ const Sidebar = ({ isOpen, onClose }) => {
     theatre: false,
     administration: false
   });
+  const { isDark, toggleTheme } = useTheme();
+
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -99,6 +105,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         { path: '/appointments', icon: Calendar, label: 'Appointments', roles: ['admin', 'doctor', 'receptionist'] },
         { path: '/visits/end-visit', icon: ToggleLeft, label: 'End Visit', roles: ['admin', 'receptionist'] },
         { path: '/lab-tests/completed', icon: CheckCircle, label: 'Lab Results', roles: ['admin', 'doctor'] },
+        { path: '/nurse/injections', label: 'Injections', icon: SyringeIcon , roles: ['nurse', 'doctor', 'admin'] },
         { path: '/admission', icon: Activity, label: 'Admission', roles: ['admin', 'doctor'] },
         { path: '/ipd', icon: Activity, label: 'IPD', roles: ['admin', 'doctor', 'nurse'] },
         { path: '/wards', icon: Activity, label: 'Wards', roles: ['admin'] },
@@ -395,6 +402,9 @@ const Sidebar = ({ isOpen, onClose }) => {
           >
             <LogOut className={`w-5 h-5 flex-shrink-0 ${!isCollapsed ? 'mr-3' : ''}`} />
             {!isCollapsed && 'Logout'}
+          </button>
+          <button onClick={toggleTheme} className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700">
+            {isDark ? <Sun className="w-5 h-5 text-yellow-400" /> : <Moon className="w-5 h-5 text-gray-500" />}
           </button>
         </div>
       </div>
