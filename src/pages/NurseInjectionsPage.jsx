@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { toast } from 'react-hot-toast';
-import api from '../../utils/api';
+import api from '../utils/api';
 
 const fetchPendingInjections = () => api.get('/visits/injections/pending');
 
