@@ -8,7 +8,7 @@ import { Menu, Sun, Moon } from 'lucide-react';
 
 // Context Providers
 import { AuthProvider, useAuth } from './context/AuthContext.jsx';
-import { ThemeProvider, useTheme } from './context/ThemeContext.jsx';
+// import { ThemeProvider, useTheme } from './context/ThemeContext.jsx';
 
 // Components
 import Sidebar from './components/Sidebar.jsx';
