@@ -51,7 +51,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     theatre: false,
     administration: false
   });
-  const { isDark, toggleTheme } = useTheme();
+  // const { isDark, toggleTheme } = useTheme();
 
 
   // Close mobile menu on route change
@@ -403,9 +403,9 @@ const Sidebar = ({ isOpen, onClose }) => {
             <LogOut className={`w-5 h-5 flex-shrink-0 ${!isCollapsed ? 'mr-3' : ''}`} />
             {!isCollapsed && 'Logout'}
           </button>
-          <button onClick={toggleTheme} className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700">
+          {/* <button onClick={toggleTheme} className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700">
             {isDark ? <Sun className="w-5 h-5 text-yellow-400" /> : <Moon className="w-5 h-5 text-gray-500" />}
-          </button>
+          </button> */}
         </div>
       </div>
     </div>

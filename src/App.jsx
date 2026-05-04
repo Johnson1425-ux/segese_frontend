@@ -271,7 +271,7 @@ const AppContent = () => {
           <Route path="/visits/new" element={
             <ProtectedRoute requiredRoles={['admin', 'receptionist']}><VisitForm /></ProtectedRoute>
           } />
-          <Route path="/visits/active" element={
+          <Route path="/visits/end-visit" element={
             <ProtectedRoute requiredRoles={['admin', 'doctor', 'nurse']}><ActiveVisits /></ProtectedRoute>
           } />
           <Route path="/visits/:id" element={
