@@ -227,7 +227,7 @@ const Patients = () => {
               </button>
               
               <Link
-                to={`/patients/${patient._id}/edit`}
+                to={`/patients/edit/${patient._id}`}
                 className="flex items-center w-full px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200 no-underline"
                 onClick={(e) => {
                   e.stopPropagation();
@@ -384,7 +384,7 @@ const Patients = () => {
         
         <div className="mt-4 sm:mt-6 md:mt-8 flex flex-col sm:flex-row justify-end gap-2 sm:gap-3 md:gap-4">
           <Link
-            to={`/patients/${patient._id}/edit`}
+            to={`/patients/edit/${patient._id}`}
             className="btn-secondary flex items-center justify-center text-xs sm:text-sm"
             onClick={onClose}
           >

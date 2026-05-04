@@ -188,9 +188,9 @@ const AppointmentForm = () => {
   if (isLoading) return <LoadingSpinner />;
 
   return (
-    <div className="max-w-4xl mx-auto p-4 md:p-6 bg-white rounded-lg shadow-md">
+    <div className="max-w-4xl mx-auto p-4 md:p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 md:mb-6 gap-3">
-        <h1 className="text-xl md:text-2xl font-bold text-gray-800">
+        <h1 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-white">
           {isEditing ? 'Edit Appointment' : 'Book New Appointment'}
         </h1>
         <button
@@ -206,7 +206,7 @@ const AppointmentForm = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
           {/* Patient Search */}
           <div ref={patientSearchRef} className="relative">
-            <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1 md:mb-2">
+            <label className="block text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 md:mb-2">
               Patient *
             </label>
             <div className="relative">
@@ -217,15 +217,15 @@ const AppointmentForm = () => {
                 onChange={handlePatientSearchChange}
                 onFocus={() => setShowPatientDropdown(true)}
                 placeholder="Search for a patient..."
-                className="input-field pl-9 md:pl-10 text-sm md:text-base h-10 md:h-auto"
+                className="input-field pl-9 md:pl-10 text-sm md:text-base h-10 md:h-auto bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
               />
               {showPatientDropdown && patientSearchResults.length > 0 && (
-                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-48 md:max-h-60 overflow-y-auto">
+                <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg max-h-48 md:max-h-60 overflow-y-auto">
                   {patientSearchResults.map(patient => (
                     <div
                       key={patient._id}
                       onClick={() => handlePatientSelect(patient)}
-                      className="px-3 md:px-4 py-2 md:py-2.5 hover:bg-gray-100 cursor-pointer text-sm md:text-base active:bg-gray-200"
+                      className="px-3 md:px-4 py-2 md:py-2.5 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer text-sm md:text-base text-gray-900 dark:text-white active:bg-gray-200 dark:active:bg-gray-500"
                     >
                       {patient.firstName} {patient.lastName}
                     </div>
@@ -237,7 +237,7 @@ const AppointmentForm = () => {
 
           {/* Doctor Search */}
           <div ref={doctorSearchRef} className="relative">
-            <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1 md:mb-2">
+            <label className="block text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 md:mb-2">
               Doctor *
             </label>
             <div className="relative">
@@ -248,20 +248,20 @@ const AppointmentForm = () => {
                 onChange={handleDoctorSearchChange}
                 onFocus={() => setShowDoctorDropdown(true)}
                 placeholder="Search for a doctor..."
-                className="input-field pl-9 md:pl-10 text-sm md:text-base h-10 md:h-auto"
+                className="input-field pl-9 md:pl-10 text-sm md:text-base h-10 md:h-auto bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
               />
               {showDoctorDropdown && doctorSearchResults.length > 0 && (
-                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-48 md:max-h-60 overflow-y-auto">
+                <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg max-h-48 md:max-h-60 overflow-y-auto">
                   {doctorSearchResults.map(doctor => (
                     <div
                       key={doctor._id}
                       onClick={() => handleDoctorSelect(doctor)}
-                      className="px-3 md:px-4 py-2 md:py-2.5 hover:bg-gray-100 cursor-pointer active:bg-gray-200"
+                      className="px-3 md:px-4 py-2 md:py-2.5 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer active:bg-gray-200 dark:active:bg-gray-500"
                     >
-                      <div className="text-sm md:text-base font-medium">
+                      <div className="text-sm md:text-base font-medium text-gray-900 dark:text-white">
                         Dr. {doctor.firstName} {doctor.lastName}
                       </div>
-                      <div className="text-xs md:text-sm text-gray-500 truncate">
+                      <div className="text-xs md:text-sm text-gray-500 dark:text-gray-400 truncate">
                         {doctor.specialization}
                       </div>
                     </div>
@@ -273,7 +273,7 @@ const AppointmentForm = () => {
 
           {/* Appointment Date */}
           <div>
-            <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1 md:mb-2">
+            <label className="block text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 md:mb-2">
               Appointment Date *
             </label>
             <input
@@ -281,13 +281,13 @@ const AppointmentForm = () => {
               name="date"
               value={formData.date}
               onChange={handleChange}
-              className="input-field text-sm md:text-base h-10 md:h-auto"
+              className="input-field text-sm md:text-base h-10 md:h-auto bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
             />
           </div>
 
           {/* Appointment Time */}
           <div>
-            <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1 md:mb-2">
+            <label className="block text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 md:mb-2">
               Appointment Time *
             </label>
             <input
@@ -295,23 +295,22 @@ const AppointmentForm = () => {
               name="time"
               value={formData.time}
               onChange={handleChange}
-              className="input-field text-sm md:text-base h-10 md:h-auto"
+              className="input-field text-sm md:text-base h-10 md:h-auto bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
             />
           </div>
 
           {/* Appointment Type */}
           <div>
-            <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1 md:mb-2">
+            <label className="block text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 md:mb-2">
               Appointment Type *
             </label>
             <select
               name="type"
               value={formData.type}
               onChange={handleChange}
-              className="input-field text-sm md:text-base h-10 md:h-auto"
+              className="input-field text-sm md:text-base h-10 md:h-auto bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
             >
               <option value="">Select Type</option>
-              {/* Values are now lowercase to match the schema */}
               <option value="consultation">Consultation</option>
               <option value="follow-up">Follow-up</option>
               <option value="check-up">Check-up</option>
@@ -322,14 +321,14 @@ const AppointmentForm = () => {
 
           {/* Duration */}
           <div>
-            <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1 md:mb-2">
+            <label className="block text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 md:mb-2">
               Duration *
             </label>
             <select
               name="duration"
               value={formData.duration}
               onChange={handleChange}
-              className="input-field text-sm md:text-base h-10 md:h-auto"
+              className="input-field text-sm md:text-base h-10 md:h-auto bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
             >
               <option value="15 minutes">15 minutes</option>
               <option value="30 minutes">30 minutes</option>
@@ -341,7 +340,7 @@ const AppointmentForm = () => {
 
         {/* Notes */}
         <div className="mt-4 md:mt-6">
-          <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1 md:mb-2">
+          <label className="block text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 md:mb-2">
             Notes *
           </label>
           <textarea
@@ -349,7 +348,7 @@ const AppointmentForm = () => {
             value={formData.notes}
             onChange={handleChange}
             rows="3"
-            className="input-field text-sm md:text-base min-h-[80px] md:min-h-[100px]"
+            className="input-field text-sm md:text-base min-h-[80px] md:min-h-[100px] bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
             placeholder="Enter appointment notes, symptoms, or special instructions..."
           />
         </div>
@@ -359,7 +358,7 @@ const AppointmentForm = () => {
           <button
             type="button"
             onClick={() => navigate('/appointments')}
-            className="px-4 py-2 md:py-2.5 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors text-sm md:text-base w-full sm:w-auto"
+            className="px-4 py-2 md:py-2.5 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-sm md:text-base w-full sm:w-auto"
             disabled={isSubmitting}
           >
             Cancel
@@ -374,8 +373,8 @@ const AppointmentForm = () => {
             ) : (
               <Save className="w-4 h-4 mr-2" />
             )}
-            {isSubmitting 
-              ? (isEditing ? 'Updating...' : 'Booking...') 
+            {isSubmitting
+              ? (isEditing ? 'Updating...' : 'Booking...')
               : (isEditing ? 'Update Appointment' : 'Book Appointment')
             }
           </button>

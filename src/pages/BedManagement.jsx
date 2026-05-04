@@ -204,43 +204,43 @@ const BedManagement = () => {
   return (
     <div className="p-2 sm:p-4 md:p-6">
       <div className="mb-3 sm:mb-4 md:mb-6">
-        <h1 className="text-base sm:text-xl md:text-2xl font-bold text-gray-800 flex items-center gap-2">
+        <h1 className="text-base sm:text-xl md:text-2xl font-bold text-gray-800 dark:text-white flex items-center gap-2">
           <BedDouble className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8" />
           Bed Management
         </h1>
-        <p className="text-xs sm:text-sm text-gray-600">Manage hospital beds and their availability</p>
+        <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Manage hospital beds and their availability</p>
       </div>
 
       {/* Statistics */}
       {statistics && (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-3 md:gap-4 mb-3 sm:mb-4 md:mb-6">
-          <div className="bg-white p-2 sm:p-3 md:p-4 rounded-lg shadow">
-            <div className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800">{statistics.total}</div>
-            <div className="text-[10px] sm:text-xs md:text-sm text-gray-600">Total Beds</div>
+          <div className="bg-white dark:bg-gray-800 p-2 sm:p-3 md:p-4 rounded-lg shadow">
+            <div className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 dark:text-white">{statistics.total}</div>
+            <div className="text-[10px] sm:text-xs md:text-sm text-gray-600 dark:text-gray-400">Total Beds</div>
           </div>
-          <div className="bg-green-50 p-2 sm:p-3 md:p-4 rounded-lg shadow">
+          <div className="bg-green-50 dark:bg-green-900/20 p-2 sm:p-3 md:p-4 rounded-lg shadow">
             <div className="text-lg sm:text-xl md:text-2xl font-bold text-green-600">{statistics.available}</div>
-            <div className="text-[10px] sm:text-xs md:text-sm text-gray-600">Available</div>
+            <div className="text-[10px] sm:text-xs md:text-sm text-gray-600 dark:text-gray-400">Available</div>
           </div>
-          <div className="bg-red-50 p-2 sm:p-3 md:p-4 rounded-lg shadow">
+          <div className="bg-red-50 dark:bg-red-900/20 p-2 sm:p-3 md:p-4 rounded-lg shadow">
             <div className="text-lg sm:text-xl md:text-2xl font-bold text-red-600">{statistics.occupied}</div>
-            <div className="text-[10px] sm:text-xs md:text-sm text-gray-600">Occupied</div>
+            <div className="text-[10px] sm:text-xs md:text-sm text-gray-600 dark:text-gray-400">Occupied</div>
           </div>
-          <div className="bg-yellow-50 p-2 sm:p-3 md:p-4 rounded-lg shadow">
+          <div className="bg-yellow-50 dark:bg-yellow-900/20 p-2 sm:p-3 md:p-4 rounded-lg shadow">
             <div className="text-lg sm:text-xl md:text-2xl font-bold text-yellow-600">{statistics.maintenance}</div>
-            <div className="text-[10px] sm:text-xs md:text-sm text-gray-600">Maintenance</div>
+            <div className="text-[10px] sm:text-xs md:text-sm text-gray-600 dark:text-gray-400">Maintenance</div>
           </div>
-          <div className="bg-blue-50 p-2 sm:p-3 md:p-4 rounded-lg shadow col-span-2 sm:col-span-1">
+          <div className="bg-blue-50 dark:bg-blue-900/20 p-2 sm:p-3 md:p-4 rounded-lg shadow col-span-2 sm:col-span-1">
             <div className="text-lg sm:text-xl md:text-2xl font-bold text-blue-600">
               {statistics.occupancyRate ? `${statistics.occupancyRate.toFixed(1)}%` : '0%'}
             </div>
-            <div className="text-[10px] sm:text-xs md:text-sm text-gray-600">Occupancy Rate</div>
+            <div className="text-[10px] sm:text-xs md:text-sm text-gray-600 dark:text-gray-400">Occupancy Rate</div>
           </div>
         </div>
       )}
 
       {/* Filters and Search */}
-      <div className="bg-white p-3 sm:p-4 rounded-lg shadow mb-3 sm:mb-4 md:mb-6">
+      <div className="bg-white dark:bg-gray-800 p-3 sm:p-4 rounded-lg shadow mb-3 sm:mb-4 md:mb-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
           <div className="relative sm:col-span-2 md:col-span-1">
             <Search className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
@@ -249,14 +249,14 @@ const BedManagement = () => {
               placeholder="Search bed number..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-8 sm:pl-10 pr-3 sm:pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
+              className="w-full pl-8 sm:pl-10 pr-3 sm:pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
             />
           </div>
 
           <select
             value={filterWard}
             onChange={(e) => setFilterWard(e.target.value)}
-            className="px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
+            className="px-3 sm:px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
           >
             <option value="">All Wards</option>
             {wards.map(ward => (
@@ -269,7 +269,7 @@ const BedManagement = () => {
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
+            className="px-3 sm:px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
           >
             <option value="">All Statuses</option>
             {bedStatuses.map(status => (
@@ -293,68 +293,68 @@ const BedManagement = () => {
       </div>
 
       {/* Desktop Table View */}
-      <div className="hidden lg:block bg-white rounded-lg shadow overflow-hidden">
+      <div className="hidden lg:block bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+            <thead className="bg-gray-50 dark:bg-gray-700">
               <tr>
-                <th className="px-4 py-2 text-left text-[10px] font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-2 text-left text-[10px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Bed Number
                 </th>
-                <th className="px-4 py-2 text-left text-[10px] font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-2 text-left text-[10px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Ward
                 </th>
-                <th className="px-4 py-2 text-left text-[10px] font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-2 text-left text-[10px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Type
                 </th>
-                <th className="px-4 py-2 text-left text-[10px] font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-2 text-left text-[10px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Features
                 </th>
-                <th className="px-4 py-2 text-left text-[10px] font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-2 text-left text-[10px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Status
                 </th>
-                <th className="px-4 py-2 text-left text-[10px] font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-2 text-left text-[10px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Patient
                 </th>
-                <th className="px-4 py-2 text-right text-[10px] font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-2 text-right text-[10px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
               {loading ? (
                 <tr>
-                  <td colSpan="7" className="px-6 py-4 text-center text-gray-500 text-xs">
+                  <td colSpan="7" className="px-6 py-4 text-center text-gray-500 dark:text-gray-400 text-xs">
                     Loading beds...
                   </td>
                 </tr>
               ) : filteredBeds.length === 0 ? (
                 <tr>
-                  <td colSpan="7" className="px-6 py-4 text-center text-gray-500 text-xs">
+                  <td colSpan="7" className="px-6 py-4 text-center text-gray-500 dark:text-gray-400 text-xs">
                     No beds found
                   </td>
                 </tr>
               ) : (
                 filteredBeds.map((bed) => (
-                  <tr key={bed._id} className="hover:bg-gray-50">
+                  <tr key={bed._id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                     <td className="px-4 py-3 whitespace-nowrap">
                       <div className="flex items-center">
                         <BedDouble className="w-4 h-4 text-gray-400 mr-2" />
-                        <span className="font-medium text-gray-900 text-xs">{bed.bedNumber}</span>
+                        <span className="font-medium text-gray-900 dark:text-gray-100 text-xs">{bed.bedNumber}</span>
                       </div>
                     </td>
-                    <td className="px-4 py-3 whitespace-nowrap text-gray-900 text-xs">
+                    <td className="px-4 py-3 whitespace-nowrap text-gray-900 dark:text-gray-100 text-xs">
                       {bed.ward?.name || 'N/A'}
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap">
-                      <span className="capitalize text-gray-900 text-xs">{bed.type}</span>
+                      <span className="capitalize text-gray-900 dark:text-gray-100 text-xs">{bed.type}</span>
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex flex-wrap gap-1">
                         {bed.features?.map((feature, idx) => (
                           <span
                             key={idx}
-                            className="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-[10px] rounded"
+                            className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-[10px] rounded"
                           >
                             {feature.replace('_', ' ')}
                           </span>
@@ -364,7 +364,7 @@ const BedManagement = () => {
                     <td className="px-4 py-3 whitespace-nowrap">
                       {getStatusBadge(bed.status)}
                     </td>
-                    <td className="px-4 py-3 whitespace-nowrap text-gray-900 text-xs">
+                    <td className="px-4 py-3 whitespace-nowrap text-gray-900 dark:text-gray-100 text-xs">
                       {bed.currentPatient?.firstName || '-'}
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap text-right text-xs font-medium">
@@ -405,23 +405,23 @@ const BedManagement = () => {
       {/* Mobile Card View */}
       <div className="lg:hidden space-y-3">
         {loading ? (
-          <div className="bg-white rounded-lg shadow p-8 text-center text-gray-500 text-xs">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-8 text-center text-gray-500 dark:text-gray-400 text-xs">
             Loading beds...
           </div>
         ) : filteredBeds.length === 0 ? (
-          <div className="bg-white rounded-lg shadow p-8 text-center text-gray-500 text-xs">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-8 text-center text-gray-500 dark:text-gray-400 text-xs">
             No beds found
           </div>
         ) : (
           filteredBeds.map((bed) => (
-            <div key={bed._id} className="bg-white rounded-lg shadow p-3">
+            <div key={bed._id} className="bg-white dark:bg-gray-800 rounded-lg shadow p-3">
               {/* Header */}
               <div className="flex items-start justify-between mb-2">
                 <div className="flex items-center gap-2 min-w-0 flex-1">
                   <BedDouble className="w-5 h-5 text-gray-400 flex-shrink-0" />
                   <div className="min-w-0 flex-1">
-                    <div className="font-medium text-gray-900 text-sm truncate">{bed.bedNumber}</div>
-                    <div className="text-[10px] text-gray-500 truncate">{bed.ward?.name || 'N/A'}</div>
+                    <div className="font-medium text-gray-900 dark:text-gray-100 text-sm truncate">{bed.bedNumber}</div>
+                    <div className="text-[10px] text-gray-500 dark:text-gray-400 truncate">{bed.ward?.name || 'N/A'}</div>
                   </div>
                 </div>
                 {getStatusBadge(bed.status)}
@@ -431,20 +431,20 @@ const BedManagement = () => {
               <div className="space-y-1 mb-3">
                 <div className="flex justify-between text-[10px]">
                   <span className="text-gray-600">Type:</span>
-                  <span className="font-medium text-gray-900 capitalize">{bed.type}</span>
+                  <span className="font-medium text-gray-900 dark:text-gray-100 capitalize">{bed.type}</span>
                 </div>
                 <div className="flex justify-between text-[10px]">
                   <span className="text-gray-600">Patient:</span>
-                  <span className="font-medium text-gray-900">{bed.currentPatient?.firstName || '-'}</span>
+                  <span className="font-medium text-gray-900 dark:text-gray-100">{bed.currentPatient?.firstName || '-'}</span>
                 </div>
                 {bed.features && bed.features.length > 0 && (
                   <div className="text-[10px]">
-                    <span className="text-gray-600">Features:</span>
+                    <span className="text-gray-600 dark:text-gray-400">Features:</span>
                     <div className="flex flex-wrap gap-1 mt-1">
                       {bed.features.map((feature, idx) => (
                         <span
                           key={idx}
-                          className="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-[9px] rounded"
+                          className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-[9px] rounded"
                         >
                           {feature.replace('_', ' ')}
                         </span>
@@ -455,7 +455,7 @@ const BedManagement = () => {
               </div>
 
               {/* Actions */}
-              <div className="flex gap-2 pt-2 border-t border-gray-100">
+              <div className="flex gap-2 pt-2 border-t border-gray-100 dark:border-gray-700">
                 {bed.status === 'cleaning' && (
                   <button
                     onClick={() => handleMarkCleaned(bed._id)}
@@ -488,9 +488,9 @@ const BedManagement = () => {
       {/* Add/Edit Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between p-3 sm:p-4 md:p-6 border-b sticky top-0 bg-white">
-              <h2 className="text-base sm:text-lg md:text-xl font-bold text-gray-800">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between p-3 sm:p-4 md:p-6 border-b dark:border-gray-700 sticky top-0 bg-white dark:bg-gray-800">
+              <h2 className="text-base sm:text-lg md:text-xl font-bold text-gray-800 dark:text-white">
                 {editingBed ? 'Edit Bed' : 'Add New Bed'}
               </h2>
               <button
@@ -507,7 +507,7 @@ const BedManagement = () => {
             <form onSubmit={handleSubmit} className="p-3 sm:p-4 md:p-6 space-y-3 sm:space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
-                  <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Bed Number *
                   </label>
                   <input
@@ -515,20 +515,20 @@ const BedManagement = () => {
                     required
                     value={formData.bedNumber}
                     onChange={(e) => setFormData({ ...formData, bedNumber: e.target.value })}
-                    className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
+                    className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     placeholder="e.g., A-101"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Ward *
                   </label>
                   <select
                     required
                     value={formData.ward}
                     onChange={(e) => setFormData({ ...formData, ward: e.target.value })}
-                    className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
+                    className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   >
                     <option value="">Select Ward</option>
                     {wards.map(ward => (
@@ -540,14 +540,14 @@ const BedManagement = () => {
                 </div>
 
                 <div>
-                  <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Bed Type *
                   </label>
                   <select
                     required
                     value={formData.type}
                     onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-                    className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
+                    className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   >
                     {bedTypes.map(type => (
                       <option key={type.value} value={type.value}>
@@ -558,14 +558,14 @@ const BedManagement = () => {
                 </div>
 
                 <div>
-                  <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Status *
                   </label>
                   <select
                     required
                     value={formData.status}
                     onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                    className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
+                    className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   >
                     {bedStatuses.map(status => (
                       <option key={status.value} value={status.value}>
@@ -577,14 +577,14 @@ const BedManagement = () => {
               </div>
 
               <div>
-                <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Features
                 </label>
                 <div className="grid grid-cols-2 gap-2">
                   {featureOptions.map(feature => (
                     <label
                       key={feature}
-                      className="flex items-center gap-2 p-2 border rounded cursor-pointer hover:bg-gray-50"
+                      className="flex items-center gap-2 p-2 border dark:border-gray-600 rounded cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
                     >
                       <input
                         type="checkbox"
@@ -599,26 +599,26 @@ const BedManagement = () => {
               </div>
 
               <div>
-                <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-[10px] sm:text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Notes
                 </label>
                 <textarea
                   value={formData.notes}
                   onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                   rows="2"
-                  className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
+                  className="w-full px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   placeholder="Additional notes..."
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 sm:gap-3 pt-3 sm:pt-4 border-t">
+              <div className="flex items-center justify-end gap-2 sm:gap-3 pt-3 sm:pt-4 border-t dark:border-gray-700">
                 <button
                   type="button"
                   onClick={() => {
                     setShowModal(false);
                     resetForm();
                   }}
-                  className="px-3 sm:px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 text-xs sm:text-sm"
+                  className="px-3 sm:px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 text-xs sm:text-sm"
                 >
                   Cancel
                 </button>

@@ -62,15 +62,15 @@ const BillingDashboard = () => {
 
   const getStatusBadge = (status) => {
     const statusColors = {
-      'paid': 'bg-green-100 text-green-800',
-      'pending': 'bg-yellow-100 text-yellow-800',
-      'overdue': 'bg-red-100 text-red-800',
-      'partial': 'bg-blue-100 text-blue-800',
-      'cancelled': 'bg-gray-100 text-gray-800'
+      'paid': 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300',
+      'pending': 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300',
+      'overdue': 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300',
+      'partial': 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300',
+      'cancelled': 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
     };
     
     return (
-      <span className={`px-1.5 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium rounded-full ${statusColors[status] || 'bg-gray-100 text-gray-800'}`}>
+      <span className={`px-1.5 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium rounded-full ${statusColors[status] || 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'}`}>
         {status.charAt(0).toUpperCase() + status.slice(1)}
       </span>
     );
@@ -83,8 +83,8 @@ const BillingDashboard = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
         <div>
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800">Billing Dashboard</h1>
-          <p className="text-xs sm:text-sm text-gray-600">Manage invoices, payments, and financial reports</p>
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 dark:text-white">Billing Dashboard</h1>
+          <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Manage invoices, payments, and financial reports</p>
         </div>
         <div className="flex space-x-2 w-full sm:w-auto">
           <button
@@ -107,11 +107,11 @@ const BillingDashboard = () => {
 
       {/* Statistics Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 md:gap-6">
-        <div className="bg-white rounded-lg shadow p-3 sm:p-4 md:p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-3 sm:p-4 md:p-6">
           <div className="flex items-center justify-between">
             <div className="min-w-0 flex-1">
-              <p className="text-[10px] sm:text-xs md:text-sm font-medium text-gray-600 truncate">Total Revenue</p>
-              <p className="text-sm sm:text-lg md:text-2xl font-bold text-gray-900 truncate">
+              <p className="text-[10px] sm:text-xs md:text-sm font-medium text-gray-600 dark:text-gray-400 truncate">Total Revenue</p>
+              <p className="text-sm sm:text-lg md:text-2xl font-bold text-gray-900 dark:text-white truncate">
                 {formatCurrency(statistics.invoices.totalAmount)}
               </p>
             </div>
@@ -120,16 +120,16 @@ const BillingDashboard = () => {
             </div>
           </div>
           <div className="mt-2 sm:mt-3 md:mt-4">
-            <span className="text-[9px] sm:text-xs md:text-sm text-gray-600">
+            <span className="text-[9px] sm:text-xs md:text-sm text-gray-600 dark:text-gray-400">
               {statistics.invoices.totalInvoices || 0} invoices
             </span>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-3 sm:p-4 md:p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-3 sm:p-4 md:p-6">
           <div className="flex items-center justify-between">
             <div className="min-w-0 flex-1">
-              <p className="text-[10px] sm:text-xs md:text-sm font-medium text-gray-600 truncate">Total Collected</p>
+              <p className="text-[10px] sm:text-xs md:text-sm font-medium text-gray-600 dark:text-gray-400 truncate">Total Collected</p>
               <p className="text-sm sm:text-lg md:text-2xl font-bold text-green-600 truncate">
                 {formatCurrency(statistics.invoices.totalPaid)}
               </p>
@@ -139,16 +139,16 @@ const BillingDashboard = () => {
             </div>
           </div>
           <div className="mt-2 sm:mt-3 md:mt-4">
-            <span className="text-[9px] sm:text-xs md:text-sm text-gray-600">
+            <span className="text-[9px] sm:text-xs md:text-sm text-gray-600 dark:text-gray-400">
               {((statistics.invoices.totalPaid / statistics.invoices.totalAmount) * 100 || 0).toFixed(1)}% collected
             </span>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-3 sm:p-4 md:p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-3 sm:p-4 md:p-6">
           <div className="flex items-center justify-between">
             <div className="min-w-0 flex-1">
-              <p className="text-[10px] sm:text-xs md:text-sm font-medium text-gray-600 truncate">Outstanding</p>
+              <p className="text-[10px] sm:text-xs md:text-sm font-medium text-gray-600 dark:text-gray-400 truncate">Outstanding</p>
               <p className="text-sm sm:text-lg md:text-2xl font-bold text-orange-600 truncate">
                 {formatCurrency(statistics.invoices.totalDue)}
               </p>
@@ -158,16 +158,16 @@ const BillingDashboard = () => {
             </div>
           </div>
           <div className="mt-2 sm:mt-3 md:mt-4">
-            <span className="text-[9px] sm:text-xs md:text-sm text-gray-600">
+            <span className="text-[9px] sm:text-xs md:text-sm text-gray-600 dark:text-gray-400">
               Pending collection
             </span>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-3 sm:p-4 md:p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-3 sm:p-4 md:p-6">
           <div className="flex items-center justify-between">
             <div className="min-w-0 flex-1">
-              <p className="text-[10px] sm:text-xs md:text-sm font-medium text-gray-600 truncate">Overdue</p>
+              <p className="text-[10px] sm:text-xs md:text-sm font-medium text-gray-600 dark:text-gray-400 truncate">Overdue</p>
               <p className="text-sm sm:text-lg md:text-2xl font-bold text-red-600 truncate">
                 {statistics.overdueCount || 0}
               </p>
@@ -177,7 +177,7 @@ const BillingDashboard = () => {
             </div>
           </div>
           <div className="mt-2 sm:mt-3 md:mt-4">
-            <span className="text-[9px] sm:text-xs md:text-sm text-gray-600">
+            <span className="text-[9px] sm:text-xs md:text-sm text-gray-600 dark:text-gray-400">
               Invoices overdue
             </span>
           </div>
@@ -186,10 +186,10 @@ const BillingDashboard = () => {
 
       <div >
         {/* Recent Invoices */}
-        <div className="bg-white rounded-lg shadow">
-          <div className="p-3 sm:p-4 md:p-6 border-b border-gray-200">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
+          <div className="p-3 sm:p-4 md:p-6 border-b border-gray-200 dark:border-gray-700">
             <div className="flex justify-between items-center">
-              <h2 className="text-sm sm:text-base md:text-lg font-semibold">Recent Invoices</h2>
+              <h2 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 dark:text-white">Recent Invoices</h2>
               <button
                 onClick={() => navigate('/billing/invoices')}
                 className="text-[10px] sm:text-xs md:text-sm text-blue-600 hover:text-blue-800"
@@ -198,25 +198,25 @@ const BillingDashboard = () => {
               </button>
             </div>
           </div>
-          <div className="divide-y divide-gray-200">
+          <div className="divide-y divide-gray-200 dark:divide-gray-700">
             {recentInvoices.map((invoice) => (
               <div
                 key={invoice._id}
-                className="p-2 sm:p-3 md:p-4 hover:bg-gray-50 cursor-pointer"
+                className="p-2 sm:p-3 md:p-4 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors"
                 onClick={() => navigate(`/billing/invoices/${invoice._id}`)}
               >
                 <div className="flex justify-between items-start gap-2">
                   <div className="min-w-0 flex-1">
-                    <p className="text-xs sm:text-sm md:text-base font-medium text-gray-900 truncate">{invoice.invoiceNumber}</p>
-                    <p className="text-[10px] sm:text-xs md:text-sm text-gray-600 truncate">
+                    <p className="text-xs sm:text-sm md:text-base font-medium text-gray-900 dark:text-gray-100 truncate">{invoice.invoiceNumber}</p>
+                    <p className="text-[10px] sm:text-xs md:text-sm text-gray-600 dark:text-gray-400 truncate">
                       {invoice.patient?.firstName} {invoice.patient?.lastName}
                     </p>
-                    <p className="text-[9px] sm:text-[10px] md:text-xs text-gray-500">
+                    <p className="text-[9px] sm:text-[10px] md:text-xs text-gray-500 dark:text-gray-400">
                       {new Date(invoice.createdAt).toLocaleDateString()}
                     </p>
                   </div>
                   <div className="text-right flex-shrink-0">
-                    <p className="text-xs sm:text-sm md:text-base font-medium truncate">{formatCurrency(invoice.totalAmount)}</p>
+                    <p className="text-xs sm:text-sm md:text-base font-medium text-gray-900 dark:text-gray-100 truncate">{formatCurrency(invoice.totalAmount)}</p>
                     {getStatusBadge(invoice.status)}
                   </div>
                 </div>
@@ -226,8 +226,8 @@ const BillingDashboard = () => {
         </div>
 
         {/* Recent Payments */}
-        {/* <div className="bg-white rounded-lg shadow">
-          <div className="p-3 sm:p-4 md:p-6 border-b border-gray-200">
+        {/* <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
+          <div className="p-3 sm:p-4 md:p-6 border-b border-gray-200 dark:border-gray-700">
             <div className="flex justify-between items-center">
               <h2 className="text-sm sm:text-base md:text-lg font-semibold">Recent Payments</h2>
               <button
@@ -238,13 +238,13 @@ const BillingDashboard = () => {
               </button>
             </div>
           </div>
-          <div className="divide-y divide-gray-200">
+          <div className="divide-y divide-gray-200 dark:divide-gray-700">
             {recentPayments.map((payment) => (
               <div key={payment._id} className="p-2 sm:p-3 md:p-4 hover:bg-gray-50">
                 <div className="flex justify-between items-start gap-2">
                   <div className="min-w-0 flex-1">
-                    <p className="text-xs sm:text-sm md:text-base font-medium text-gray-900 truncate">{payment.paymentNumber}</p>
-                    <p className="text-[10px] sm:text-xs md:text-sm text-gray-600 truncate">
+                    <p className="text-xs sm:text-sm md:text-base font-medium text-gray-900 dark:text-gray-100 truncate">{payment.paymentNumber}</p>
+                    <p className="text-[10px] sm:text-xs md:text-sm text-gray-600 dark:text-gray-400 truncate">
                       {payment.patient?.firstName} {payment.patient?.lastName}
                     </p>
                     <p className="text-[9px] sm:text-[10px] md:text-xs text-gray-500 truncate">
@@ -271,29 +271,29 @@ const BillingDashboard = () => {
       </div>
 
       {/* Quick Actions */}
-      <div className="bg-white rounded-lg shadow p-3 sm:p-4 md:p-6">
-        <h2 className="text-sm sm:text-base md:text-lg font-semibold mb-3 sm:mb-4">Quick Actions</h2>
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-3 sm:p-4 md:p-6">
+        <h2 className="text-sm sm:text-base md:text-lg font-semibold mb-3 sm:mb-4 text-gray-900 dark:text-white">Quick Actions</h2>
         <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4">
           <button
             onClick={() => navigate('/billing/invoices')}
             className="p-2 sm:p-3 md:p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-center"
           >
-            <FileText className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 mx-auto mb-1 sm:mb-2 text-gray-600" />
-            <span className="text-[10px] sm:text-xs md:text-sm block">Manage Invoices</span>
+            <FileText className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 mx-auto mb-1 sm:mb-2 text-gray-600 dark:text-gray-400" />
+            <span className="text-[10px] sm:text-xs md:text-sm block text-gray-700 dark:text-gray-300">Manage Invoices</span>
           </button>
           <button
             onClick={() => navigate('/billing/insurance')}
             className="p-2 sm:p-3 md:p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-center"
           >
-            <FileText className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 mx-auto mb-1 sm:mb-2 text-gray-600" />
-            <span className="text-[10px] sm:text-xs md:text-sm block">Insurance Claims</span>
+            <FileText className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 mx-auto mb-1 sm:mb-2 text-gray-600 dark:text-gray-400" />
+            <span className="text-[10px] sm:text-xs md:text-sm block text-gray-700 dark:text-gray-300">Insurance Claims</span>
           </button>
           <button
             onClick={() => navigate('/billing/statements')}
             className="p-2 sm:p-3 md:p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-center"
           >
-            <Search className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 mx-auto mb-1 sm:mb-2 text-gray-600" />
-            <span className="text-[10px] sm:text-xs md:text-sm block">Patient Statements</span>
+            <Search className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 mx-auto mb-1 sm:mb-2 text-gray-600 dark:text-gray-400" />
+            <span className="text-[10px] sm:text-xs md:text-sm block text-gray-700 dark:text-gray-300">Patient Statements</span>
           </button>
         </div>
       </div>

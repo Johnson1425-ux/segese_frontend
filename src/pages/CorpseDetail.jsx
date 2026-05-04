@@ -30,7 +30,7 @@ const CorpseDetail = () => {
     ['corpse', id],
     () => corpseService.getById(id),
     {
-      enabled: !!id, // Only run query if ID exists
+      enabled: !!id,
     }
   );
 
@@ -76,60 +76,60 @@ const CorpseDetail = () => {
 
   if (isLoading) return <LoadingSpinner />;
   if (error) return <div className="text-red-500 text-center">Error loading corpse details.</div>;
-  if (!corpse) return <div className="text-center">No corpse data found.</div>;
+  if (!corpse) return <div className="text-center text-gray-700 dark:text-gray-200">No corpse data found.</div>;
 
   return (
-    <div className="container mx-auto p-6">
-      <div className="flex justify-between utems-center mb-4">
-        <h1 className="text-3xl font-bold text-gray-800">Manage Corpse Record</h1>
+    <div className="container mx-auto p-6 dark:bg-gray-900 min-h-screen">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-3xl font-bold text-gray-800 dark:text-white">Manage Corpse Record</h1>
         <button onClick={() => navigate('/corpses')} className="btn-secondary inline-flex items-center mb-6">
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back to Dashboard
         </button>
       </div>
 
-      
       <form onSubmit={handleSubmit(onSubmit)} className="max-w-4xl">
-        <div className="card">
+        <div className="card bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-md p-6">
           {/* Column 1: Editable Corpse Information */}
-          <h2 className="text-xl font-semibold mb-4 text-gray-700 border-b">Deceased Details</h2>
+          <h2 className="text-xl font-semibold mb-4 text-gray-700 dark:text-gray-200 border-b border-gray-200 dark:border-gray-700">Deceased Details</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 First Name
               </label>
               <input
                 {...register("firstName", { required: true })}
-                className="input-field"
+                className="input-field bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Middle Name
               </label>
               <input
                 {...register("middleName", { required: true })}
-                className="input-field"
+                className="input-field bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Last Name
               </label>
               <input
                 {...register("lastName", { required: true })}
-                className="input-field"
+                className="input-field bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Status
               </label>
-              <select {...register("status")}
-                className="input-field"
+              <select
+                {...register("status")}
+                className="input-field bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
               >
                 <option value="In Storage">In Storage</option>
                 <option value="Awaiting Autopsy">Awaiting Autopsy</option>
@@ -138,22 +138,22 @@ const CorpseDetail = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Cabinet Number
               </label>
-              <input 
-                {...register("cabinetNumber")} 
-                className="input-field" 
+              <input
+                {...register("cabinetNumber")}
+                className="input-field bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Cause of Death
               </label>
-              <textarea 
+              <textarea
                 {...register("causeOfDeath")}
-                className="input-field" 
+                className="input-field bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
                 rows="3"
               >
               </textarea>
@@ -162,56 +162,56 @@ const CorpseDetail = () => {
           <br />
 
           {/* Next of Kin Information */}
-          <h2 className="text-xl font-semibold mb-4 text-gray-700 border-b">Next of Kin Details</h2>
+          <h2 className="text-xl font-semibold mb-4 text-gray-700 dark:text-gray-200 border-b border-gray-200 dark:border-gray-700">Next of Kin Details</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 First Name
               </label>
-              <input 
+              <input
                 {...register("nextOfKin.firstName")}
-                className="input-field"
+                className="input-field bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Middle Name
               </label>
-              <input 
+              <input
                 {...register("nextOfKin.middleName")}
-                className="input-field"
+                className="input-field bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Last Name
               </label>
-              <input 
+              <input
                 {...register("nextOfKin.lastName")}
-                className="input-field"
+                className="input-field bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Relationship
               </label>
-              <input 
+              <input
                 {...register("nextOfKin.relationship")}
-                className="input-field"
+                className="input-field bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Phone Number
               </label>
               <input
                 {...register("nextOfKin.phone")}
-                className="input-field"
+                className="input-field bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
               />
             </div>
           </div>
@@ -223,7 +223,6 @@ const CorpseDetail = () => {
             </button>
           </div>
         </div>
-
       </form>
     </div>
   );

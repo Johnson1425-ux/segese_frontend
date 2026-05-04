@@ -53,68 +53,56 @@ export default function ActiveVisits() {
       : "N/A";
   };
   
-  if (loading) return <div className="text-center p-6">Loading active visits...</div>;
+  if (loading) return <div className="text-center p-6 text-gray-500 dark:text-gray-400">Loading active visits...</div>;
 
   return (
     <div className="p-8">
-      <h1 className="text-3xl font-bold mb-6">Active Visits Tracker</h1>
+      <h1 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">Active Visits Tracker</h1>
 
       <div className="mb-6">
         <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-        <input
-          type="text"
-          placeholder="Search by patient name..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="input-field pl-10"
-        />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+          <input
+            type="text"
+            placeholder="Search by patient name..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="input-field pl-10 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+          />
         </div>
       </div>
 
       {/* Visits Table */}
-      <div className="bg-white rounded-xl shadow-lg overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-x-auto">
+        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+          <thead className="bg-gray-50 dark:bg-gray-700">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Visit ID
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Patient Name
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Doctor
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Reason
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Status
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Actions
-              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Visit ID</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Patient Name</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Doctor</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Reason</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
             {visits.length > 0 ? (
               visits.map((visit) => (
-                <tr key={visit._id} className="border-b hover:bg-gray-50">
+                <tr key={visit._id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">{visit.visitId}</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace nowrap">
-                    <div className="text-sm text-gray-900">{getPatientName(visit.patient)}</div>
+                    <div className="text-sm text-gray-900 dark:text-gray-100">{visit.visitId}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">{getPatientName(visit.doctor)}</div>
+                    <div className="text-sm text-gray-900 dark:text-gray-100">{getPatientName(visit.patient)}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">{visit.reason}</div>
+                    <div className="text-sm text-gray-900 dark:text-gray-100">{getPatientName(visit.doctor)}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">{visit.status}</div>
+                    <div className="text-sm text-gray-900 dark:text-gray-100">{visit.reason}</div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-900 dark:text-gray-100">{visit.status}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <button
@@ -128,7 +116,7 @@ export default function ActiveVisits() {
               ))
             ) : (
               <tr>
-                <td colSpan="6" className="p-6 text-center text-gray-500">
+                <td colSpan="6" className="p-6 text-center text-gray-500 dark:text-gray-400">
                   No active visits found.
                 </td>
               </tr>
