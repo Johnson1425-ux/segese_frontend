@@ -167,7 +167,7 @@ const AppLayout = ({ children }) => {
             <Menu className="w-6 h-6 text-gray-600 dark:text-gray-300" />
           </button>
           <h1 className="text-lg font-semibold text-gray-900 dark:text-white">Segese Medical</h1>
-          <ThemeToggle />
+          {/* <ThemeToggle /> */}
         </header>
 
         {/* Main Content */}
