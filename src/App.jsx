@@ -275,7 +275,7 @@ const AppContent = () => {
             <ProtectedRoute requiredRoles={['admin', 'doctor', 'nurse']}><ActiveVisits /></ProtectedRoute>
           } />
           <Route path="/visits/:id" element={
-            <ProtectedRoute requiredRoles={['admin', 'doctor', 'nurse']}><VisitDetail /></ProtectedRoute>
+            <ProtectedRoute requiredRoles={['admin', 'doctor', 'nurse', 'receptionist']}><VisitDetail /></ProtectedRoute>
           } />
 
           {/* IPD Routes */}
