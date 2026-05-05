@@ -113,7 +113,7 @@ const Sidebar = ({ isOpen, onClose }) => {
       ];
 
       if (hasRole('doctor')) {
-        patientItems.push({ path: '/doctors/my-queue', icon: Activity, label: 'My Queue', roles: ['doctor'] });
+        patientItems.push({ path: '/doctor-queue', icon: Activity, label: 'My Queue', roles: ['doctor'] });
       } else {
         patientItems.push({ path: '/visits', icon: Activity, label: 'Visits', roles: ['admin', 'receptionist'] });
       }
