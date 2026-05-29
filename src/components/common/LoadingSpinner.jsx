@@ -1,6 +1,6 @@
 import React from 'react';
 
-const LoadingSpinner = ({ size = 'md', text = 'Loading...', className = '' }) => {
+const LoadingSpinner = ({ size = 'md', text = 'Loading...', className = 'min-h-screen' }) => {
   const sizeClasses = {
     sm: 'h-4 w-4',
     md: 'h-8 w-8',
