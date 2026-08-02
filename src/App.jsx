@@ -254,6 +254,15 @@ const AppContent = () => {
           <Route path="/doctors/schedule" element={
             <ProtectedRoute requiredRoles={['admin', 'doctor', 'receptionist']}><DoctorSchedule /></ProtectedRoute>
           } />
+          {/*
+            Doctors.jsx links to /doctors/schedule/:id and DoctorSchedule reads
+            an `id` from useParams, but only the bare path was declared, so
+            every per-doctor schedule link 404'd. Both forms are kept so the
+            id-less entry point still works.
+          */}
+          <Route path="/doctors/schedule/:id" element={
+            <ProtectedRoute requiredRoles={['admin', 'doctor', 'receptionist']}><DoctorSchedule /></ProtectedRoute>
+          } />
           <Route path="/doctor-queue" element={
             <ProtectedRoute requiredRoles={['admin', 'doctor', 'nurse']}><DoctorQueue /></ProtectedRoute>
           } />

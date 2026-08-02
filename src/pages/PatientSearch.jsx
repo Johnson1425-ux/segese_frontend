@@ -224,7 +224,7 @@ const PatientSearch = () => {
         
         <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row justify-end gap-3 sm:gap-4">
           <Link
-            to={`/patients/${patient._id}/edit`}
+            to={`/patients/edit/${patient._id}`}
             className="btn-secondary flex items-center justify-center text-sm sm:text-base"
             onClick={onClose}
           >
@@ -411,7 +411,7 @@ const PatientSearch = () => {
                           <Eye size={16} />
                         </button>
                         <Link
-                          to={`/patients/${patient._id || patient.id}/edit`}
+                          to={`/patients/edit/${patient._id || patient.id}`}
                           className="text-indigo-600 hover:text-indigo-900 p-1 rounded hover:bg-blue-50"
                           title="Edit Patient"
                         >
@@ -547,7 +547,7 @@ const PatientSearch = () => {
                   View
                 </button>
                 <Link
-                  to={`/patients/${patient._id || patient.id}/edit`}
+                  to={`/patients/edit/${patient._id || patient.id}`}
                   className="flex-1 flex items-center justify-center px-4 py-2 bg-indigo-50 text-indigo-700 rounded-lg hover:bg-indigo-100 transition-colors text-sm font-medium"
                 >
                   <Edit className="w-4 h-4 mr-2" />
