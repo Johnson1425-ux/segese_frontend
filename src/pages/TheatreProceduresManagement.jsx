@@ -149,11 +149,15 @@ const TheatreProceduresManagement = () => {
   const handleAddDiagnosis = async (e) => {
     e.preventDefault();
     try {
-      await api.post(`/ipd-records/${selectedRecord._id}/diagnosis`, diagnosisData);
+      // Was posting to /ipd-records/${selectedRecord._id}/diagnosis, but this
+      // page has no selectedRecord — a theatre procedure is not linked to an
+      // IPD record — so the handler threw a ReferenceError before it could
+      // send anything. Diagnoses are recorded against the procedure itself.
+      await api.post(`/theatre-procedures/${selectedProcedure._id}/diagnosis`, diagnosisData);
       toast.success('Diagnosis added successfully');
       setShowDiagnosisModal(false);
       resetDiagnosisForm();
-      loadRecordDetails(selectedRecord._id);
+      loadProcedureDetails(selectedProcedure._id);
     } catch (error) {
       console.error('Error adding diagnosis:', error);
       toast.error('Failed to add diagnosis');

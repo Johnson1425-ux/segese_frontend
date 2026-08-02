@@ -340,10 +340,13 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Resend verification email
-  const resendVerification = async () => {
+  // Takes the address explicitly: this runs before sign-in, so there is no
+  // authenticated user to infer it from. The previous version sent no body,
+  // which the endpoint rejects.
+  const resendVerification = async (email) => {
     try {
-      await api.post('/auth/resend-verification');
-      toast.success('Verification email sent successfully');
+      const response = await api.post('/auth/resend-verification', { email });
+      toast.success(response.data?.data || 'Verification email sent');
       return { success: true };
     } catch (error) {
       const message = error.response?.data?.message || 'Failed to send verification email';

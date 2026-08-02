@@ -21,6 +21,7 @@ import LoginForm from './components/auth/LoginForm.jsx';
 import ForgotPasswordForm from './components/auth/ForgotPasswordForm.jsx';
 import ResetPasswordForm from './components/auth/ResetPasswordForm.jsx';
 import VerifyEmail from './components/auth/VerifyEmail.jsx';
+import ResendVerification from './components/auth/ResendVerification.jsx';
 
 // Pages
 import Home from './pages/Home.jsx';
@@ -141,6 +142,7 @@ const AppLayout = ({ children }) => {
     '/our-services',
     '/login',
     '/forgot-password',
+    '/resend-verification',
     '/register'
   ];
 
@@ -210,6 +212,9 @@ const AppContent = () => {
             isAuthenticated ? <Navigate to="/dashboard" replace /> : <ResetPasswordForm />
           } />
           <Route path="/verify-email/:token" element={<VerifyEmail />} />
+          <Route path="/resend-verification" element={
+            isAuthenticated ? <Navigate to="/dashboard" replace /> : <ResendVerification />
+          } />
 
           {/* Protected Routes */}
           <Route path="/dashboard" element={
