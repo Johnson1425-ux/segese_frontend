@@ -1,12 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { Plus, Search, Edit, Trash2, ToggleLeft, ToggleRight, User } from 'lucide-react';
+import { Plus, Search, Edit, Trash2, ToggleLeft, ToggleRight, User, ChevronLeft, ChevronRight } from 'lucide-react';
 import api from '../utils/api.js';
 import { userService } from '../utils/userService';
 import LoadingSpinner from '../components/common/LoadingSpinner.jsx';
 import ConfirmationDialog from './ConfirmationDialog.jsx';
+
+const PAGE_SIZE = 20;
 
 const Users = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -14,7 +16,26 @@ const Users = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
 
-  const { data, isLoading, error } = useQuery('users', userService.getAllUsers);
+  const [page, setPage] = useState(1);
+  // Debounced so typing does not fire a request per keystroke.
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+
+  useEffect(() => {
+    const t = setTimeout(() => {
+      setDebouncedSearch(searchTerm);
+      setPage(1); // a new search starts from the first page
+    }, 300);
+    return () => clearTimeout(t);
+  }, [searchTerm]);
+
+  // Searching and paging happen on the server. Previously this fetched a
+  // single default page of 10 and filtered it in the browser, so every user
+  // past the tenth was unreachable — including by search.
+  const { data, isLoading, error, isFetching } = useQuery(
+    ['users', page, debouncedSearch],
+    () => userService.getAllUsers({ page, limit: PAGE_SIZE, search: debouncedSearch || undefined }),
+    { keepPreviousData: true }
+  );
 
   const toggleStatusMutation = useMutation(userService.toggleUserStatus, {
     onSuccess: () => {
@@ -26,13 +47,10 @@ const Users = () => {
     },
   });
   
-  const users = data?.data || [];
-
-  const filteredUsers = users.filter(user =>
-    `${user.firstName} ${user.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.role.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // The server has already applied the search and the page window.
+  const filteredUsers = data?.data || [];
+  const total = data?.total ?? filteredUsers.length;
+  const totalPages = data?.totalPages ?? 1;
 
   const deleteMutation = useMutation(
     (id) => {
@@ -222,7 +240,58 @@ const Users = () => {
       {filteredUsers.length === 0 && (
         <div className="text-center py-12">
           <User className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-          <p className="text-gray-500">No users found</p>
+          <p className="text-gray-500">
+            {debouncedSearch ? `No users match "${debouncedSearch}"` : 'No users found'}
+          </p>
+        </div>
+      )}
+
+      {/*
+        Deliberately outside both the `hidden md:block` table and the
+        `md:hidden` card list, so the controls appear on every viewport. There
+        were no pagination controls at all before, which is why only the first
+        page of users could ever be reached.
+      */}
+      {total > 0 && (
+        <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-sm text-gray-600">
+            Showing{' '}
+            <span className="font-medium">{(page - 1) * PAGE_SIZE + 1}</span>
+            {'–'}
+            <span className="font-medium">{(page - 1) * PAGE_SIZE + filteredUsers.length}</span>
+            {' of '}
+            <span className="font-medium">{total}</span>
+            {total === 1 ? ' user' : ' users'}
+            {isFetching && <span className="ml-2 text-gray-400">updating…</span>}
+          </p>
+
+          {totalPages > 1 && (
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                disabled={page <= 1}
+                className="inline-flex items-center px-3 py-2 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <ChevronLeft className="w-4 h-4 mr-1" />
+                Previous
+              </button>
+
+              <span className="text-sm text-gray-600 px-2 whitespace-nowrap">
+                Page {page} of {totalPages}
+              </span>
+
+              <button
+                type="button"
+                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                disabled={page >= totalPages}
+                className="inline-flex items-center px-3 py-2 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Next
+                <ChevronRight className="w-4 h-4 ml-1" />
+              </button>
+            </div>
+          )}
         </div>
       )}
 
