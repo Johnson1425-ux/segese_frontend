@@ -8,7 +8,11 @@ const ResetPasswordForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const { resetToken } = useParams();
+  // The route is declared as /reset-password/:token, so the param is `token`.
+  // Destructuring `resetToken` yielded undefined, which was then sent to the
+  // API as the literal string "undefined" and always came back as
+  // "Invalid or expired token".
+  const { token: resetToken } = useParams();
   const { resetPassword, isLoading } = useAuth();
   const navigate = useNavigate();
 

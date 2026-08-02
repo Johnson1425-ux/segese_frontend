@@ -315,6 +315,15 @@ export const AuthProvider = ({ children }) => {
 
   // Reset password
   const resetPassword = async (token, newPassword) => {
+  // Without this, a missing token is interpolated as the string "undefined"
+  // and the server answers "Invalid or expired token", which sends everyone
+  // looking at token expiry instead of at the caller.
+  if (!token) {
+    const message = 'Reset link is missing its token. Please use the link from your email again.';
+    toast.error(message);
+    throw new Error(message);
+  }
+
   try {
     await api.put(`/auth/reset-password/${token}`, {
       password: newPassword
