@@ -1,9 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import api from '../utils/api';
-import { 
-  Stethoscope, User, Search, AlertCircle, CheckCircle, Clock, 
-  FileText, Calendar, Eye, Plus, Scissors, Bed, Users, MapPin, 
-  FishIcon, XCircle, RefreshCw, BedDouble
+import {
+  Stethoscope,
+  User,
+  Search,
+  AlertCircle,
+  CheckCircle,
+  FileText,
+  Plus,
+  Scissors,
+  MapPin,
+  XCircle,
+  RefreshCw,
+  BedDouble,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -24,15 +33,15 @@ const Theatre = () => {
 
   // Selections
   const [selections, setSelections] = useState([]);
-  const [loadingSelections, setLoadingSelections] = useState(false);
+  const [, setLoadingSelections] = useState(false);
 
   // Surgeons
   const [surgeons, setSurgeons] = useState([]);
   const [loadingSurgeons, setLoadingSurgeons] = useState(false);
   
   // Theatre schedules
-  const [theatreSchedules, setTheatreSchedules] = useState([]);
-  const [loadingSchedules, setLoadingSchedules] = useState(false);
+  const [, setTheatreSchedules] = useState([]);
+  const [, setLoadingSchedules] = useState(false);
   
   // Theatre procedures
   const [theatreProcedures, setTheatreProcedures] = useState([]);
@@ -241,15 +250,7 @@ const Theatre = () => {
   };
 
   // Format date
-  const formatDate = (dateString) => {
-    if (!dateString) return 'N/A';
-    return new Date(dateString).toLocaleDateString('en-TZ', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    });
-  };
-
+  
   // Format datetime
   const formatDateTime = (dateString) => {
     if (!dateString) return 'N/A';
@@ -281,21 +282,7 @@ const Theatre = () => {
   };
 
   // Get priority color
-  const getPriorityColor = (priority) => {
-    switch (priority?.toLowerCase()) {
-      case 'emergency':
-        return 'bg-red-100 text-red-800';
-      case 'urgent':
-        return 'bg-orange-100 text-orange-800';
-      case 'normal':
-        return 'bg-green-100 text-green-800';
-      case 'elective':
-        return 'bg-blue-100 text-blue-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
-  };
-
+  
   return (
     <div className="bg-gray-50 min-h-screen p-3 md:p-4 lg:p-8">
       <div className="max-w-7xl mx-auto">

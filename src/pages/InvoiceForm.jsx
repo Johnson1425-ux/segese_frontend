@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { ArrowLeft, Save, Plus, Trash2, Search, Loader2 } from 'lucide-react';
+import { Save, Plus, Trash2, Search, Loader2 } from 'lucide-react';
 import { patientService } from '../utils/patientService.js';
 import { billingService } from '../utils/billingService.js';
 import serviceService from '../utils/serviceService.js';
@@ -14,7 +14,7 @@ const InvoiceForm = () => {
 
     const [patientId, setPatientId] = useState('');
     const [items, setItems] = useState([{ description: '', quantity: 1, unitPrice: 0, total: 0, type: 'other', search: '' }]);
-    const [paymentTerms, setPaymentTerms] = useState('immediate');
+    const [paymentTerms] = useState('immediate');
     
     // State for patient search
     const [patients, setPatients] = useState([]);
@@ -117,7 +117,7 @@ const InvoiceForm = () => {
         try {
             const invoiceData = {
                 patient: patientId,
-                items: items.map(({ search, ...rest }) => rest), // Remove the temporary 'search' field before sending
+                items: items.map(({ ...rest }) => rest), // Remove the temporary 'search' field before sending
                 paymentTerms
             };
             const res = await billingService.createInvoice(invoiceData);

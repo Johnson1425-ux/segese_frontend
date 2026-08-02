@@ -13,7 +13,7 @@ const medicineService = {
   getAll: (params) => api.get('/medicines', { params })
 };
 
-const PrescriptionForm = ({ visitId, patientId, existingPrescriptions }) => {
+const PrescriptionForm = ({ visitId, patientId }) => {
   const { control, handleSubmit, register, reset, formState: { isSubmitting } } = useForm({
     defaultValues: {
       medication: null,

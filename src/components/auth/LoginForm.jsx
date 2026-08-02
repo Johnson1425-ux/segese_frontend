@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate, useLocation, NavLink } from 'react-router-dom';
-import { Eye, EyeOff, Mail, Lock, AlertCircle, Heart, ArrowLeft } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, AlertCircle, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext.jsx';
 
 const LoginForm = () => {
@@ -99,7 +99,7 @@ const LoginForm = () => {
 
           {/* Bottom Quote */}
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-            <p className="text-white italic">"Your health is our priority. Trust us to provide the best care for you and your loved ones."</p>
+            <p className="text-white italic">&quot;Your health is our priority. Trust us to provide the best care for you and your loved ones.&quot;</p>
             <p className="text-blue-100 mt-2 text-sm">- Segese Medical Team</p>
           </div>
         </div>

@@ -1,17 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import api from '../utils/api';
 import { useAuth } from '../context/AuthContext';
-import { 
-  Activity, User, Plus, Edit, Eye, FileText, Heart,
-  Pill, Stethoscope, ClipboardList, Calendar, Clock,
-  TrendingUp, AlertCircle, CheckCircle, XCircle, Search,
-  Download, Filter, X, BedDouble, UserCheck,
-  Scissors
+import {
+  User,
+  Eye,
+  Stethoscope,
+  Calendar,
+  Search,
+  X,
+  UserCheck,
+  Scissors,
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
 const TheatreProceduresManagement = () => {
-  const { user, hasRole } = useAuth();
+  const { hasRole } = useAuth();
   const [procedures, setProcedures] = useState([]);
   const [selectedProcedure, setSelectedProcedure] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -28,16 +31,6 @@ const TheatreProceduresManagement = () => {
   const [filterTheatre, setFilterTheatre] = useState('');
   const [theatres, setTheatres] = useState([]);
 
-  // Form states
-  const [vitalsData, setVitalsData] = useState({
-    bloodPressure: { systolic: '', diastolic: '' },
-    heartRate: '',
-    temperature: '',
-    respiratoryRate: '',
-    oxygenSaturation: '',
-    notes: ''
-  });
-
   const [medicationData, setMedicationData] = useState({
     medication: '',
     dosage: '',
@@ -45,11 +38,6 @@ const TheatreProceduresManagement = () => {
     startDate: new Date().toISOString().split('T')[0],
     endDate: '',
     notes: ''
-  });
-
-  const [nursingNoteData, setNursingNoteData] = useState({
-    note: '',
-    category: 'general'
   });
 
   const [diagnosisData, setDiagnosisData] = useState({
@@ -70,15 +58,7 @@ const TheatreProceduresManagement = () => {
     { value: 'completed', label: 'Completed' }
   ];
 
-  const noteCategories = [
-    { value: 'general', label: 'General' },
-    { value: 'medication', label: 'Medication' },
-    { value: 'vital_signs', label: 'Vital Signs' },
-    { value: 'treatment', label: 'Treatment' },
-    { value: 'observation', label: 'Observation' },
-    { value: 'incident', label: 'Incident' }
-  ];
-
+  
   const dischargeReasons = [
     { value: 'completed', label: 'Completed' },
     { value: 'referred', label: 'Referred' },
@@ -130,20 +110,6 @@ const TheatreProceduresManagement = () => {
     }
   };
 
-  const handleAddVitals = async (e) => {
-    e.preventDefault();
-    try {
-      await api.post(`/ipd-records/${selectedRecord._id}/vitals`, vitalsData);
-      toast.success('Vital signs recorded successfully');
-      setShowVitalsModal(false);
-      resetVitalsForm();
-      loadRecordDetails(selectedRecord._id);
-    } catch (error) {
-      console.error('Error adding vitals:', error);
-      toast.error('Failed to record vital signs');
-    }
-  };
-
   const handleAddMedication = async (e) => {
     e.preventDefault();
     try {
@@ -158,28 +124,18 @@ const TheatreProceduresManagement = () => {
     }
   };
 
-  const handleAddNursingNote = async (e) => {
-    e.preventDefault();
-    try {
-      await api.post(`/ipd-records/${selectedRecord._id}/nursing-notes`, nursingNoteData);
-      toast.success('Nursing note added successfully');
-      setShowNursingNoteModal(false);
-      resetNursingNoteForm();
-      loadRecordDetails(selectedRecord._id);
-    } catch (error) {
-      console.error('Error adding nursing note:', error);
-      toast.error('Failed to add nursing note');
-    }
-  };
-
   const handleAddDiagnosis = async (e) => {
     e.preventDefault();
     try {
-      await api.post(`/ipd-records/${selectedRecord._id}/diagnosis`, diagnosisData);
+      // Was posting to /ipd-records/${selectedRecord._id}/diagnosis, but this
+      // page has no selectedRecord — a theatre procedure is not linked to an
+      // IPD record — so the handler threw a ReferenceError before it could
+      // send anything. Diagnoses are recorded against the procedure itself.
+      await api.post(`/theatre-procedures/${selectedProcedure._id}/diagnosis`, diagnosisData);
       toast.success('Diagnosis added successfully');
       setShowDiagnosisModal(false);
       resetDiagnosisForm();
-      loadRecordDetails(selectedRecord._id);
+      loadProcedureDetails(selectedProcedure._id);
     } catch (error) {
       console.error('Error adding diagnosis:', error);
       toast.error('Failed to add diagnosis');
@@ -193,7 +149,7 @@ const TheatreProceduresManagement = () => {
     }
 
     try {
-      const response = await api.put(`/theatre-procedures/${selectedProcedure._id}/discharge`, dischargeData);
+      await api.put(`/theatre-procedures/${selectedProcedure._id}/discharge`, dischargeData);
       toast.success('Procedure completed successfully');
       setShowDischargeModal(false);
       setShowDetailModal(false);
@@ -211,17 +167,7 @@ const TheatreProceduresManagement = () => {
     }
   };
 
-  const resetVitalsForm = () => {
-    setVitalsData({
-      bloodPressure: { systolic: '', diastolic: '' },
-      heartRate: '',
-      temperature: '',
-      respiratoryRate: '',
-      oxygenSaturation: '',
-      notes: ''
-    });
-  };
-
+  
   const resetMedicationForm = () => {
     setMedicationData({
       medication: '',
@@ -233,13 +179,7 @@ const TheatreProceduresManagement = () => {
     });
   };
 
-  const resetNursingNoteForm = () => {
-    setNursingNoteData({
-      note: '',
-      category: 'general'
-    });
-  };
-
+  
   const resetDiagnosisForm = () => {
     setDiagnosisData({
       condition: '',
@@ -299,9 +239,6 @@ const TheatreProceduresManagement = () => {
   });
 
   const canAddDiagnosis = hasRole('surgeon') || hasRole('admin');
-  const canAddMedication = hasRole('doctor') || hasRole('admin');
-  const canAddVitals = hasRole('doctor') || hasRole('nurse') || hasRole('admin');
-  const canAddNursingNote = hasRole('nurse') || hasRole('admin');
   const canDischarge = hasRole('surgeon') || hasRole('admin');
 
   return (
@@ -346,7 +283,7 @@ const TheatreProceduresManagement = () => {
 
             <select
               value={filterTheatre}
-              onChange={(e) => setFilterWard(e.target.value)}
+              onChange={(e) => setFilterTheatre(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">All Theatres</option>

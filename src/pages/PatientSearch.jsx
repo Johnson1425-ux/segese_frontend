@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { Search, Filter, Calendar, User, MapPin, Mail, Phone, Eye, Edit, AlertCircle, X } from 'lucide-react';
+import { Search, Filter, Calendar, User, Mail, Phone, Eye, Edit, AlertCircle, X } from 'lucide-react';
 import { patientService } from '../utils/patientService.js';
 
 const PatientSearch = () => {
@@ -13,7 +13,7 @@ const PatientSearch = () => {
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [totalResults, setTotalResults] = useState(0);
+  const [, setTotalResults] = useState(0);
 
   const searchPatients = async () => {
     setLoading(true);
@@ -353,14 +353,14 @@ const PatientSearch = () => {
                     <div className="flex flex-col items-center">
                       <Search className="h-12 w-12 text-gray-300 mb-4" />
                       <h3 className="text-lg font-medium text-gray-900 mb-2">Start Your Patient Search</h3>
-                      <p>Enter a patient's name, email, or phone number in the search field above to get started.</p>
+                      <p>Enter a patient&apos;s name, email, or phone number in the search field above to get started.</p>
                     </div>
                   </td>
                 </tr>
               ) : patients.length === 0 ? (
                 <tr>
                   <td colSpan="8" className="px-6 py-4 text-center text-gray-500">
-                    No patients found matching "{searchQuery}". Try adjusting your search term.
+                    No patients found matching &quot;{searchQuery}&quot;. Try adjusting your search term.
                   </td>
                 </tr>
               ) : (
@@ -488,11 +488,11 @@ const PatientSearch = () => {
           <div className="bg-white rounded-lg shadow-md p-8 text-center">
             <Search className="h-12 w-12 text-gray-300 mx-auto mb-4" />
             <h3 className="text-lg font-medium text-gray-900 mb-2">Start Your Patient Search</h3>
-            <p className="text-sm text-gray-500">Enter a patient's name, email, or phone number to get started.</p>
+            <p className="text-sm text-gray-500">Enter a patient&apos;s name, email, or phone number to get started.</p>
           </div>
         ) : patients.length === 0 ? (
           <div className="bg-white rounded-lg shadow-md p-8 text-center">
-            <p className="text-gray-500">No patients found matching "{searchQuery}".</p>
+            <p className="text-gray-500">No patients found matching &quot;{searchQuery}&quot;.</p>
           </div>
         ) : (
           patients.map((patient, index) => (

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Plus, Edit, Trash2, Upload, Download } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import api from "../utils/api.js";

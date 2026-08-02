@@ -1,20 +1,19 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { 
-  User, 
-  Mail, 
-  Lock, 
-  Phone, 
-  Calendar, 
-  MapPin, 
-  Building, 
-  Shield,
+import {
+  User,
+  Mail,
+  Lock,
+  Phone,
+  Calendar,
+  MapPin,
+  Building,
   Save,
   ArrowLeft,
   Eye,
-  EyeOff
+  EyeOff,
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import api from '../utils/api.js';
@@ -40,7 +39,7 @@ const UserForm = () => {
   const password = watch('password');
 
   // Fetch user data if editing
-  const { data: userData, isLoading: isLoadingUser } = useQuery(
+  const { isLoading: isLoadingUser } = useQuery(
     ['user', id],
     async () => {
       const response = await api.get(`/users/${id}`);
@@ -80,7 +79,7 @@ const UserForm = () => {
       }
     },
     {
-      onSuccess: (data) => {
+      onSuccess: () => {
         queryClient.invalidateQueries(['users']);
         toast.success(isEditing ? 'User updated successfully' : 'User created successfully');
         navigate('/users');
@@ -279,7 +278,7 @@ const UserForm = () => {
                 {...register('phone', {
                   required: 'Phone number is required',
                   pattern: {
-                    value: /^[\+]?[1-9][\d]{0,15}$/,
+                    value: /^\+?[1-9]\d{0,15}$/,
                     message: 'Invalid phone number',
                   },
                 })}

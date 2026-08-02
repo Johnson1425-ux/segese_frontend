@@ -1,9 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
-  FileText, Calendar, DollarSign, Users, Activity, Pill,
-  Stethoscope, Download, TrendingUp, Building2, AlertCircle,
-  Bed, ChevronRight, BarChart2, ClipboardList, X, RefreshCw,
-  CheckCircle, Clock, ArrowUpRight, Beaker
+  FileText,
+  DollarSign,
+  Users,
+  Activity,
+  Pill,
+  Stethoscope,
+  Download,
+  AlertCircle,
+  Bed,
+  ChevronRight,
+  ClipboardList,
+  X,
+  RefreshCw,
 } from 'lucide-react';
 import api from '../utils/api';
 import jsPDF from 'jspdf';
@@ -21,11 +30,6 @@ const fmtDate = (d) => {
 };
 
 // Safely extract age in years from a DOB string
-const ageFromDOB = (dob) => {
-  if (!dob) return null;
-  const diff = Date.now() - new Date(dob).getTime();
-  return Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
-};
 
 // Classify patient into HMIS age bucket
 const ageGroup = (dob) => {

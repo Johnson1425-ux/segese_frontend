@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { ArrowLeft, User, Stethoscope, Search, Loader2, Plus, X, DollarSign, MessageSquare, Activity } from 'lucide-react';
+import { Stethoscope, Search, Loader2, DollarSign, MessageSquare, Activity } from 'lucide-react';
 import { patientService } from '../utils/patientService.js';
 import { doctorService } from '../utils/doctorService.js';
 import { visitService } from '../utils/visitService.js';
@@ -27,9 +27,7 @@ const getTanzaniaDateTime = () => {
 
 const VisitForm = () => {
     const navigate = useNavigate();
-    const { id } = useParams();
-    const isEditing = !!id;
-    const patientSearchRef = useRef(null);
+        const patientSearchRef = useRef(null);
     
     // Form data state
     const [formData, setFormData] = useState({

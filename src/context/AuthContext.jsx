@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import { createContext, useContext, useReducer, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { toast } from 'react-hot-toast';
 import api from '../utils/api.js';
@@ -47,7 +47,7 @@ const authReducer = (state, action) => {
         isLoading: true
       };
     
-    case 'AUTH_SUCCESS':
+    case 'AUTH_SUCCESS': {
       const user = action.payload.user;
       const userRole = user?.role || null;
       const userPermissions = userRole ? getPermissionsByRole(userRole) : [];
@@ -62,7 +62,8 @@ const authReducer = (state, action) => {
         role: userRole,
         preferences: user?.preferences || state.preferences
       };
-    
+    }
+
     case 'AUTH_FAIL':
       return {
         ...state,
@@ -85,7 +86,7 @@ const authReducer = (state, action) => {
         role: null
       };
     
-    case 'UPDATE_USER':
+    case 'UPDATE_USER': {
       const updatedUser = { ...state.user, ...action.payload };
       const updatedRole = updatedUser.role;
       const updatedPermissions = updatedRole ? getPermissionsByRole(updatedRole) : state.permissions;
@@ -97,7 +98,8 @@ const authReducer = (state, action) => {
         role: updatedRole,
         preferences: updatedUser.preferences || state.preferences
       };
-    
+    }
+
     case 'UPDATE_PREFERENCES':
       return {
         ...state,
@@ -114,7 +116,7 @@ const authReducer = (state, action) => {
         isLoading: action.payload
       };
     
-    case 'TOGGLE_THEME':
+    case 'TOGGLE_THEME': {
       const newTheme = state.preferences.theme === 'light' ? 'dark' : 'light';
       // Update localStorage
       localStorage.setItem('theme', newTheme);
@@ -126,6 +128,7 @@ const authReducer = (state, action) => {
           theme: newTheme
         }
       };
+    }
 
     default:
       return state;
@@ -340,10 +343,13 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Resend verification email
-  const resendVerification = async () => {
+  // Takes the address explicitly: this runs before sign-in, so there is no
+  // authenticated user to infer it from. The previous version sent no body,
+  // which the endpoint rejects.
+  const resendVerification = async (email) => {
     try {
-      await api.post('/auth/resend-verification');
-      toast.success('Verification email sent successfully');
+      const response = await api.post('/auth/resend-verification', { email });
+      toast.success(response.data?.data || 'Verification email sent');
       return { success: true };
     } catch (error) {
       const message = error.response?.data?.message || 'Failed to send verification email';
@@ -414,6 +420,11 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
+// Exporting the hook alongside the provider is the conventional shape for a
+// context module. This rule only affects Fast Refresh in development, and
+// splitting the hook into its own file would touch every consumer for no
+// runtime benefit.
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {

@@ -1,9 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import api from '../utils/api';
-import { 
-  BedDouble, Search, AlertCircle, CheckCircle, Clock, 
-  FileText, User, Plus, Calendar, MapPin, Users, Activity,
-  RefreshCw, XCircle
+import {
+  BedDouble,
+  Search,
+  AlertCircle,
+  CheckCircle,
+  FileText,
+  User,
+  Plus,
+  MapPin,
+  Activity,
+  RefreshCw,
+  XCircle,
 } from 'lucide-react';
 import { toast } from "react-hot-toast";
 
@@ -36,8 +44,7 @@ const IPD = () => {
   
   // Wards and beds
   const [wards, setWards] = useState([]);
-  const [beds, setBeds] = useState([]);
-  const [availableBeds, setAvailableBeds] = useState([]);
+    const [availableBeds, setAvailableBeds] = useState([]);
   const [loadingWards, setLoadingWards] = useState(false);
   const [loadingBeds, setLoadingBeds] = useState(false);
   
@@ -294,15 +301,7 @@ const IPD = () => {
   };
 
   // Format date
-  const formatDate = (dateString) => {
-    if (!dateString) return 'N/A';
-    return new Date(dateString).toLocaleDateString('en-TZ', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    });
-  };
-
+  
   // Format datetime
   const formatDateTime = (dateString) => {
     if (!dateString) return 'N/A';

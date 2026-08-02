@@ -5,7 +5,7 @@ import Select from 'react-select';
 import { toast } from 'react-hot-toast';
 import api from '../../utils/api';
 
-const LabOrderForm = ({ visitId, existingOrders, patientId, visitStatus }) => {
+const LabOrderForm = ({ visitId, visitStatus }) => {
   const { control, register, handleSubmit, reset, formState: { isSubmitting } } = useForm();
   const queryClient = useQueryClient();
   const [paymentRequired, setPaymentRequired] = useState(false);

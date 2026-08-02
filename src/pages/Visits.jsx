@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from 'react-query';
-import { Plus, Search, Filter, Eye, ChevronLeft, ChevronRight, MoreVertical, Trash2, Loader2 } from 'lucide-react';
+import { Plus, Search, Filter, Eye, ChevronLeft, ChevronRight, MoreVertical } from 'lucide-react';
 import { visitService } from '../utils/visitService.js';
 import { useAuth } from '../context/AuthContext.jsx';
 import LoadingSpinner from '../components/common/LoadingSpinner.jsx';
@@ -11,33 +11,13 @@ const Visits = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
-  const [isDeleting, setIsDeleting] = useState(null);
   const [openDropdown, setOpenDropdown] = useState(null);
 
   const canCreateVisit = hasAnyRole(['admin', 'receptionist']);
-  const dropdownRef = useRef(null);
-
+  
   const toggleDropdown = (visitId) => {
     setOpenDropdown(openDropdown === visitId ? null : visitId);
   }
-
-  const handleDeleteConfirm = async () => {
-      if (!patientToDelete) return;
-  
-      try {
-        setIsDeleting(patientToDelete._id);
-        await patientService.deletePatient(patientToDelete._id);
-        setPatients(prev => prev.filter(p => p._id !== patientToDelete._id));
-        toast.success(`Patient ${patientToDelete.firstName} ${patientToDelete.lastName} deleted successfully`);
-      } catch (error) {
-        const message = error.response?.data?.message || 'Failed to delete patient';
-        toast.error(message);
-      } finally {
-        setIsDeleting(null);
-        setShowConfirmDialog(false);
-        setPatientToDelete(null);
-      }
-    };
 
   const {
     data: visitsData,
@@ -142,24 +122,14 @@ const Visits = () => {
                 <Eye className="w-3 h-3 sm:w-4 sm:h-4 mr-2 sm:mr-3 flex-shrink-0" />
                 View Details
               </Link>
-              
-              <hr className="my-1 border-gray-200" />
-              
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDeleteClick(patient);
-                }}
-                className="flex items-center w-full px-3 sm:px-4 py-2 text-[10px] sm:text-xs md:text-sm text-red-600 hover:bg-red-50 transition-colors duration-200 cursor-pointer"
-                disabled={isDeleting === visit._id}
-              >
-                {isDeleting === visit._id ? (
-                  <Loader2 className="w-3 h-3 sm:w-4 sm:h-4 mr-2 sm:mr-3 animate-spin flex-shrink-0" />
-                ) : (
-                  <Trash2 className="w-3 h-3 sm:w-4 sm:h-4 mr-2 sm:mr-3 flex-shrink-0" />
-                )}
-                Delete Visit
-              </button>
+              {/*
+                A "Delete Visit" button used to sit here. It called
+                handleDeleteClick(patient) — neither of which existed in this
+                file — so clicking it threw a ReferenceError. The handler
+                behind it was patient-deletion code copied from the Patients
+                page. The API has no DELETE /visits/:id route either, so the
+                action was never possible; removed rather than wired up.
+              */}
             </div>
           </>
         )}

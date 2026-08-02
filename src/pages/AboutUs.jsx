@@ -90,7 +90,7 @@ function SignInDropdown() {
 }
 
 export default function AboutUs() {
-  const [activeLink, setActiveLink] = useState("about");
+  const [, setActiveLink] = useState("about");
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 

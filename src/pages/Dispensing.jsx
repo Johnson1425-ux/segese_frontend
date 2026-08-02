@@ -1,13 +1,13 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect } from "react";
 import api from "../utils/api.js";
-import { Search, ArrowLeft } from "lucide-react";
+import { Search } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
 
 export default function Dispensing() {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("quantification"); // "quantification", "dispensing", or "ipd-medications"
-  const [filters, setFilters] = useState({ search: "", patientId: "", status: "" });
+  const [filters] = useState({ search: "", patientId: "", status: "" });
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [selectedDispensingPatient, setSelectedDispensingPatient] = useState(null);
   const [selectedIPDPatient, setSelectedIPDPatient] = useState(null);
@@ -140,54 +140,9 @@ export default function Dispensing() {
   };
 
   // Filtering
-  const filteredPendingPrescriptions = useMemo(() => {
-    return pendingPrescriptions.filter((p) => {
-      const patientName = p.patient
-        ? `${p.patient.firstName || ""} ${p.patient.lastName || ""}`
-        : "";
-      
-      const matchesSearch =
-        filters.search.trim() === "" ||
-        patientName.toLowerCase().includes(filters.search.toLowerCase()) ||
-        (p.medication && p.medication.toLowerCase().includes(filters.search.toLowerCase())) ||
-        (p.visit.visitId && p.visit.visitId.toLowerCase().includes(filters.search.toLowerCase()));
-
-      return matchesSearch;
-    });
-  }, [filters, pendingPrescriptions]);
-
-  const filteredReadyPrescriptions = useMemo(() => {
-    return readyPrescriptions.filter((p) => {
-      const patientName = p.patient
-        ? `${p.patient.firstName || ""} ${p.patient.lastName || ""}`
-        : "";
-      
-      const matchesSearch =
-        filters.search.trim() === "" ||
-        patientName.toLowerCase().includes(filters.search.toLowerCase()) ||
-        (p.medication && p.medication.toLowerCase().includes(filters.search.toLowerCase())) ||
-        (p.visit.visitId && p.visit.visitId.toLowerCase().includes(filters.search.toLowerCase()));
-
-      return matchesSearch;
-    });
-  }, [filters, readyPrescriptions]);
-
-  const filteredIPDMedications = useMemo(() => {
-    return ipdMedications.filter((med) => {
-      const patientName = med.patient
-        ? `${med.patient.firstName || ""} ${med.patient.lastName || ""}`
-        : "";
-      
-      const matchesSearch =
-        filters.search.trim() === "" ||
-        patientName.toLowerCase().includes(filters.search.toLowerCase()) ||
-        (med.medication && med.medication.toLowerCase().includes(filters.search.toLowerCase())) ||
-        (med.admissionNumber && med.admissionNumber.toLowerCase().includes(filters.search.toLowerCase()));
-
-      return matchesSearch;
-    });
-  }, [filters, ipdMedications]);
-
+  
+  
+  
   // Group prescriptions by patient
   const groupPrescriptionsByPatient = () => {
     const grouped = {};
@@ -268,11 +223,7 @@ export default function Dispensing() {
     return fullName.includes(ipdSearchTerm.toLowerCase()) || admissionNum.includes(ipdSearchTerm.toLowerCase());
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFilters((prev) => ({ ...prev, [name]: value }));
-  };
-
+  
   // Quantification handlers
   const handleSelectForQuantify = (prescription) => {
     setSelectedForQuantify(prescription);
@@ -357,10 +308,7 @@ export default function Dispensing() {
   };
 
   // Dispensing handlers
-  const handleSelectForDispense = (prescription) => {
-    setSelectedForDispense(prescription);
-  };
-
+  
   const completeDispensing = async () => {
     try {
       setLoading(true);

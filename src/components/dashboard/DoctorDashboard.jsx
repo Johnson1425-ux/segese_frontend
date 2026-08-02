@@ -1,4 +1,3 @@
-import React from 'react';
 import { useQuery } from 'react-query';
 import { dashboardService } from '../../utils/dashboardService';
 import LoadingSpinner from '../common/LoadingSpinner.jsx';

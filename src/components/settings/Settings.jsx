@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { 
+import {
   Lock,
-  Eye, 
-  EyeOff, 
+  Eye,
+  EyeOff,
   Save,
-  CheckCircle,
-  AlertTriangle
+  AlertTriangle,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext.jsx';
 
@@ -35,7 +34,11 @@ const Settings = () => {
         newPassword: '',
         confirmPassword: '',
       });
-      setTimeout(() => setPasswordSuccess(false), 3000);
+      // A setTimeout(() => setPasswordSuccess(false), 3000) ran here. There is
+      // no passwordSuccess state in this component, so three seconds after a
+      // successful password change the timer threw a ReferenceError. The
+      // banner it was meant to clear does not exist either; the form reset
+      // above is the confirmation.
     } catch (error) {
       if (error.response?.data?.errors) {
         error.response.data.errors.forEach((err) => {

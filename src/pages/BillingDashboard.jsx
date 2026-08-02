@@ -1,15 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   DollarSign,
   FileText,
-  CreditCard,
   TrendingUp,
   AlertCircle,
   Plus,
   Search,
-  Download,
-  RefreshCw
+  RefreshCw,
 } from 'lucide-react';
 import api from '../utils/api.js';
 import LoadingSpinner from '../components/common/LoadingSpinner.jsx';
@@ -24,7 +22,7 @@ const BillingDashboard = () => {
     overdueCount: 0
   });
   const [recentInvoices, setRecentInvoices] = useState([]);
-  const [recentPayments, setRecentPayments] = useState([]);
+  const [, setRecentPayments] = useState([]);
 
   useEffect(() => {
     fetchBillingData();

@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery } from 'react-query';
 import { toast } from 'react-hot-toast';
 import { ArrowLeft, Printer, CreditCard } from 'lucide-react';
 import { billingService } from '../utils/billingService.js';
@@ -10,8 +10,7 @@ import PaymentModal from '../components/billing/PaymentModal.jsx';
 const InvoiceDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
-  const printRef = useRef();
+    const printRef = useRef();
 
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
@@ -101,7 +100,6 @@ const InvoiceDetail = () => {
               <p className="text-gray-600 text-xs sm:text-sm">Email: publichope2@gmail.com</p>
             </div>
           </div>
-
 
           {/* Patient and Date Info */}
           <div className="flex flex-col sm:flex-row justify-between items-start mb-4 sm:mb-6 md:mb-8 border-b pb-1 sm:pb-1 md:pb-1 gap-3">

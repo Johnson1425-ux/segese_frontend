@@ -91,7 +91,7 @@ function SignInDropdown() {
 }
 
 export default function ServicesPage() {
-  const [activeLink, setActiveLink] = useState("services");
+  const [, setActiveLink] = useState("services");
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -353,7 +353,7 @@ export default function ServicesPage() {
               What We Offer
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto px-4">
-              From routine check-ups to specialized treatments, we're here to support your health journey
+              From routine check-ups to specialized treatments, we&apos;re here to support your health journey
             </p>
           </div>
 
