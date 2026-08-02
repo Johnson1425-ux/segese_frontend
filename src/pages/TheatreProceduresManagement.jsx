@@ -130,19 +130,6 @@ const TheatreProceduresManagement = () => {
     }
   };
 
-  const handleAddVitals = async (e) => {
-    e.preventDefault();
-    try {
-      await api.post(`/ipd-records/${selectedRecord._id}/vitals`, vitalsData);
-      toast.success('Vital signs recorded successfully');
-      setShowVitalsModal(false);
-      resetVitalsForm();
-      loadRecordDetails(selectedRecord._id);
-    } catch (error) {
-      console.error('Error adding vitals:', error);
-      toast.error('Failed to record vital signs');
-    }
-  };
 
   const handleAddMedication = async (e) => {
     e.preventDefault();
@@ -158,19 +145,6 @@ const TheatreProceduresManagement = () => {
     }
   };
 
-  const handleAddNursingNote = async (e) => {
-    e.preventDefault();
-    try {
-      await api.post(`/ipd-records/${selectedRecord._id}/nursing-notes`, nursingNoteData);
-      toast.success('Nursing note added successfully');
-      setShowNursingNoteModal(false);
-      resetNursingNoteForm();
-      loadRecordDetails(selectedRecord._id);
-    } catch (error) {
-      console.error('Error adding nursing note:', error);
-      toast.error('Failed to add nursing note');
-    }
-  };
 
   const handleAddDiagnosis = async (e) => {
     e.preventDefault();
@@ -346,7 +320,7 @@ const TheatreProceduresManagement = () => {
 
             <select
               value={filterTheatre}
-              onChange={(e) => setFilterWard(e.target.value)}
+              onChange={(e) => setFilterTheatre(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">All Theatres</option>

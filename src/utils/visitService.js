@@ -6,8 +6,11 @@ export const visitService = {
     return response.data;
   },
 
+  // GET /visits already returns only active visits unless ?isActive=all is
+  // passed, so the previous '/visits/active' path (which the API does not
+  // implement) was never needed.
   getActiveVisits: async () => {
-    const response = await api.get('/visits/active');
+    const response = await api.get('/visits');
     return response.data;
   },
 
@@ -22,15 +25,11 @@ export const visitService = {
   },
 
   endVisit: async (id, notes) => {
-    const response = await api.put(`/visits/${id}/end`, { notes });
+    // Was PUT /visits/:id/end — wrong verb and wrong path.
+    const response = await api.patch(`/visits/${id}/end-visit`, { notes });
     return response.data;
   },
   
-  updateVisit: async (id, visitData) => {
-    const response = await api.put(`/visits/${id}`, visitData);
-    return response.data;
-  },
-
   // --- NEW METHODS ---
   updateVitals: async ({ visitId, vitalsData }) => {
     const response = await api.post(`/visits/${visitId}/vitals`, vitalsData);
