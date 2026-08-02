@@ -72,7 +72,7 @@ const NotFound = () => {
             <div className="text-center">
               <p className="text-xs text-gray-500">
                 Still can&apos;t find what you&apos;re looking for?{' '}
-                <Link to="/contact" className="text-blue-600 hover:text-blue-500">
+                <Link to="/about#contact" className="text-blue-600 hover:text-blue-500">
                   Contact support
                 </Link>
               </p>

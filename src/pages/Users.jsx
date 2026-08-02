@@ -151,7 +151,7 @@ const Users = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex space-x-2">
-                      <Link to={`/users/${user._id}/edit`} className="text-indigo-600 hover:text-indigo-900">
+                      <Link to={`/users/edit/${user._id}`} className="text-indigo-600 hover:text-indigo-900">
                         <Edit className="w-4 h-4" />
                       </Link>
                       <button onClick={() => handleDeleteClick(user)} className="text-red-600 hover:text-red-900">
@@ -218,7 +218,7 @@ const Users = () => {
             {/* Action Buttons */}
             <div className="flex gap-2 pt-3 border-t border-gray-200">
               <Link 
-                to={`/users/${user._id}/edit`}
+                to={`/users/edit/${user._id}`}
                 className="flex-1 flex items-center justify-center px-4 py-2 bg-indigo-50 text-indigo-700 rounded-lg hover:bg-indigo-100 transition-colors text-sm font-medium"
               >
                 <Edit className="w-4 h-4 mr-2" />
