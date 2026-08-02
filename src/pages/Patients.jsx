@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { Plus, Search, Edit, Trash2, Eye, Loader2, RefreshCw, MoreVertical, X } from 'lucide-react';
@@ -19,8 +19,7 @@ const Patients = () => {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [patientToDelete, setPatientToDelete] = useState(null);
   
-  const dropdownRef = useRef(null);
-  
+    
   const fetchPatients = async () => {
     try {
       setIsLoading(true);

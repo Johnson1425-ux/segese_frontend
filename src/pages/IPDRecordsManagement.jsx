@@ -1,17 +1,28 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import api from '../utils/api';
 import { useAuth } from '../context/AuthContext';
-import { 
-  Activity, User, Plus, Edit, Eye, FileText, Heart,
-  Pill, Stethoscope, ClipboardList, Calendar, Clock,
-  TrendingUp, AlertCircle, CheckCircle, XCircle, Search,
-  Download, Filter, X, BedDouble, UserCheck, ArrowRight, MoreHorizontal
+import {
+  Activity,
+  User,
+  Eye,
+  FileText,
+  Heart,
+  Pill,
+  Stethoscope,
+  ClipboardList,
+  Calendar,
+  Search,
+  X,
+  BedDouble,
+  UserCheck,
+  ArrowRight,
+  MoreHorizontal,
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import TransferPatientModal from './TransferPatientModal.jsx';
 
 const IPDRecordsManagement = () => {
-  const { user, hasRole } = useAuth();
+  const { hasRole } = useAuth();
   const [records, setRecords] = useState([]);
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -30,8 +41,7 @@ const IPDRecordsManagement = () => {
   const [filterWard, setFilterWard] = useState('');
   const [wards, setWards] = useState([]);
 
-  const dropDownRef = useRef(null);
-
+  
   // Form states
   const [vitalsData, setVitalsData] = useState({
     bloodPressure: { systolic: '', diastolic: '' },
@@ -198,7 +208,7 @@ const IPDRecordsManagement = () => {
     }
 
     try {
-      const response = await api.put(`/ipd-records/${selectedRecord._id}/discharge`, dischargeData);
+      await api.put(`/ipd-records/${selectedRecord._id}/discharge`, dischargeData);
       toast.success('Patient discharged successfully');
       setShowDischargeModal(false);
       setShowDetailModal(false);

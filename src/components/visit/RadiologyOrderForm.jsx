@@ -5,7 +5,7 @@ import Select from 'react-select';
 import { toast } from 'react-hot-toast';
 import api from '../../utils/api';
 
-const RadiologyOrderForm = ({ visitId, patientId }) => {
+const RadiologyOrderForm = ({ visitId }) => {
 const { control, register, handleSubmit, reset, formState: { errors } } = useForm();
 const queryClient = useQueryClient();
 

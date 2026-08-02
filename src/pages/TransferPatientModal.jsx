@@ -340,7 +340,7 @@ export default function TransferPatientModal({ record, onClose, onSuccess }) {
                   <div>
                     <p className="font-semibold text-yellow-900">Critical Care Ward</p>
                     <p className="text-sm text-yellow-800 mt-1">
-                      Patient status will be automatically updated to "Critical" when transferred to {selectedWard.type.toUpperCase()}.
+                      Patient status will be automatically updated to &quot;Critical&quot; when transferred to {selectedWard.type.toUpperCase()}.
                     </p>
                   </div>
                 </div>

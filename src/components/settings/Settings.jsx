@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { 
+import {
   Lock,
-  Eye, 
-  EyeOff, 
+  Eye,
+  EyeOff,
   Save,
-  CheckCircle,
-  AlertTriangle
+  AlertTriangle,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext.jsx';
 

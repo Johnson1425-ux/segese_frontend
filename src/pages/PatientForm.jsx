@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { ArrowLeft, Save, User, Loader2, MapPin, Phone, ShieldCheck, Cross } from 'lucide-react';
+import { Save, User, Loader2, MapPin, Phone, ShieldCheck, Cross } from 'lucide-react';
 import { patientService } from '../utils/patientService.js';
 
 const PatientForm = () => {

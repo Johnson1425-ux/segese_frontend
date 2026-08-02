@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { ArrowLeft, Save, Calendar, Search, X, User, ChevronDown, Loader2, Stethoscope } from 'lucide-react';
+import { ArrowLeft, Save, User, Loader2, Stethoscope } from 'lucide-react';
 import { patientService } from '../utils/patientService.js';
 import { doctorService } from '../utils/doctorService.js';
 import { appointmentService } from '../utils/appointmentService.js';
@@ -32,17 +32,16 @@ const AppointmentForm = () => {
   const [patientSearchTerm, setPatientSearchTerm] = useState('');
   const [patientSearchResults, setPatientSearchResults] = useState([]);
   const [showPatientDropdown, setShowPatientDropdown] = useState(false);
-  const [selectedPatient, setSelectedPatient] = useState(null);
+  const [, setSelectedPatient] = useState(null);
 
   // State for doctor search
   const [doctors, setDoctors] = useState([]);
   const [doctorSearchTerm, setDoctorSearchTerm] = useState('');
   const [doctorSearchResults, setDoctorSearchResults] = useState([]);
   const [showDoctorDropdown, setShowDoctorDropdown] = useState(false);
-  const [selectedDoctor, setSelectedDoctor] = useState(null);
+  const [, setSelectedDoctor] = useState(null);
 
-  const [errors, setErrors] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isEditing = !!id;
 
@@ -109,7 +108,6 @@ const AppointmentForm = () => {
       setDoctorSearchResults([]);
     }
   }, [doctorSearchTerm, doctors]);
-
 
   // Click outside handler
   useEffect(() => {

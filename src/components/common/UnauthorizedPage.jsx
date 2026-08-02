@@ -1,4 +1,3 @@
-import React from 'react';
 import { Shield, ArrowLeft, Home } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -22,7 +21,7 @@ const UnauthorizedPage = ({ requiredRole, requiredPermissions }) => {
             Access Denied
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            You don't have permission to access this resource.
+            You don&apos;t have permission to access this resource.
           </p>
         </div>
 
@@ -61,7 +60,7 @@ const UnauthorizedPage = ({ requiredRole, requiredPermissions }) => {
                   <div className="mt-2 text-sm text-yellow-700">
                     <ul className="list-disc pl-5 space-y-1">
                       <li>Contact your administrator to request access</li>
-                      <li>Check if you're logged in with the correct account</li>
+                      <li>Check if you&apos;re logged in with the correct account</li>
                       <li>Return to the dashboard or previous page</li>
                     </ul>
                   </div>

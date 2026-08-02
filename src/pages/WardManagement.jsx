@@ -1,8 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import api from '../utils/api';
-import { 
-  Building2, Plus, Edit, Trash2, Search, X, 
-  BedDouble, Users, Activity, CheckCircle, AlertCircle 
+import {
+  Building2,
+  Plus,
+  Edit,
+  Trash2,
+  Search,
+  X,
+  BedDouble,
+  Users,
+  Activity,
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 

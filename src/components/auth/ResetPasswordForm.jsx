@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams, Link, useNavigate, NavLink } from 'react-router-dom';
-import { Eye, EyeOff, Lock, CheckCircle, ArrowLeft, Heart, AlertCircle, Check, X } from 'lucide-react';
+import { Eye, EyeOff, Lock, CheckCircle, ArrowLeft, AlertCircle, Check, X } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext.jsx';
 
 const ResetPasswordForm = () => {

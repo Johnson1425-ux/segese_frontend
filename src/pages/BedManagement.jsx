@@ -1,5 +1,5 @@
 // src/pages/BedManagement.jsx
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import api from '../utils/api';
 import { 
   BedDouble, Plus, Edit, Trash2, Search, X, 

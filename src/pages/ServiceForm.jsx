@@ -1,4 +1,3 @@
-import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -16,7 +15,7 @@ const ServiceForm = () => {
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
   // Fetch service data if editing
-  const { data: serviceData, isLoading } = useQuery(
+  const { isLoading } = useQuery(
     ['service', id],
     () => serviceService.getServiceById(id).then(res => res.data.data),
     {

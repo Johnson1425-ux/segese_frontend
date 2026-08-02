@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 // import { useTheme } from '../context/ThemeContext.jsx';
-import { 
-  Home, 
-  Users, 
-  UserCheck, 
-  Calendar, 
+import {
+  Home,
+  Users,
+  UserCheck,
+  Calendar,
   Activity,
-  Plus,
   Settings,
   Search,
   User,
@@ -15,15 +14,12 @@ import {
   Shield,
   FileText,
   BarChart3,
-  Bell,
-  DollarSign, 
+  DollarSign,
   Briefcase,
   AlignEndHorizontal,
   ChevronDown,
   ChevronRight,
-  PlusCircle,
   UserPlus,
-  Truck,
   Microscope,
   Store,
   ToggleLeft,
@@ -32,15 +28,13 @@ import {
   X,
   Scissors,
   Building2,
-  Sun,
-  Moon,
-  SyringeIcon
+  SyringeIcon,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
 
 const Sidebar = ({ isOpen, onClose }) => {
   const location = useLocation();
-  const { user, logout, hasPermission, hasRole } = useAuth();
+  const { user, logout, hasRole } = useAuth();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState({
     main: true,
@@ -52,7 +46,6 @@ const Sidebar = ({ isOpen, onClose }) => {
     administration: false
   });
   // const { isDark, toggleTheme } = useTheme();
-
 
   // Close mobile menu on route change
   useEffect(() => {

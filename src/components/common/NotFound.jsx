@@ -1,4 +1,3 @@
-import React from 'react';
 import { Search, Home, ArrowLeft } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -22,7 +21,7 @@ const NotFound = () => {
             Page Not Found
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Sorry, we couldn't find the page you're looking for.
+            Sorry, we couldn&apos;t find the page you&apos;re looking for.
           </p>
         </div>
 
@@ -31,7 +30,7 @@ const NotFound = () => {
             <div className="text-center">
               <h3 className="text-lg font-medium text-gray-900 mb-2">Error 404</h3>
               <p className="text-sm text-gray-600">
-                The page you requested doesn't exist or has been moved.
+                The page you requested doesn&apos;t exist or has been moved.
               </p>
             </div>
 
@@ -45,7 +44,7 @@ const NotFound = () => {
                       <li>Check the URL for typos</li>
                       <li>Go back to the previous page</li>
                       <li>Return to the dashboard</li>
-                      <li>Use the navigation menu to find what you're looking for</li>
+                      <li>Use the navigation menu to find what you&apos;re looking for</li>
                     </ul>
                   </div>
                 </div>
@@ -72,7 +71,7 @@ const NotFound = () => {
 
             <div className="text-center">
               <p className="text-xs text-gray-500">
-                Still can't find what you're looking for?{' '}
+                Still can&apos;t find what you&apos;re looking for?{' '}
                 <Link to="/contact" className="text-blue-600 hover:text-blue-500">
                   Contact support
                 </Link>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { Plus, Search, Filter, Eye, ChevronLeft, ChevronRight, MoreVertical } from 'lucide-react';
@@ -14,8 +14,7 @@ const Visits = () => {
   const [openDropdown, setOpenDropdown] = useState(null);
 
   const canCreateVisit = hasAnyRole(['admin', 'receptionist']);
-  const dropdownRef = useRef(null);
-
+  
   const toggleDropdown = (visitId) => {
     setOpenDropdown(openDropdown === visitId ? null : visitId);
   }

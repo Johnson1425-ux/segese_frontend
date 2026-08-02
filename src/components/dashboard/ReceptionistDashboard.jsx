@@ -1,4 +1,3 @@
-import React from 'react';
 import { useQuery } from 'react-query';
 import { dashboardService } from '../../utils/dashboardService';
 import LoadingSpinner from '../common/LoadingSpinner.jsx';
@@ -62,7 +61,7 @@ const ReceptionistDashboard = () => {
       {/* Appointments Table */}
       <div className="bg-white rounded-lg shadow overflow-hidden">
         <div className="px-6 py-4 border-b border-gray-200">
-          <h2 className="text-xl font-bold text-gray-900">Today's Appointments</h2>
+          <h2 className="text-xl font-bold text-gray-900">Today&apos;s Appointments</h2>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full">

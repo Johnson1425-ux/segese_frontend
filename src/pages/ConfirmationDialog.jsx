@@ -1,4 +1,3 @@
-import React from 'react';
 import { AlertTriangle, X, Check } from 'lucide-react';
 
 const ConfirmationDialog = ({

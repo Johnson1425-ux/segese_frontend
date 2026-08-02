@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Search, ShoppingCart, Trash2, Plus, X, Package, User, Calendar, AlertCircle, Loader2 } from 'lucide-react';
 import api from "../utils/api.js";
 import { toast } from "react-hot-toast";
@@ -248,7 +248,7 @@ export default function DirectDispensing() {
               <div className="px-6 py-16 text-center">
                 <Search className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                 <p className="text-gray-500 font-medium text-lg">Search for a client to begin</p>
-                <p className="text-gray-400 text-sm mt-2">Type a client's name in the search box above</p>
+                <p className="text-gray-400 text-sm mt-2">Type a client&apos;s name in the search box above</p>
               </div>
             ) : (
               <table className="w-full">
@@ -337,7 +337,7 @@ export default function DirectDispensing() {
               <div className="py-12 text-center">
                 <Search className="w-12 h-12 text-gray-300 mx-auto mb-3" />
                 <p className="text-gray-500 font-medium text-base">Search for a client to begin</p>
-                <p className="text-gray-400 text-xs mt-2">Type a client's name in the search box above</p>
+                <p className="text-gray-400 text-xs mt-2">Type a client&apos;s name in the search box above</p>
               </div>
             ) : isSearching ? (
               <div className="py-12 text-center">

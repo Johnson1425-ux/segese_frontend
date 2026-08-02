@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Menu } from 'lucide-react'; // Make sure this import is here
 import { useAuth } from '../../context/AuthContext.jsx';
 import Sidebar from '../Sidebar.jsx';

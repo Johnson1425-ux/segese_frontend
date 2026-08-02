@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, NavLink } from 'react-router-dom';
 import { Mail, ArrowLeft, CheckCircle, Heart, AlertCircle } from 'lucide-react';

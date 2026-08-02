@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { HelmetProvider } from 'react-helmet-async';
 import { ErrorBoundary } from 'react-error-boundary';
-import { Menu, Sun, Moon } from 'lucide-react';
+import { Menu } from 'lucide-react';
 
 // Context Providers
 import { AuthProvider, useAuth } from './context/AuthContext.jsx';
@@ -341,7 +341,6 @@ const AppContent = () => {
           <Route path="/nurse/injections" element={
             <ProtectedRoute requiredRoles={['nurse', 'doctor', 'admin']}><NurseInjectionsPage /></ProtectedRoute>
           } />
-
 
           {/* Theatre Routes */}
           <Route path="/theatre-scheduling" element={

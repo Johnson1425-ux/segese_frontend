@@ -1,18 +1,15 @@
-import React from 'react';
-import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import LoadingSpinner from '../components/common/LoadingSpinner';
-import { User, Clock, ChevronRight } from 'lucide-react';
+import { User, ChevronRight } from 'lucide-react';
 import { doctorService } from '../utils/doctorService';
-import toast from 'react-hot-toast';
 
 const DoctorQueue = () => {
   const { user } = useAuth();
 
   // Get the query client instance
-  const queryClient = useQueryClient();
-
+  
   const { data, isLoading, error } = useQuery(
     ['doctorQueue', user._id],
     () => doctorService.getDoctorQueue(),

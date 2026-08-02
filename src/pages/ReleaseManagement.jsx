@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { toast } from 'react-hot-toast';
-import { Plus, Eye, Check, X, FileText, Building, Phone } from 'lucide-react';
+import { Plus, Eye, Check, X, FileText, Building } from 'lucide-react';
 import api from '../utils/api';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 

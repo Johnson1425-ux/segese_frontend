@@ -1,11 +1,9 @@
-import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
 import { toast } from 'react-hot-toast';
-import LoadingSpinner from '../common/LoadingSpinner.jsx';
 import { visitService } from '../../utils/visitService';
 
-const DiagnosisForm = ({ visitId, existingDiagnosis }) => {
+const DiagnosisForm = ({ visitId }) => {
   const { register, handleSubmit, reset, formState: { isSubmitting } } = useForm();
   const queryClient = useQueryClient();
 

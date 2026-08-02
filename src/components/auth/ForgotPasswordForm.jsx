@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, NavLink } from 'react-router-dom';
-import { Mail, ArrowLeft, CheckCircle, Heart, AlertCircle } from 'lucide-react';
+import { Mail, ArrowLeft, CheckCircle, AlertCircle } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext.jsx';
 
 const ForgotPasswordForm = () => {
@@ -54,7 +54,7 @@ const ForgotPasswordForm = () => {
             </h2>
             
             <p className="text-gray-600 mb-8 leading-relaxed">
-              We've sent a password reset link to your email address. Please check your inbox and follow the instructions to reset your password.
+              We&apos;ve sent a password reset link to your email address. Please check your inbox and follow the instructions to reset your password.
             </p>
 
             <div className="space-y-4">
@@ -67,7 +67,7 @@ const ForgotPasswordForm = () => {
               </Link>
 
               <p className="text-sm text-gray-500">
-                Didn't receive the email? Check your spam folder or{' '}
+                Didn&apos;t receive the email? Check your spam folder or{' '}
                 <button
                   onClick={() => setIsSubmitted(false)}
                   className="text-blue-600 hover:text-blue-700 font-medium"
@@ -119,7 +119,7 @@ const ForgotPasswordForm = () => {
             </h2>
             
             <p className="text-gray-600">
-              No worries! Enter your email and we'll send you reset instructions.
+              No worries! Enter your email and we&apos;ll send you reset instructions.
             </p>
           </div>
 

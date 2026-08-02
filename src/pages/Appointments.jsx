@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { Link } from 'react-router-dom';
-import { Calendar, Plus, MoreVertical, Edit, Trash2 } from 'lucide-react';
+import { Plus, Edit, Trash2 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext.jsx';
 import api from '../utils/api.js';
@@ -9,7 +9,7 @@ import LoadingSpinner from '../components/common/LoadingSpinner.jsx';
 import ConfirmationDialog from './ConfirmationDialog.jsx';
 
 const Appointments = () => {
-  const { hasAnyRole, user, role, isAuthenticated } = useAuth();
+  const { hasAnyRole, isAuthenticated } = useAuth();
   const queryClient = useQueryClient();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState(null);

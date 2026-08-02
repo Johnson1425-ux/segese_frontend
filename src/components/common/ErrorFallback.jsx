@@ -1,4 +1,3 @@
-import React from 'react';
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
 
 const ErrorFallback = ({ error, resetErrorBoundary }) => {
@@ -21,7 +20,7 @@ const ErrorFallback = ({ error, resetErrorBoundary }) => {
             Something went wrong
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            We're sorry, but something unexpected happened. Please try again or contact support if the problem persists.
+            We&apos;re sorry, but something unexpected happened. Please try again or contact support if the problem persists.
           </p>
         </div>
 

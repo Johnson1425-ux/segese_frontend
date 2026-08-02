@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
-import { toast } from 'react-hot-toast';
 import { Search, Filter, Eye, ChevronLeft, ChevronRight, FileText, Plus, DollarSign, Calendar, User } from 'lucide-react';
 import { billingService } from '../utils/billingService.js';
 import LoadingSpinner from '../components/common/LoadingSpinner.jsx';

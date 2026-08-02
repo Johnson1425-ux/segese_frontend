@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { User, Mail, Phone, Shield, Edit, Save, X } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext.jsx';
@@ -197,7 +197,7 @@ const Profile = () => {
                       disabled={!isEditing}
                       {...register('phone', {
                         pattern: {
-                          value: /^[\+]?[1-9][\d]{0,15}$/,
+                          value: /^\+?[1-9]\d{0,15}$/,
                           message: 'Invalid phone number',
                         },
                       })}

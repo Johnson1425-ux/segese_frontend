@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import api from '../utils/api.js';
 import { toast } from 'react-hot-toast';
 import { Search } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
 
 export default function ActiveVisits() {
-  const { user } = useAuth();
   const [visits, setVisits] = useState([]);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false);
